@@ -6,10 +6,12 @@
         xmlns:local="clr-namespace:UI_Layer"
         mc:Ignorable="d"
        Title="Camping Applicatie" Height="600" Width="800">
-    <Grid>
-        <Image Source="achtergrond.jpg" Stretch="Fill" />
 
-        <Canvas>
+    <Canvas Name="CampingCanvas">
+        
+        <Image Source="achtergrond.png" Stretch="Fill" />
+
+       
          
             <Rectangle Width="50" Height="50" Fill="Green" Canvas.Left="100" Canvas.Top="100" />
 
@@ -19,6 +21,6 @@
             <Rectangle Width="50" Height="50" Fill="Red" Canvas.Left="400" Canvas.Top="200" />
             <Rectangle Width="50" Height="50" Fill="Green" Canvas.Left="500" Canvas.Top="300" />
             <Rectangle Width="50" Height="50" Fill="Red" Canvas.Left="600" Canvas.Top="300" />
-        </Canvas>
-    </Grid>
+    </Canvas>
+   
 </Window>

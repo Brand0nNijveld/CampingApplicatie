@@ -43,7 +43,8 @@ namespace UI_Layer
             };
             Canvas.SetLeft(plaats, x);
             Canvas.SetTop(plaats, y);
-            ((Canvas)Content).Children.Add(plaats);
+            CampingCanvas.Children.Add(plaats); 
         }
+
     }
 }
