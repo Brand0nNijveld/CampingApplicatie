@@ -1,0 +1,21 @@
+﻿<Window x:Class="CampingApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Camping Applicatie" Height="600" Width="800">
+    <Grid>
+
+        <Image Source="achtergrond.png" Stretch="Fill" />
+
+        <Canvas>
+
+            <Rectangle Width="50" Height="50" Fill="Green" Canvas.Left="123" Canvas.Top="100" />
+
+            <Rectangle Width="50" Height="50" Fill="Red" Canvas.Left="318" Canvas.Top="75" />
+
+            <Rectangle Width="50" Height="50" Fill="Green" Canvas.Left="255" Canvas.Top="208" />
+            <Rectangle Width="50" Height="50" Fill="Red" Canvas.Left="306" Canvas.Top="275" />
+            <Rectangle Width="50" Height="50" Fill="Green" Canvas.Left="383" Canvas.Top="75" />
+            <Rectangle Width="50" Height="50" Fill="Red" Canvas.Left="388" Canvas.Top="175" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Canvas>
+    </Grid>
+</Window>
