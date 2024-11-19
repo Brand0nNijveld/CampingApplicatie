@@ -19,7 +19,9 @@ namespace UI_Layer
         public MainWindow()
         {
             InitializeComponent();
+   
             PlaatsenTonen();
+
         }
 
         private void PlaatsenTonen()

@@ -5,22 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI_Layer"
         mc:Ignorable="d"
-       Title="Camping Applicatie" Height="600" Width="800">
+       Title="Camping Applicatie" Height="960" Width="1440">
+
+
+
 
     <Canvas Name="CampingCanvas">
-        
-        <Image Source="achtergrond.png" Stretch="Fill" />
 
-       
-         
-            <Rectangle Width="50" Height="50" Fill="Green" Canvas.Left="100" Canvas.Top="100" />
+        <Image Source="test1.png" Stretch="Fill" Height="934" Width="1440" />
 
-            <Rectangle Width="50" Height="50" Fill="Red" Canvas.Left="200" Canvas.Top="100" />
+        <Rectangle Width="175" Height="112" Fill="Green" Canvas.Left="325" Canvas.Top="83" />
 
-            <Rectangle Width="50" Height="50" Fill="Green" Canvas.Left="300" Canvas.Top="200" />
-            <Rectangle Width="50" Height="50" Fill="Red" Canvas.Left="400" Canvas.Top="200" />
-            <Rectangle Width="50" Height="50" Fill="Green" Canvas.Left="500" Canvas.Top="300" />
-            <Rectangle Width="50" Height="50" Fill="Red" Canvas.Left="600" Canvas.Top="300" />
+        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="100" Canvas.Top="245" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+        <Rectangle Width="175" Height="105" Fill="Green" Canvas.Left="325" Canvas.Top="245" />
+        <Rectangle Width="175" Height="87" Fill="Red" Canvas.Left="325" Canvas.Top="555" />
+        <Rectangle Width="158" Height="91" Fill="Green" Canvas.Left="575" Canvas.Top="83" />
+        <Rectangle Width="158" Height="105" Fill="Red" Canvas.Left="575" Canvas.Top="245" />
+        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="100" Canvas.Top="395" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="812" Canvas.Top="245" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="1055" Canvas.Top="245" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="1287" Canvas.Top="245" HorizontalAlignment="Left" VerticalAlignment="Center" />
     </Canvas>
-   
+
 </Window>
