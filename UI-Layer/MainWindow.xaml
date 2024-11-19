@@ -14,18 +14,12 @@
 
         <Image Source="test1.png" Stretch="Fill" Height="934" Width="1440" />
 
-        <Rectangle Width="175" Height="112" Fill="Green" Canvas.Left="325" Canvas.Top="83" />
-
-        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="100" Canvas.Top="245" HorizontalAlignment="Center" VerticalAlignment="Center" />
-
-        <Rectangle Width="175" Height="105" Fill="Green" Canvas.Left="325" Canvas.Top="245" />
-        <Rectangle Width="175" Height="87" Fill="Red" Canvas.Left="325" Canvas.Top="555" />
-        <Rectangle Width="158" Height="91" Fill="Green" Canvas.Left="575" Canvas.Top="83" />
-        <Rectangle Width="158" Height="105" Fill="Red" Canvas.Left="575" Canvas.Top="245" />
-        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="100" Canvas.Top="395" HorizontalAlignment="Center" VerticalAlignment="Top" />
-        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="812" Canvas.Top="245" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="1055" Canvas.Top="245" HorizontalAlignment="Left" VerticalAlignment="Center" />
-        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="1287" Canvas.Top="245" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="58" Canvas.Top="211" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Rectangle Width="158" Height="105" Fill="Red" Canvas.Left="238" Canvas.Top="211" />
+        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="58" Canvas.Top="341" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="429" Canvas.Top="211" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="600" Canvas.Top="211" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="773" Canvas.Top="211" HorizontalAlignment="Left" VerticalAlignment="Top" />
     </Canvas>
 
 </Window>
