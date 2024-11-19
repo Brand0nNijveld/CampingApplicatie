@@ -22,11 +22,6 @@ namespace UI_Layer
             PlaatsenTonen();
         }
 
-        private void InitializeComponent()
-        {
-            throw new NotImplementedException();
-        }
-
         private void PlaatsenTonen()
         {
             
