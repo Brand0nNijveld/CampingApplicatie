@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CampingApplication.Business;
+using CampingApplication.VisitorApp.Models;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
@@ -13,8 +14,8 @@ namespace CampingApplication.VisitorApp.ViewModels
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        private ObservableCollection<CampingSpot> campingSpots = [];
-        public ObservableCollection<CampingSpot> CampingSpots
+        private ObservableCollection<CampingSpotVisualModel> campingSpots = [];
+        public ObservableCollection<CampingSpotVisualModel> CampingSpots
         {
             get => campingSpots;
             set
@@ -35,10 +36,26 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
         }
 
-        public CampingMapViewModel(string backgroundImage, CampingSpot[] campingSpots) : this()
+        public CampingMapViewModel(string backgroundImage, CampingSpotVisualModel[] campingSpots) : this()
         {
             this.campingSpots = new(campingSpots);
             this.backgroundImage = backgroundImage;
+        }
+
+        public void SetAvailability(Dictionary<int, CampingSpot> available)
+        {
+            foreach (var visual in campingSpots)
+            {
+                if (available.ContainsKey(visual.ID))
+                {
+                    visual.Available = true;
+                }
+                else
+                {
+                    visual.Available = false;
+                }
+            }
+            OnPropertyChanged(nameof(CampingSpots));
         }
 
         protected void OnPropertyChanged(string propertyName)

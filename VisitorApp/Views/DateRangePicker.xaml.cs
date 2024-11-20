@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CampingApplication.Business;
+using CampingApplication.VisitorApp.ViewModels;
 
 namespace CampingApplication.VisitorApp.Views
 {
@@ -21,6 +22,8 @@ namespace CampingApplication.VisitorApp.Views
     /// </summary>
     public partial class DateRangePicker : UserControl
     {
+        public MainViewModel? mainViewModel;
+
         public DateRangePicker()
         {
             InitializeComponent();
@@ -55,6 +58,7 @@ namespace CampingApplication.VisitorApp.Views
                 else
                 {
                     ResultTextBlock.Text = "De datums zijn geldig.";
+                    mainViewModel?.CheckAvailableSpots(beginDate, endDate);
                 }
             }
             else

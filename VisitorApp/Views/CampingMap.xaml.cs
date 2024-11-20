@@ -63,8 +63,8 @@ namespace CampingApplication.VisitorApp.Views
                     Height = 50,
                     RadiusX = 8,
                     RadiusY = 8,
-                    Fill = Brushes.Blue,
-                    Opacity = 50
+                    Fill = spot.Available ? Brushes.Green : Brushes.Red,
+                    Opacity = 0.5
                 };
 
                 Canvas.SetLeft(spotVisual, spot.PositionX);

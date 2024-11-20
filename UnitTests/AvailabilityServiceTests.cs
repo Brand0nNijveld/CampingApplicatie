@@ -2,9 +2,9 @@ using CampingApplication.Business;
 
 namespace UnitTests
 {
-    public class CampingAvailabilityServiceTests
+    public class AvailabilityServiceTests
     {
-        private CampingAvailabilityService service;
+        private AvailabilityService service;
 
         [SetUp]
         public void Setup()
@@ -38,7 +38,7 @@ namespace UnitTests
             ),
             ];
 
-            service = new CampingAvailabilityService(spots);
+            service = new AvailabilityService(spots);
         }
 
         [TestCase("2024-11-18", "2024-11-23", 2)]

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CampingApplication.Business
 {
-    public class CampingAvailabilityService
+    public class AvailabilityService
     {
         private CampingSpot[] campingSpots;
 
@@ -14,7 +14,7 @@ namespace CampingApplication.Business
         /// Assumes all campingspots with their future bookings have been fetched from the database.
         /// </summary>
         /// <param name="campingSpots"></param>
-        public CampingAvailabilityService(CampingSpot[] campingSpots)
+        public AvailabilityService(CampingSpot[] campingSpots)
         {
             this.campingSpots = campingSpots;
         }

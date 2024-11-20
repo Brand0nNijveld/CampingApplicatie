@@ -18,20 +18,18 @@ namespace CampingApplication.VisitorApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private readonly MainViewModel viewModel;
+
+        public MainWindow(MainViewModel viewModel)
         {
             InitializeComponent();
+            this.viewModel = viewModel;
+            DataContext = viewModel;
 
-            CampingSpot[] campingSpots =
-                [
-                    new(0, 188, 32, []),
-                    new(1, 268, 32, []),
-                    new(2, 348, 32, []),
-                ];
+            CampingMapUserControl.DataContext = viewModel.CampingMapViewModel;
+            CampingMapUserControl.SetViewModel(viewModel.CampingMapViewModel);
 
-            CampingMapViewModel campingMapViewModel = new("../test1.png", campingSpots);
-            CampingMapUserControl.DataContext = campingMapViewModel;
-            CampingMapUserControl.SetViewModel(campingMapViewModel);
+            DateRangePicker.mainViewModel = viewModel;
         }
     }
 }
