@@ -9,6 +9,8 @@ namespace CampingApplication.Business
     public class CampingSpot
     {
         public int ID { get; private set; }
+        public int PositionX { get; private set; }
+        public int PositionY { get; private set; }
         public List<Booking> Bookings { get; private set; } = [];
 
         public CampingSpot()
@@ -16,9 +18,11 @@ namespace CampingApplication.Business
 
         }
 
-        public CampingSpot(int ID, Booking[] bookings)
+        public CampingSpot(int ID, int x, int y, Booking[] bookings)
         {
             this.ID = ID;
+            PositionX = x;
+            PositionY = y;
             Bookings = new(bookings);
         }
 
