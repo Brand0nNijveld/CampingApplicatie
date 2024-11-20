@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace UI_Layer
+namespace CampingApplication.VisitorApp 
 {
     /// <summary>
     /// Interaction logic for App.xaml

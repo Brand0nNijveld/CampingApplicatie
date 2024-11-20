@@ -1,25 +1,11 @@
-﻿<Window x:Class="UI_Layer.MainWindow"
+﻿<Window x:Class="CampingApplication.VisitorApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:UI_Layer"
+        xmlns:local="clr-namespace:CampingApplication.VisitorApp"
+        xmlns:views="clr-namespace:CampingApplication.VisitorApp.Views"
         mc:Ignorable="d"
        Title="Camping Applicatie" Height="960" Width="1440">
-
-
-
-
-    <Canvas Name="CampingCanvas">
-
-        <Image Source="test1.png" Stretch="Fill" Height="934" Width="1440" />
-
-        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="58" Canvas.Top="211" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <Rectangle Width="158" Height="105" Fill="Red" Canvas.Left="238" Canvas.Top="211" />
-        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="58" Canvas.Top="341" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="429" Canvas.Top="211" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="600" Canvas.Top="211" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <Rectangle Width="148" Height="105" Fill="Red" Canvas.Left="773" Canvas.Top="211" HorizontalAlignment="Left" VerticalAlignment="Top" />
-    </Canvas>
-
+    <views:CampingMap x:Name="CampingMapUserControl" />
 </Window>
