@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CampingApplication.Business
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{DB345E7A-B3AC-40D9-BF88-EBE770B4B25D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "datapicker", "..\..\datapicker\datapicker\datapicker.csproj", "{18BC1E24-B8FB-494B-9659-A51D75D4CD1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CampingApplication.Datapicker", "..\..\datapicker\datapicker\CampingApplication.Datapicker.csproj", "{18BC1E24-B8FB-494B-9659-A51D75D4CD1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
