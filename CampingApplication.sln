@@ -5,7 +5,9 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CampingApplication.Business", "Business\CampingApplication.Business.csproj", "{C9244DA7-A905-4FF7-9CFD-15B05F5740DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{DB345E7A-B3AC-40D9-BF88-EBE770B4B25D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{DB345E7A-B3AC-40D9-BF88-EBE770B4B25D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "datapicker", "..\..\datapicker\datapicker\datapicker.csproj", "{18BC1E24-B8FB-494B-9659-A51D75D4CD1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{DB345E7A-B3AC-40D9-BF88-EBE770B4B25D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB345E7A-B3AC-40D9-BF88-EBE770B4B25D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB345E7A-B3AC-40D9-BF88-EBE770B4B25D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18BC1E24-B8FB-494B-9659-A51D75D4CD1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18BC1E24-B8FB-494B-9659-A51D75D4CD1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18BC1E24-B8FB-494B-9659-A51D75D4CD1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18BC1E24-B8FB-494B-9659-A51D75D4CD1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
