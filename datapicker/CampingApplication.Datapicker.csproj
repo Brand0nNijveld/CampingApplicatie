@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Brand0nNijveld\CampingApplicatie\Business\CampingApplication.Business.csproj" />
+    <ProjectReference Include="..\Business\CampingApplication.Business.csproj" />
   </ItemGroup>
 
 </Project>

@@ -52,6 +52,8 @@ namespace CampingApplication.VisitorApp.Views
 
             CampingCanvas.Children.Clear();
 
+            int width = 64;
+            int height = 50;
 
             foreach (var spot in viewModel.CampingSpots)
             {
@@ -68,7 +70,24 @@ namespace CampingApplication.VisitorApp.Views
                 Canvas.SetLeft(spotVisual, spot.PositionX);
                 Canvas.SetTop(spotVisual, spot.PositionY);
 
+                var spotID = new TextBlock
+                {
+                    Text = spot.ID.ToString(),
+                    FontSize = 14,
+                    Foreground = new SolidColorBrush(Colors.Black)
+                };
+
+                spotID.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                var textSize = spotID.DesiredSize;
+
+                double textPosX = spot.PositionX + (width / 2) - (textSize.Width / 2);
+                double textPosY = spot.PositionY + (height / 2) - (textSize.Height / 2);
+
+                Canvas.SetLeft(spotID, textPosX);
+                Canvas.SetTop(spotID, textPosY);
+
                 CampingCanvas.Children.Add(spotVisual);
+                CampingCanvas.Children.Add(spotID);
             }
         }
     }

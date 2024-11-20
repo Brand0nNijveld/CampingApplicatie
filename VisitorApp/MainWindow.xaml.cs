@@ -25,6 +25,8 @@ namespace CampingApplication.VisitorApp
             CampingSpot[] campingSpots =
                 [
                     new(0, 188, 32, []),
+                    new(1, 268, 32, []),
+                    new(2, 348, 32, []),
                 ];
 
             CampingMapViewModel campingMapViewModel = new("../test1.png", campingSpots);
