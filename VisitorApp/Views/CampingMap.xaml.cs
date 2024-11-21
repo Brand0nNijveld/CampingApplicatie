@@ -10,6 +10,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -23,16 +24,53 @@ namespace CampingApplication.VisitorApp.Views
     {
         private CampingMapViewModel? viewModel;
 
+        DoubleAnimation fadeInAnimation;
+        DoubleAnimation fadeOutAnimation;
+
         public CampingMap()
         {
             InitializeComponent();
+            fadeInAnimation = new DoubleAnimation
+            {
+                From = 0,   // Start from fully opaque
+                To = 1,     // End at fully transparent
+                Duration = new Duration(TimeSpan.FromSeconds(0.3))
+            };
+
+            fadeOutAnimation = new DoubleAnimation
+            {
+                From = 1,   // Start from fully opaque
+                To = 0,     // End at fully transparent
+                Duration = new Duration(TimeSpan.FromSeconds(0.3))
+            };
         }
 
         public void SetViewModel(CampingMapViewModel viewModel)
         {
             this.viewModel = viewModel;
             viewModel.PropertyChanged += ViewModel_PropertyChanged;
+            viewModel.AvailabilityChanged += OnAvailabilityChanged;
+
             UpdateCanvas();
+        }
+
+        private void OnAvailabilityChanged(bool available)
+        {
+            if (available)
+            {
+                if (NoneAvailableInfo.Opacity == 1)
+                {
+                    NoneAvailableInfo.BeginAnimation(OpacityProperty, fadeOutAnimation);
+                }
+            }
+            else
+            {
+                if (NoneAvailableInfo.Opacity == 0)
+                {
+                    NoneAvailableInfo.IsEnabled = true;
+                    NoneAvailableInfo.BeginAnimation(OpacityProperty, fadeInAnimation);
+                }
+            }
         }
 
         private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -52,19 +90,19 @@ namespace CampingApplication.VisitorApp.Views
 
             CampingCanvas.Children.Clear();
 
-            int width = 64;
-            int height = 50;
+            int width = 81;
+            int height = 60;
 
             foreach (var spot in viewModel.CampingSpots)
             {
                 var spotVisual = new Rectangle
                 {
-                    Width = 64,
-                    Height = 50,
-                    RadiusX = 8,
-                    RadiusY = 8,
-                    Fill = spot.Available ? Brushes.Green : Brushes.Red,
-                    Opacity = 0.5
+                    Width = width,
+                    Height = height,
+                    RadiusX = 5,
+                    RadiusY = 5,
+                    Fill = spot.Available ? Brushes.Yellow : Brushes.Transparent,
+                    Cursor = Cursors.Hand
                 };
 
                 Canvas.SetLeft(spotVisual, spot.PositionX);

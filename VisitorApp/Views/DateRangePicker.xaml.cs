@@ -30,10 +30,12 @@ namespace CampingApplication.VisitorApp.Views
             BeginDatePicker.BlackoutDates.AddDatesInPast();
             EndDatePicker.BlackoutDates.AddDatesInPast();
         }
+
         private void BeginDatePicker_SelectedDate(object sender, SelectionChangedEventArgs e)
         {
             ValidateDates();
         }
+
         private void EndDatePicker_SelectedDate(object sender, SelectionChangedEventArgs e)
         {
             ValidateDates();

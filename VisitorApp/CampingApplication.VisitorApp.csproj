@@ -18,7 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="test1.png" />
+    <Resource Include="./Resources/TestMap.jpg" />
+    <Resource Include="./Resources/Icons/info.svg" />
   </ItemGroup>
 
 </Project>

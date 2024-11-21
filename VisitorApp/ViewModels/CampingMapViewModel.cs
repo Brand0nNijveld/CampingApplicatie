@@ -10,8 +10,10 @@ using CampingApplication.VisitorApp.Models;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
+    public delegate void AvailabilityHandler(bool available);
     public class CampingMapViewModel() : INotifyPropertyChanged
     {
+        public event AvailabilityHandler? AvailabilityChanged;
         public event PropertyChangedEventHandler? PropertyChanged;
 
         private ObservableCollection<CampingSpotVisualModel> campingSpots = [];
@@ -44,6 +46,11 @@ namespace CampingApplication.VisitorApp.ViewModels
 
         public void SetAvailability(Dictionary<int, CampingSpot> available)
         {
+            if (available.Count == 0)
+            {
+                AvailabilityChanged?.Invoke(false);
+            }
+
             foreach (var visual in campingSpots)
             {
                 if (available.ContainsKey(visual.ID))
@@ -55,7 +62,9 @@ namespace CampingApplication.VisitorApp.ViewModels
                     visual.Available = false;
                 }
             }
+
             OnPropertyChanged(nameof(CampingSpots));
+            AvailabilityChanged?.Invoke(true);
         }
 
         protected void OnPropertyChanged(string propertyName)

@@ -14,8 +14,8 @@
         </Grid.RowDefinitions>
 
         <views:DateRangePicker Grid.Row="0" x:Name="DateRangePicker"/>
-        <Viewbox Grid.Row="1">
-            <views:CampingMap x:Name="CampingMapUserControl" />
+        <Viewbox Grid.Row="1" VerticalAlignment="Top">
+            <views:CampingMap Padding="50" x:Name="CampingMapUserControl" />
         </Viewbox>
     </Grid>
 </Window>
