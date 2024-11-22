@@ -2,9 +2,9 @@ using CampingApplication.Business;
 
 namespace UnitTests
 {
-    public class CampingAvailabilityServiceTests
+    public class AvailabilityServiceTests
     {
-        private CampingAvailabilityService service;
+        private AvailabilityService service;
 
         [SetUp]
         public void Setup()
@@ -13,18 +13,24 @@ namespace UnitTests
             [
             new CampingSpot(
                 1,
+                0,
+                0,
                 [
                     new(DateTime.Parse("2024-11-21"), DateTime.Parse("2024-11-26"))
                 ]
             ),
             new CampingSpot(
                 2,
+                0,
+                0,
                 [
                     new(DateTime.Parse("2024-11-1"), DateTime.Parse("2024-11-9"))
                 ]
             ),
             new CampingSpot(
                 3,
+                0,
+                0,
                 [
                     new(DateTime.Parse("2024-11-24"), DateTime.Parse("2024-11-28")),
                     new(DateTime.Parse("2024-12-1"), DateTime.Parse("2024-12-7"))
@@ -32,7 +38,7 @@ namespace UnitTests
             ),
             ];
 
-            service = new CampingAvailabilityService(spots);
+            service = new AvailabilityService(spots);
         }
 
         [TestCase("2024-11-18", "2024-11-23", 2)]

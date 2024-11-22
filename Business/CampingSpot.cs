@@ -9,16 +9,19 @@ namespace CampingApplication.Business
     public class CampingSpot
     {
         public int ID { get; private set; }
+        public int PositionX { get; private set; }
+        public int PositionY { get; private set; }
         public List<Booking> Bookings { get; private set; } = [];
 
-        public CampingSpot()
-        {
-
-        }
-
-        public CampingSpot(int ID, Booking[] bookings)
+        public CampingSpot(int ID, int x, int y)
         {
             this.ID = ID;
+            this.PositionX = x;
+            this.PositionY = y;
+        }
+
+        public CampingSpot(int ID, int x, int y, Booking[] bookings) : this(ID, x, y)
+        {
             Bookings = new(bookings);
         }
 
