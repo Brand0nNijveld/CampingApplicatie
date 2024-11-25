@@ -42,7 +42,7 @@ jobs:
 
       # Upload the publish files as release assets
       - name: Upload Release Asset
-        uses: csexton/upload-release-asset@v1
+        uses: actions/upload-release-asset@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           pattern: CampingApplication/bin/Release/netcoreapp8.0/win-x64/publish/*.exe
