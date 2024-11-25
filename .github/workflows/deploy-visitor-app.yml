@@ -1,35 +1,49 @@
 name: Deploy Visitor App
 
 on:
- push:
-   branches:
-    - "releases/visitor/v*"
+  push:
+    branches:
+      - "releases/visitor/v*"
 
 env:
-    PROJECT_PATH: VisitorApp/CampingApplication.VisitorApp.csproj
+  PROJECT_PATH: VisitorApp/CampingApplication.VisitorApp.csproj
 
 jobs:
   deploy:
     runs-on: windows-latest
     steps:
-     - uses: actions/checkout@v2
-     - uses: actions/setup-dotnet@v1
-       with:
-        dotnet-version: 8.0.x
+      # Checkout the repository
+      - uses: actions/checkout@v2
 
-     - run: dotnet restore ${{ env.PROJECT_PATH }}
-     - run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
-  
-     - run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build
-       id: create_release
-       env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-       with:
-         tag_name: ${{ github.ref }}
-         release_name: ${{ github.ref }}
-     
-     - uses: csexton/release-asset-actions@v2
-       with:
-        github-token: ${{ secrets.GITHUBTOKEN }}
-        pattern: CampingApplication/bin/Release/netcoreapp8.0/win-x64/publish/*.exe
-        release-url: ${{ steps.create_release.outputs.upload_url }}
+      # Setup .NET SDK
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 8.0.x
+
+      # Restore dependencies
+      - run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      # Build the project
+      - run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
+
+      # Publish the project
+      - run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build
+
+      # Create a release on GitHub
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          body: "Release notes for ${{ github.ref }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Upload the publish files as release assets
+      - name: Upload Release Asset
+        uses: csexton/release-asset-actions@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pattern: CampingApplication/bin/Release/netcoreapp8.0/win-x64/publish/*.exe
+          release-url: ${{ steps.create_release.outputs.upload_url }}
