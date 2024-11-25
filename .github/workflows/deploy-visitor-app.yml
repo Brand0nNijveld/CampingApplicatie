@@ -3,7 +3,7 @@ name: Deploy Visitor App
 on:
   push:
     tags:
-      - "test"
+      - "releases/visitor/v*"
 
 permissions:
   contents: write
