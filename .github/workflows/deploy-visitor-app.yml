@@ -24,10 +24,10 @@ jobs:
       - run: dotnet restore ${{ env.PROJECT_PATH }}
 
       # Build the project
-      - run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore -o ./output
+      - run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
 
       # Publish the project
-      - run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build -o ./output/publish
+      - run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true
 
       # Create a release on GitHub
       - name: Create GitHub Release
