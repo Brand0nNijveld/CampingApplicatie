@@ -44,6 +44,11 @@ namespace CampingApplication.VisitorApp.ViewModels
             this.backgroundImage = backgroundImage;
         }
 
+        public void ClearAvailability()
+        {
+            SetAvailability([]);
+        }
+
         public void SetAvailability(Dictionary<int, CampingSpot> available)
         {
             if (available.Count == 0)

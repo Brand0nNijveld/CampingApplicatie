@@ -49,6 +49,13 @@ namespace CampingApplication.VisitorApp.Views
                 DateTime endDate = EndDatePicker.SelectedDate.Value;
                 DateValidationResult result = DateValidationService.ValidateDates(beginDate, endDate);
 
+                if (result == DateValidationResult.ValidDates)
+                {
+                    ResultTextBlock.Text = "";
+                    mainViewModel?.CheckAvailableSpots(beginDate, endDate);
+                    return;
+                }
+
                 if (result == DateValidationResult.EndBeforeBegin)
                 {
                     ResultTextBlock.Text = "De einddatum mag niet eerder zijn dan de begindatum.";
@@ -57,11 +64,8 @@ namespace CampingApplication.VisitorApp.Views
                 {
                     ResultTextBlock.Text = "De einddatum en begindatum mogen niet gelijk zijn.";
                 }
-                else
-                {
-                    ResultTextBlock.Text = "De datums zijn geldig.";
-                    mainViewModel?.CheckAvailableSpots(beginDate, endDate);
-                }
+
+                mainViewModel?.CampingMapViewModel.ClearAvailability();
             }
             else
             {
