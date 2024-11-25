@@ -9,6 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\Unit
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CampingApplication.VisitorApp", "VisitorApp\CampingApplication.VisitorApp.csproj", "{81CE4B74-73BC-40F4-9165-07EF8539649D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{1BA2E456-ED88-44FE-AD09-B192E4BC9CC4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{D1883CA6-F0F5-459D-BC21-7BC4230B949B}"
+	ProjectSection(SolutionItems) = preProject
+		deploy-visitor-app.yml = deploy-visitor-app.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +37,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D1883CA6-F0F5-459D-BC21-7BC4230B949B} = {1BA2E456-ED88-44FE-AD09-B192E4BC9CC4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F5763714-2B5A-4B78-A0B2-AD1F8CA8A8E6}

@@ -1,0 +1,54 @@
+name: Deploy Visitor App
+
+on:
+  push:
+    tags:
+      - "releases/visitor/v*"
+
+env:
+  PROJECT_PATH: VisitorApp/CampingApplication.VisitorApp.csproj
+
+jobs:
+  deploy:
+    runs-on: windows-latest
+    steps:
+      # Checkout the repository
+      - uses: actions/checkout@v2
+
+      # Setup .NET SDK
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 8.0.x
+
+      # Restore dependencies
+      - run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      # Build the project
+      - run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
+
+      # Publish the project
+      - run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true
+
+      - run: dir VisitorApp/bin/Release/net8.0-windows/win-x64/publish/
+
+      - name: Check directory write access
+        run: echo "Testing write permissions" > D:/a/CampingApplicatie/CampingApplicatie/VisitorApp/bin/Release/net8.0-windows/win-x64/publish/testfile.txt
+
+      # Create a release on GitHub
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: "Release ${{ github.ref_name }}"
+          body: "Release notes for ${{ github.ref_name }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Upload the publish files as release assets
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pattern: 'VisitorApp\bin\Release\net8.0-windows\win-x64\publish\*.exe'
+          release-url: ${{ steps.create_release.outputs.upload_url }}
