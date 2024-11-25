@@ -5,6 +5,9 @@ on:
     tags:
       - "releases/visitor/v*"
 
+permissions:
+  contents: write
+
 env:
   PROJECT_PATH: VisitorApp/CampingApplication.VisitorApp.csproj
 
@@ -27,12 +30,8 @@ jobs:
       - run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
 
       # Publish the project
-      - run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true
-
+      - run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -r win-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:UseAppHost=true --self-contained
       - run: dir VisitorApp/bin/Release/net8.0-windows/win-x64/publish/
-
-      - name: Check directory write access
-        run: echo "Testing write permissions" > D:/a/CampingApplicatie/CampingApplicatie/VisitorApp/bin/Release/net8.0-windows/win-x64/publish/testfile.txt
 
       # Create a release on GitHub
       - name: Create GitHub Release
@@ -49,6 +48,10 @@ jobs:
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          pattern: 'VisitorApp\bin\Release\net8.0-windows\win-x64\publish\*.exe'
-          release-url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: VisitorApp/bin/Release/net8.0-windows/win-x64/publish/CampingApplication.VisitorApp.exe
+          asset_name: CampingApplication.VisitorApp.exe
+          asset_content_type: application/octet-stream
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
