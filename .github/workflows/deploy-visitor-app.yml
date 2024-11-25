@@ -20,4 +20,16 @@ jobs:
      - run: dotnet restore ${{ env.PROJECT_PATH }}
      - run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
   
-     - run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true
+     - run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build
+       id: create_release
+       env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       with:
+         branch_name: ${{ github.ref }}
+         release_name: ${{ github.ref }}
+     
+     - uses: csexton/release-asset-actions@v2
+       with:
+        github-token: ${{ secrets.GITHUBTOKEN }}
+        pattern: CampingApplication/bin/Release/netcoreapp8.0/win-x64/publish/*.exe
+        release-url: ${{ steps.create_release.outputs.upload_url }}
