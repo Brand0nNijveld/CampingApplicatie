@@ -56,3 +56,6 @@ jobs:
           asset_path: VisitorApp/bin/Release/net8.0-windows/win-x64/publish/CampingApplication.VisitorApp.exe
           asset_name: CampingApplication.VisitorApp.exe
           asset_content_type: application/octet-stream
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
