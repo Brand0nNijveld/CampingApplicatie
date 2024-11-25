@@ -29,6 +29,8 @@ jobs:
       # Publish the project
       - run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true
 
+      - run: dir VisitorApp/bin/Release/net8.0-windows/win-x64/publish/
+
       # Create a release on GitHub
       - name: Create GitHub Release
         id: create_release
@@ -45,5 +47,5 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          pattern: VisitorApp\bin\Release\net8.0-windows\win-x64\publish\*.exe
+          pattern: VisitorApp/bin/Release/net8.0-windows/win-x64/publish/*.exe
           release-url: ${{ steps.create_release.outputs.upload_url }}
