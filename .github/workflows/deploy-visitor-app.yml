@@ -4,6 +4,9 @@ on:
   push:
     tags:
       - "releases/visitor/v*"
+      
+permissions:
+  contents: write
 
 env:
   PROJECT_PATH: VisitorApp/CampingApplication.VisitorApp.csproj
