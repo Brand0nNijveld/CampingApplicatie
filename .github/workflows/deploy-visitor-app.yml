@@ -30,12 +30,8 @@ jobs:
       - run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
 
       # Publish the project
-      - run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true
-
+      - run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -r win-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:UseAppHost=true --self-contained
       - run: dir VisitorApp/bin/Release/net8.0-windows/win-x64/publish/
-
-      - name: Check directory write access
-        run: echo "Testing write permissions" > D:/a/CampingApplicatie/CampingApplicatie/VisitorApp/bin/Release/net8.0-windows/win-x64/publish/testfile.txt
 
       # Create a release on GitHub
       - name: Create GitHub Release
