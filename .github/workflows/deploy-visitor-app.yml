@@ -6,7 +6,7 @@ on:
     - "releases/visitor/v*"
 
 env:
-    PROJECT_PATH: VisitorApp/CampingApplication.VisitorApp
+    PROJECT_PATH: VisitorApp/CampingApplication.VisitorApp.csproj
 
 jobs:
   deploy:
