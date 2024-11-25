@@ -47,5 +47,5 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          pattern: VisitorApp/bin/Release/net8.0-windows/win-x64/publish/*.exe
+          pattern: D:\a\CampingApplicatie\CampingApplicatie\VisitorApp\bin\Release\net8.0-windows\win-x64\publish\*.exe
           release-url: ${{ steps.create_release.outputs.upload_url }}
