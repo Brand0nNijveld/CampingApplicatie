@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>CampingApplication.VisitorApp</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="test1.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Business\CampingApplication.Business.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="./Resources/TestMap.jpg" />
+    <Resource Include="./Resources/Icons/info.svg" />
+  </ItemGroup>
+
+</Project>
