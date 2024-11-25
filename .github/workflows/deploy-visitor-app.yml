@@ -53,6 +53,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: VisitorApp/bin/Release/net8.0-windows/win-x64/publish/*.exe
+          asset_path: VisitorApp/bin/Release/net8.0-windows/win-x64/publish/CampingApplication.VisitorApp.exe
           asset_name: CampingApplication.VisitorApp.exe
           asset_content_type: application/octet-stream
