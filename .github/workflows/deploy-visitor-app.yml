@@ -34,13 +34,20 @@ jobs:
       - name: Check directory write access
         run: echo "Testing write permissions" > D:/a/CampingApplicatie/CampingApplicatie/VisitorApp/bin/Release/net8.0-windows/win-x64/publish/testfile.txt
 
+      # Create a tag from the branch (use the branch name as the tag)
+      - name: Create Git tag
+        run: |
+          TAG_NAME=${GITHUB_REF#refs/heads/} # Extract branch name from ref
+          git tag $TAG_NAME
+          git push origin $TAG_NAME
+
       # Create a release on GitHub
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
         with:
           tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
+          release_name: "Release ${{ github.ref }}"
           body: "Release notes for ${{ github.ref }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -50,5 +57,5 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          pattern: 'D:\a\CampingApplicatie\CampingApplicatie\VisitorApp\bin\Release\net8.0-windows\win-x64\publish\*'
+          pattern: 'D:\a\CampingApplicatie\CampingApplicatie\VisitorApp\bin\Release\net8.0-windows\win-x64\publish\*.exe'
           release-url: ${{ steps.create_release.outputs.upload_url }}
