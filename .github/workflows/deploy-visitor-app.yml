@@ -2,7 +2,7 @@ name: Deploy Visitor App
 
 on:
  push:
-  tags:
+   branches:
     - "releases/visitor/v*"
 
 env:
