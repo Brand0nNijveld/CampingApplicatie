@@ -1,6 +1,4 @@
 # Camping Applicatie 🏕️
-
-## Beschrijving
 Een applicatie waarmee bezoekers beschikbare campingplaatsen kunnen bekijken op een plattegrond, filteren en boeken op basis van hun ingevoerde data. Het systeem ondersteunt een eenvoudige en gebruiksvriendelijke interface voor bezoekers.
 
 ## Inhoud
