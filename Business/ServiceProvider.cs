@@ -8,7 +8,24 @@ namespace CampingApplication.Business
 {
     public class ServiceProvider
     {
-        public static ServiceProvider Current;
+        public static ServiceProvider Current
+        {
+            get
+            {
+                if (Current == null)
+                {
+                    throw new Exception();
+                }
+                else
+                {
+                    return Current;
+                }
+            }
+            set
+            {
+                Current = value;
+            }
+        }
 
         public ServiceProvider()
         {
@@ -27,6 +44,11 @@ namespace CampingApplication.Business
         // Register an instance
         public void RegisterInstance<TInterface>(TInterface instance)
         {
+            if (instance == null)
+            {
+                return;
+            }
+
             _services[typeof(TInterface)] = instance;
         }
 
