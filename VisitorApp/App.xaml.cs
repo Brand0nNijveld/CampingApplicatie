@@ -1,4 +1,5 @@
 ﻿using CampingApplication.Business;
+using CampingApplication.Business.CampingSpotService;
 using CampingApplication.VisitorApp.ViewModels;
 using System.Configuration;
 using System.Data;
@@ -17,6 +18,13 @@ namespace CampingApplication.VisitorApp
         /// </summary>
         public App()
         {
+            ServiceProvider serviceProvider = new();
+
+            ICampingSpotRepository campingSpotRepository = new CampingSpotMockRepository();
+            CampingSpotService campingSpotService = new(campingSpotRepository);
+
+            serviceProvider.RegisterInstance<CampingSpotService>(campingSpotService);
+
             MainViewModel mainViewModel = new();
 
             MainWindow = new MainWindow(mainViewModel);

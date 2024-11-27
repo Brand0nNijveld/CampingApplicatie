@@ -38,9 +38,16 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
         }
 
-        public CampingMapViewModel(string backgroundImage, CampingSpotVisualModel[] campingSpots) : this()
+        public CampingMapViewModel(string backgroundImage, List<CampingSpot> campingSpots) : this()
         {
-            this.campingSpots = new(campingSpots);
+            var campingSpotVisuals = new CampingSpotVisualModel[campingSpots.Count];
+            for (int i = 0; i < campingSpots.Count; i++)
+            {
+                CampingSpot spot = campingSpots[i];
+                campingSpotVisuals[i] = new(spot.ID, spot.PositionX, spot.PositionY);
+            }
+
+            this.campingSpots = new(campingSpotVisuals);
             this.backgroundImage = backgroundImage;
         }
 

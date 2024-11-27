@@ -15,7 +15,6 @@ namespace CampingApplication.Business
     }
     public class DateValidationService
     {
-
         public static DateValidationResult ValidateDates(DateTime beginDate, DateTime endDate)
         {
             if (endDate < beginDate)
