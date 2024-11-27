@@ -5,7 +5,7 @@
              >
     <Application.Resources>
         <ResourceDictionary>
-            <FontFamily x:Key="GlobalFont">Inter</FontFamily>
+            <FontFamily x:Key="GlobalFont">Roboto</FontFamily>
 
             <!-- Global style for text-based controls -->
             <Style TargetType="TextBlock">

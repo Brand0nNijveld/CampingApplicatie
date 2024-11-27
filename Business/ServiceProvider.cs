@@ -8,28 +8,29 @@ namespace CampingApplication.Business
 {
     public class ServiceProvider
     {
+        private static ServiceProvider? current;
         public static ServiceProvider Current
         {
             get
             {
-                if (Current == null)
+                if (current == null)
                 {
-                    throw new Exception();
+                    throw new Exception("ServiceProvider has not been initialized.");
                 }
                 else
                 {
-                    return Current;
+                    return current;
                 }
             }
             set
             {
-                Current = value;
+                current = value;
             }
         }
 
         public ServiceProvider()
         {
-            Current = this;
+            current = this;
         }
 
         private readonly Dictionary<Type, object> _services = [];

@@ -20,10 +20,10 @@ namespace CampingApplication.VisitorApp
     {
         private readonly MainViewModel viewModel;
 
-        public MainWindow(MainViewModel viewModel)
+        public MainWindow()
         {
             InitializeComponent();
-            this.viewModel = viewModel;
+            viewModel = new();
             DataContext = viewModel;
 
             CampingMapUserControl.DataContext = viewModel.CampingMapViewModel;
