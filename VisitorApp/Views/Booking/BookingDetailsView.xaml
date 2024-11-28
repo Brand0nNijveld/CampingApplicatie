@@ -32,7 +32,6 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
@@ -50,7 +49,7 @@
                 </TextBlock>
             </StackPanel>
 
-            <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="0,0,10,0">
+            <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" Margin="10,0,0,10">
                 <Label Style="{StaticResource SmallLabel}" Opacity="0.5">
                     Begindatum
                 </Label>
@@ -58,41 +57,36 @@
                         02/05/2025
                 </TextBlock>
             </StackPanel>
-            <StackPanel Grid.Column="2" Margin="0,0,0,5" VerticalAlignment="Top">
+            <StackPanel Grid.Column="1" Grid.Row="1" Margin="10,0,0,10" VerticalAlignment="Top">
                 <Label Style="{StaticResource SmallLabel}" Opacity="0.5">
                     Einddatum
                 </Label>
                 <TextBlock Text="12/05/2025"/>
             </StackPanel>
 
-            <StackPanel Grid.Column="1" Grid.Row="1" Margin="0,0,10,0" VerticalAlignment="Top">
-                <Label Style="{StaticResource SmallLabel}" Opacity="0.5">
-                    Aantal Dagen
-                </Label>
+            <StackPanel Grid.Column="0" Grid.Row="2" Margin="0,0,10,0" VerticalAlignment="Top">
+                <Label Style="{StaticResource SmallLabel}" Opacity="0.5" Content="Aantal Nachten"/>
                 <TextBlock>
                             5
                 </TextBlock>
             </StackPanel>
-            <StackPanel Margin="0,0,0,5" Grid.Row="1" Grid.Column="2" VerticalAlignment="Top">
-                <Label Style="{StaticResource SmallLabel}" Opacity="0.5">
-                    Prijs per dag
-                </Label>
+            <StackPanel Margin="10,0,0,10" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top">
+                <Label Style="{StaticResource SmallLabel}" Opacity="0.5" Content="Prijs per nacht"/>
                 <TextBlock>
                                     €50
                 </TextBlock>
             </StackPanel>
-            <Border Background="Black" Height="1" Opacity="0.2" VerticalAlignment="Top" Grid.Row="2" Grid.ColumnSpan="3" CornerRadius="1" />
-            <Grid Margin="0,5,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="3">
+            <Border Background="Black" Height="1" Opacity="0.2" VerticalAlignment="Top" Grid.Row="3" Grid.ColumnSpan="2" CornerRadius="1" />
+            <Grid Margin="0,5,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="3" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                Style="{StaticResource SmallLabel}" Opacity="0.5">
+                <TextBlock Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
                     Totaalprijs
-                </Label>
-                <TextBlock Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+                </TextBlock>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Right" FontSize="20" VerticalAlignment="Center" Foreground="Green" FontWeight="SemiBold">
                                 €2.500
                 </TextBlock>
             </Grid>

@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CampingApplication.VisitorApp.Views.Booking"
+             xmlns:components="clr-namespace:CampingApplication.VisitorApp.Views.Components" xmlns:viewmodels="clr-namespace:CampingApplication.VisitorApp.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:BookingViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             >
     <UserControl.Resources>
         <Style x:Key="CustomLabelStyle" TargetType="Label">
             <Setter Property="Opacity" Value="0.5" />
@@ -14,7 +16,7 @@
 
         <Style x:Key="SmallLabel" TargetType="Label">
             <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
             <Setter Property="Padding" Value="0"/>
         </Style>
 
@@ -24,22 +26,77 @@
 
         <Style x:Key="InformationBorderStyle" TargetType="Border">
             <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="Background" Value="#F9F9F9" />
+            <Setter Property="Padding" Value="10" />
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="MinWidth" Value="200" />
         </Style>
     </UserControl.Resources>
 
     <Border Padding="10" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="10">
         <StackPanel>
-            <TextBlock Margin="0,0,0,10" FontSize="30" FontWeight="Bold">Plaats Boeken</TextBlock>
-            <StackPanel>
-                <local:BookingDetailsView />
+            <TextBlock Margin="0,0,0,10" FontSize="30" FontWeight="Bold">Boeking Voltooien</TextBlock>
+            <StackPanel Orientation="Horizontal">
+                <local:BookingDetailsView HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-                <Border Margin="0,10,0,0" Padding="10" Background="#F9F9F9" Style="{StaticResource InformationBorderStyle}">
-                    <Grid>
-                        <TextBox Text="Voornaam"></TextBox>
-                    </Grid>
+                <Border Margin="10,0,0,0"  Style="{StaticResource InformationBorderStyle}">
+                    <StackPanel>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Top">
+                                <Label Style="{StaticResource SmallLabel}" Opacity="0.5" Content="Voornaam"/>
+                                <Border Background="White" CornerRadius="5" BorderBrush="Transparent">
+                                    <TextBox />
+                                </Border>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" VerticalAlignment="Top">
+                                <Label Style="{StaticResource SmallLabel}" Opacity="0.5" Content="Achternaam"/>
+                                <Border Background="White" CornerRadius="5" BorderBrush="Transparent">
+                                    <TextBox />
+                                </Border>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,10,0,0" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top">
+                                <Label Style="{StaticResource SmallLabel}" Opacity="0.5" Content="Email Adres"/>
+                                <Border Background="White" CornerRadius="5" BorderBrush="Transparent">
+                                    <TextBox />
+                                </Border>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,10,0,0" Grid.ColumnSpan="2" Grid.Row="2" VerticalAlignment="Top">
+                                <Label Style="{StaticResource SmallLabel}" Opacity="0.5" Content="Telefoonnummer"/>
+                                <Border Background="White" CornerRadius="5" BorderBrush="Transparent">
+                                    <TextBox />
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                        <components:CustomButton 
+                            Content="Nu boeken" 
+                            HorizontalAlignment="Stretch"
+                            Width="Auto" Margin="0, 10, 0, 0" 
+                            ButtonState="{Binding ButtonState}" 
+                            Click="Submit_Booking"
+                            />
+                    </StackPanel>
                 </Border>
             </StackPanel>
-            <Button HorizontalAlignment="Right" Padding="10">Afronden</Button>
         </StackPanel>
     </Border>
 </UserControl>

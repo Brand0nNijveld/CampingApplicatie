@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CampingApplication.VisitorApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,19 @@ namespace CampingApplication.VisitorApp.Views
     /// </summary>
     public partial class BookingView : UserControl
     {
+        private BookingViewModel viewModel;
+
         public BookingView()
         {
             InitializeComponent();
+
+            viewModel = new();
+            DataContext = viewModel;
+        }
+
+        public async void Submit_Booking(object sender, RoutedEventArgs e)
+        {
+            await viewModel.SubmitBooking();
         }
     }
 }
