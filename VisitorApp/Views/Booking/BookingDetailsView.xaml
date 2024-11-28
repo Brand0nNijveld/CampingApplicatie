@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="CampingApplication.VisitorApp.Views.Booking.BookingDetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CampingApplication.VisitorApp.Views.Booking"
+             mc:Ignorable="d" 
+            >
+    <UserControl.Resources>
+        <Style x:Key="CustomLabelStyle" TargetType="Label">
+            <Setter Property="Opacity" Value="0.5" />
+            <Setter Property="FontSize" Value="18" />
+        </Style>
+
+        <Style x:Key="SmallLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
+        <Style x:Key="InformationBorderStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="5" />
+        </Style>
+    </UserControl.Resources>
+
+    <Border Padding="10" Background="#F9F9F9" Style="{StaticResource InformationBorderStyle}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.RowSpan="2" Margin="0,0,10,0" VerticalAlignment="Top">
+                <Label Style="{StaticResource SmallLabel}" Opacity="0.5">
+                    Plaatsnummer
+                </Label>
+                <TextBlock FontSize="48">
+                                123
+                </TextBlock>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="0,0,10,0">
+                <Label Style="{StaticResource SmallLabel}" Opacity="0.5">
+                    Begindatum
+                </Label>
+                <TextBlock>
+                        02/05/2025
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Margin="0,0,0,5" VerticalAlignment="Top">
+                <Label Style="{StaticResource SmallLabel}" Opacity="0.5">
+                    Einddatum
+                </Label>
+                <TextBlock Text="12/05/2025"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Grid.Row="1" Margin="0,0,10,0" VerticalAlignment="Top">
+                <Label Style="{StaticResource SmallLabel}" Opacity="0.5">
+                    Aantal Dagen
+                </Label>
+                <TextBlock>
+                            5
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Margin="0,0,0,5" Grid.Row="1" Grid.Column="2" VerticalAlignment="Top">
+                <Label Style="{StaticResource SmallLabel}" Opacity="0.5">
+                    Prijs per dag
+                </Label>
+                <TextBlock>
+                                    €50
+                </TextBlock>
+            </StackPanel>
+            <Border Background="Black" Height="1" Opacity="0.2" VerticalAlignment="Top" Grid.Row="2" Grid.ColumnSpan="3" CornerRadius="1" />
+            <Grid Margin="0,5,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                Style="{StaticResource SmallLabel}" Opacity="0.5">
+                    Totaalprijs
+                </Label>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                €2.500
+                </TextBlock>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

@@ -102,7 +102,7 @@ namespace CampingApplication.VisitorApp.Views
                     RadiusX = 5,
                     RadiusY = 5,
                     Fill = spot.Available ? Brushes.Yellow : Brushes.Transparent,
-                    Cursor = Cursors.Hand
+                    Cursor = Cursors.Hand,
                 };
 
                 Canvas.SetLeft(spotVisual, spot.PositionX);
