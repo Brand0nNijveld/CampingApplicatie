@@ -87,12 +87,12 @@
                                 </Border>
                             </StackPanel>
                         </Grid>
-                        <components:CustomButton 
-                            Content="Nu boeken" 
+                        <components:CustomButton
                             HorizontalAlignment="Stretch"
-                            Width="Auto" Margin="0, 10, 0, 0" 
-                            ButtonState="{Binding ButtonState}" 
+                            Width="Auto" Margin="0, 10, 0, 0"
+                            ButtonState="{Binding ButtonState}"
                             Click="Submit_Booking"
+                            Content="Nu boeken"
                             />
                     </StackPanel>
                 </Border>

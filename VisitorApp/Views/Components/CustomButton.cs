@@ -17,19 +17,24 @@ namespace CampingApplication.VisitorApp.Views.Components
 {
     public enum ButtonState
     {
-        Enabled,
-        Disabled,
+        Active,
+        Inactive,
         Loading,
     }
 
     public partial class CustomButton : Button
     {
+        public CustomButton()
+        {
+            UpdateVisualState();
+        }
+
         public static readonly DependencyProperty ButtonStateProperty =
             DependencyProperty.Register(
                 "ButtonState",
                 typeof(ButtonState),
                 typeof(CustomButton),
-                new PropertyMetadata(ButtonState.Enabled, OnButtonStateChanged));
+                new PropertyMetadata(ButtonState.Active, OnButtonStateChanged));
 
         public ButtonState ButtonState
         {
@@ -47,7 +52,7 @@ namespace CampingApplication.VisitorApp.Views.Components
         {
             VisualStateManager.GoToState(this, ButtonState.ToString(), true);
 
-            if (ButtonState == ButtonState.Disabled || ButtonState == ButtonState.Loading)
+            if (ButtonState == ButtonState.Inactive || ButtonState == ButtonState.Loading)
             {
                 this.IsEnabled = false;
             }

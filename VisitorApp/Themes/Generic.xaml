@@ -23,33 +23,40 @@
                             BorderThickness="0"
                             BorderBrush="{TemplateBinding BorderBrush}">
                         <Grid>
-
                             <!-- Text Content -->
-                            <ContentPresenter x:Name="ButtonContent"
+                            <ContentPresenter Panel.ZIndex="0" x:Name="ButtonContent"
                                       HorizontalAlignment="Center" 
                                       VerticalAlignment="Center"
                                       Content="{TemplateBinding Content}" 
-                                      Opacity="1" />
+                                      Opacity="1" >
+                                <ContentPresenter.RenderTransform >
+                                    <TranslateTransform x:Name="ContentTransform" />
+                                </ContentPresenter.RenderTransform>
+                            </ContentPresenter>
 
-                            <!-- Loading Icon -->
-                            <Ellipse x:Name="LoadingIcon"
-                             Width="16"
-                             Height="16"
-                             Fill="{TemplateBinding Foreground}"
-                             HorizontalAlignment="Center"
-                             VerticalAlignment="Center"
-                             Opacity="0" />
+                            <Grid>
+                                <Grid.RenderTransform >
+                                    <TranslateTransform x:Name="LoaderTranslate" />
+                                </Grid.RenderTransform>
+
+                                <ContentControl x:Name="Loader" Content="{DynamicResource Loader}" Foreground="White" Opacity="0" Width="24" Height="24" HorizontalAlignment="Center" VerticalContentAlignment="Center">
+                                    <ContentControl.RenderTransform >
+                                        <!-- Set center to half of the width and height, so it's not off axis -->
+                                        <RotateTransform x:Name="LoaderRotation" CenterX="12" CenterY="12" />
+                                    </ContentControl.RenderTransform>
+                                </ContentControl>
+                            </Grid>
                         </Grid>
 
                         <!-- VisualStateManager for managing button states -->
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Enabled">
+                                <VisualState x:Name="Active">
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="ButtonContent" 
                                                  Storyboard.TargetProperty="Opacity" 
                                                  To="1" Duration="0:0:0.2"/>
-                                        <DoubleAnimation Storyboard.TargetName="LoadingIcon" 
+                                        <DoubleAnimation Storyboard.TargetName="Loader" 
                                                  Storyboard.TargetProperty="Opacity" 
                                                  To="0" Duration="0:0:0.2"/>
                                         <DoubleAnimation Storyboard.TargetName="CustomButton" 
@@ -59,23 +66,37 @@
                                 </VisualState>
                                 <VisualState x:Name="Loading">
                                     <Storyboard>
+                                        <!-- Start rotating loader -->
+                                        <DoubleAnimation 
+                                            Storyboard.TargetName="LoaderRotation" 
+                                            Storyboard.TargetProperty="Angle" 
+                                            From="0" To="360" Duration="0:0:1" RepeatBehavior="Forever"/>
+
+                                        <DoubleAnimation Storyboard.TargetName="Loader" 
+                                                 Storyboard.TargetProperty="Opacity" 
+                                                 To="1" Duration="0:0:0.2"/>
                                         <DoubleAnimation Storyboard.TargetName="ButtonContent" 
                                                  Storyboard.TargetProperty="Opacity" 
                                                  To="0" Duration="0:0:0.2"/>
-                                        <DoubleAnimation Storyboard.TargetName="LoadingIcon" 
-                                                 Storyboard.TargetProperty="Opacity" 
-                                                 To="1" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetName="ContentTransform" 
+                                                 Storyboard.TargetProperty="Y" 
+                                                 From="0"
+                                                 To="-10" Duration="0:0:0.1"/>
+                                        <DoubleAnimation Storyboard.TargetName="LoaderTranslate" 
+                                                 Storyboard.TargetProperty="Y" 
+                                                 From="10"
+                                                 To="0" Duration="0:0:0.1"/>
                                         <DoubleAnimation Storyboard.TargetName="CustomButton" 
                                                  Storyboard.TargetProperty="Opacity" 
                                                  To="0.5" Duration="0:0:0.2"/>
                                     </Storyboard>
                                 </VisualState>
-                                <VisualState x:Name="Disabled">
+                                <VisualState x:Name="Inactive">
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="ButtonContent" 
                                                  Storyboard.TargetProperty="Opacity" 
                                                  To="1" Duration="0:0:0.2"/>
-                                        <DoubleAnimation Storyboard.TargetName="LoadingIcon" 
+                                        <DoubleAnimation Storyboard.TargetName="Loader" 
                                                  Storyboard.TargetProperty="Opacity" 
                                                  To="0" Duration="0:0:0.2"/>
                                         <DoubleAnimation Storyboard.TargetName="CustomButton" 

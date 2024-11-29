@@ -38,7 +38,7 @@ namespace CampingApplication.VisitorApp.ViewModels
         {
             ButtonState = ButtonState.Loading;
             await Task.Delay(1000);
-            ButtonState = ButtonState.Enabled;
+            ButtonState = ButtonState.Active;
             Debug.WriteLine("Button re-enabled");
         }
     }
