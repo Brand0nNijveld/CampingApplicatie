@@ -27,10 +27,10 @@
             <Style TargetType="DatePicker">
                 <Setter Property="FontFamily" Value="{StaticResource GlobalFont}" />
             </Style>
-                
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="./Resources/DatePickerStyles.xaml" />
-                <ResourceDictionary Source="./Themes/Generic.xaml" />
+                <ResourceDictionary Source="./Themes/Themes.xaml" />
                 <ResourceDictionary Source="./Resources/Icons/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

@@ -1,4 +1,5 @@
 ﻿using CampingApplication.Business;
+using CampingApplication.Business.BookingService;
 using CampingApplication.Business.CampingSpotService;
 using CampingApplication.VisitorApp.ViewModels;
 using System.Configuration;
@@ -38,8 +39,11 @@ namespace CampingApplication.VisitorApp
 
             ICampingSpotRepository campingSpotRepository = new CampingSpotMockRepository();
             CampingSpotService campingSpotService = new(campingSpotRepository);
+            serviceProvider.RegisterInstance(campingSpotService);
 
-            serviceProvider.RegisterInstance<CampingSpotService>(campingSpotService);
+            IBookingRepository bookingRepository = new BookingRepostoryMock();
+            BookingService bookingService = new(bookingRepository);
+            serviceProvider.RegisterInstance(bookingService);
         }
 
         /// <summary>
@@ -51,8 +55,11 @@ namespace CampingApplication.VisitorApp
 
             ICampingSpotRepository campingSpotRepository = new CampingSpotMockRepository();
             CampingSpotService campingSpotService = new(campingSpotRepository);
-
             serviceProvider.RegisterInstance<CampingSpotService>(campingSpotService);
+
+            IBookingRepository bookingRepository = new BookingRepostoryMock();
+            BookingService bookingService = new(bookingRepository);
+            serviceProvider.RegisterInstance(bookingService);
         }
 
         private void SetWindow(Window window)
