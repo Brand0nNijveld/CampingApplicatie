@@ -23,5 +23,6 @@ namespace CampingApplication.Business.CampingSpotService
         {
             return repository.GetAvailableSpots(spots, startDate, endDate);
         }
+
     }
 }

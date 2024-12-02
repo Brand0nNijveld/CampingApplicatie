@@ -124,7 +124,10 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
             catch (BookingValidationException ex)
             {
-                UpdateErrors(ex.Errors);
+                foreach (KeyValuePair<string, string> error in ex.Errors)
+                {
+                    SetError(error.Key, error.Value);
+                }
             }
 
             ButtonState = ButtonState.Active;
@@ -134,10 +137,10 @@ namespace CampingApplication.VisitorApp.ViewModels
         {
             string? error = propertyName switch
             {
-                nameof(FirstName) => BookingService.ValidateFirstName(FirstName),
-                nameof(LastName) => BookingService.ValidateLastName(LastName),
-                nameof(Email) => BookingService.ValidateEmail(Email),
-                nameof(PhoneNumber) => BookingService.ValidatePhoneNumber(PhoneNumber),
+                nameof(FirstName) => BookingValidator.ValidateFirstName(FirstName),
+                nameof(LastName) => BookingValidator.ValidateLastName(LastName),
+                nameof(Email) => BookingValidator.ValidateEmail(Email),
+                nameof(PhoneNumber) => BookingValidator.ValidatePhoneNumber(PhoneNumber),
                 _ => null
             };
 
@@ -152,26 +155,6 @@ namespace CampingApplication.VisitorApp.ViewModels
             else if (propertyName == nameof(PhoneNumber)) PhoneNumberError = error;
 
             OnPropertyChanged($"{propertyName}Error");
-        }
-
-        private void UpdateErrors(Dictionary<string, string> errors)
-        {
-            errors.TryGetValue(nameof(FirstName), out string? firstNameError);
-            FirstNameError = firstNameError;
-
-            errors.TryGetValue(nameof(LastName), out string? lastNameError);
-            LastNameError = lastNameError;
-
-            errors.TryGetValue(nameof(Email), out string? emailError);
-            EmailError = emailError;
-
-            errors.TryGetValue(nameof(PhoneNumber), out string? phoneNumberError);
-            PhoneNumberError = phoneNumberError;
-
-            OnPropertyChanged(nameof(FirstNameError));
-            OnPropertyChanged(nameof(LastNameError));
-            OnPropertyChanged(nameof(EmailError));
-            OnPropertyChanged(nameof(PhoneNumberError));
         }
     }
 }

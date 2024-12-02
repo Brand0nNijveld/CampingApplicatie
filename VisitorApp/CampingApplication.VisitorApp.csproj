@@ -22,4 +22,10 @@
     <Resource Include="./Resources/Icons/info.svg" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\Booking\BookingSuccessView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

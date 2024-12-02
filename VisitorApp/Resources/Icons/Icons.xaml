@@ -8,4 +8,18 @@
             </Path.Data>
         </Path>
     </Canvas>
+
+    <Canvas x:Key="ArrowLeft" Width="24" Height="24">
+        <Path StrokeThickness="2" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ContentControl}}" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+            <Path.Data>
+                <PathGeometry Figures="m12 19-7-7 7-7" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+        <Path StrokeThickness="2" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ContentControl}}" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+            <Path.Data>
+                <PathGeometry Figures="M19 12H5" FillRule="NonZero" />
+            </Path.Data>
+        </Path>
+    </Canvas>
+
 </ResourceDictionary>

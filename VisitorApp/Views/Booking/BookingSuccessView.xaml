@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="CampingApplication.VisitorApp.Views.Booking.BookingSuccessView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CampingApplication.VisitorApp.Views.Booking"
+             xmlns:components="clr-namespace:CampingApplication.VisitorApp.Views.Components"
+             mc:Ignorable="d" 
+            >
+    <UserControl.Resources>
+        <Style x:Key="CustomLabelStyle" TargetType="Label">
+            <Setter Property="Opacity" Value="0.5" />
+            <Setter Property="FontSize" Value="18" />
+        </Style>
+
+        <Style x:Key="SmallLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
+        <Style x:Key="InformationBorderStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="5" />
+        </Style>
+    </UserControl.Resources>
+
+    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Padding="30" Background="#F9F9F9" Style="{StaticResource InformationBorderStyle}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.RowSpan="2" Margin="50,0,50,0" VerticalAlignment="Top">
+                <TextBlock FontSize="32">
+                    Geweldig, je bent geboekt!
+                </TextBlock>
+
+                <components:CustomButton Margin="0,30,0,0" >
+                    Terug naar kaart
+                </components:CustomButton>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

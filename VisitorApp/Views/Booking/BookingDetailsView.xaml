@@ -44,7 +44,7 @@
                 <Label Style="{StaticResource SmallLabel}" Opacity="0.5">
                     Plaatsnummer
                 </Label>
-                <TextBlock FontSize="48">
+                <TextBlock x:Name="ID" FontSize="48">
                                 123
                 </TextBlock>
             </StackPanel>
@@ -53,7 +53,7 @@
                 <Label Style="{StaticResource SmallLabel}" Opacity="0.5">
                     Begindatum
                 </Label>
-                <TextBlock>
+                <TextBlock x:Name="StartDate">
                         02/05/2025
                 </TextBlock>
             </StackPanel>
@@ -61,18 +61,18 @@
                 <Label Style="{StaticResource SmallLabel}" Opacity="0.5">
                     Einddatum
                 </Label>
-                <TextBlock Text="12/05/2025"/>
+                <TextBlock x:Name="EndDate" Text="12/05/2025"/>
             </StackPanel>
 
             <StackPanel Grid.Column="0" Grid.Row="2" Margin="0,0,10,0" VerticalAlignment="Top">
                 <Label Style="{StaticResource SmallLabel}" Opacity="0.5" Content="Aantal Nachten"/>
-                <TextBlock>
+                <TextBlock x:Name="AmountOfNights">
                             5
                 </TextBlock>
             </StackPanel>
             <StackPanel Margin="10,0,0,10" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top">
                 <Label Style="{StaticResource SmallLabel}" Opacity="0.5" Content="Prijs per nacht"/>
-                <TextBlock>
+                <TextBlock x:Name="PricePerNight">
                                     €50
                 </TextBlock>
             </StackPanel>
@@ -86,7 +86,7 @@
                 <TextBlock Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
                     Totaalprijs
                 </TextBlock>
-                <TextBlock Grid.Column="1" HorizontalAlignment="Right" FontSize="20" VerticalAlignment="Center" Foreground="Green" FontWeight="SemiBold">
+                <TextBlock x:Name="TotalPrice" Grid.Column="1" HorizontalAlignment="Right" FontSize="20" VerticalAlignment="Center" Foreground="Green" FontWeight="SemiBold">
                                 €2.500
                 </TextBlock>
             </Grid>

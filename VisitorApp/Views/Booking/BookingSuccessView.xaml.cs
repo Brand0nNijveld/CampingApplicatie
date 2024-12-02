@@ -10,21 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using CampingApplication.VisitorApp.Views.Booking;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CampingApplication.VisitorApp
+namespace CampingApplication.VisitorApp.Views.Booking
 {
     /// <summary>
-    /// Interaction logic for TestWindow.xaml
+    /// Interaction logic for BookingDetailsView.xaml
     /// </summary>
-    public partial class TestWindow : Window
+    public partial class BookingSuccessView : UserControl
     {
-        public TestWindow()
+        public BookingSuccessView()
         {
             InitializeComponent();
-
-            ContentWindow.Children.Add(new BookingView(123, DateTime.Now, DateTime.Now.AddDays(5), 60));
         }
     }
 }
