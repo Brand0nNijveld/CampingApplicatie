@@ -13,9 +13,13 @@ using System.Windows.Input;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
+    public delegate void BookingSuccessHandler();
+
     public class BookingViewModel : INotifyPropertyChanged
     {
         private readonly BookingService bookingService;
+
+        public event BookingSuccessHandler? BookingSuccessful;
 
         private ButtonState buttonState;
         public ButtonState ButtonState
@@ -32,6 +36,17 @@ namespace CampingApplication.VisitorApp.ViewModels
         }
 
         private BookingRequest bookingRequest;
+
+        private string? systemError;
+        public string? SystemError
+        {
+            get => systemError;
+            set
+            {
+                systemError = value;
+                OnPropertyChanged(nameof(SystemError));
+            }
+        }
 
         public string FirstName
         {
@@ -83,12 +98,13 @@ namespace CampingApplication.VisitorApp.ViewModels
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public BookingViewModel()
+        public BookingViewModel(int ID, DateTime startDate, DateTime endDate)
         {
             bookingRequest = new BookingRequest
             {
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now,
+                CampingSpotID = ID,
+                StartDate = startDate,
+                EndDate = endDate,
                 FirstName = "",
                 LastName = "",
                 Email = "",
@@ -103,7 +119,7 @@ namespace CampingApplication.VisitorApp.ViewModels
             {
                 Debug.WriteLine(ex.Message);
 
-                ServiceProvider.Current.RegisterInstance(new BookingService(new BookingRepostoryMock()));
+                ServiceProvider.Current.RegisterInstance(new BookingService(new BookingRepositoryMock()));
                 bookingService = ServiceProvider.Current.Resolve<BookingService>();
             }
         }
@@ -121,6 +137,8 @@ namespace CampingApplication.VisitorApp.ViewModels
                 bool success = await bookingService.BookAsync(bookingRequest);
                 if (!success)
                     throw new Exception();
+
+                BookingSuccessful?.Invoke();
             }
             catch (BookingValidationException ex)
             {
@@ -128,6 +146,11 @@ namespace CampingApplication.VisitorApp.ViewModels
                 {
                     SetError(error.Key, error.Value);
                 }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                SystemError = "Er is iets misgegaan bij het opslaan van de boeking. Probeer het later opnieuw.";
             }
 
             ButtonState = ButtonState.Active;

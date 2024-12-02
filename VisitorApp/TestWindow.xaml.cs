@@ -24,7 +24,8 @@ namespace CampingApplication.VisitorApp
         {
             InitializeComponent();
 
-            ContentWindow.Children.Add(new BookingView(123, DateTime.Now, DateTime.Now.AddDays(5), 60));
+            BookingStepsPanel view = new(12, DateTime.Now, DateTime.Now.AddDays(5));
+            ContentWindow.Children.Add(view);
         }
     }
 }

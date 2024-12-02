@@ -39,19 +39,46 @@
         </Style>
     </UserControl.Resources>
 
-    <Border Padding="15" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="10">
+    <Border Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="10">
         <StackPanel>
             <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
-                <Viewbox VerticalAlignment="Center" Width="32" Height="32">
-                    <ContentControl Foreground="Black" Content="{DynamicResource ArrowLeft}">
-                    </ContentControl>
+                <Viewbox VerticalAlignment="Center" Width="38" Height="38">
+                    <Border PreviewMouseLeftButtonUp="BackButton_Clicked" Padding="3" Background="Transparent" CornerRadius="100" Cursor="Hand">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <!-- Use the VisualStateManager to define hover states -->
+                                    <EventTrigger RoutedEvent="Border.MouseEnter">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation 
+                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" 
+                                    To="LightGray" Duration="0:0:0.2" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                    <EventTrigger RoutedEvent="Border.MouseLeave">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation 
+                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" 
+                                    To="Transparent" Duration="0:0:0.2" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <ContentControl Foreground="Black" Content="{DynamicResource ArrowLeft}">
+                        </ContentControl>
+                    </Border>
                 </Viewbox>
                 <TextBlock LineHeight="45" Margin="20,0,0,0" FontSize="30" FontWeight="Bold"><Run Text="Boeking Voltooien"/></TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <local:BookingDetailsView x:Name="Details" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <local:BookingDetailsView x:Name="Details" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
-                <Border Margin="10,0,0,0"  Style="{StaticResource InformationBorderStyle}">
+                <Border Margin="10,0,0,10"  Style="{StaticResource InformationBorderStyle}">
                     <StackPanel>
 
                         <Grid>
@@ -105,6 +132,18 @@
                     </StackPanel>
                 </Border>
             </StackPanel>
+
+            <Border MaxHeight="60" x:Name="SystemErrorText" CornerRadius="5" Padding="10" HorizontalAlignment="Stretch">
+                <Border.Background>
+                    <SolidColorBrush Color="Red" Opacity="0.6"/>
+                </Border.Background>
+                <StackPanel Orientation="Horizontal">
+                    <Viewbox Width="32" Height="32">
+                        <ContentControl Content="{DynamicResource AlertIcon}" Foreground="White" />
+                    </Viewbox>
+                    <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Left" Text="{Binding SystemError}" ></TextBlock>
+                </StackPanel>
+            </Border>
         </StackPanel>
     </Border>
 </UserControl>

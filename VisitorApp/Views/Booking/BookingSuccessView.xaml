@@ -28,7 +28,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Padding="30" Background="#F9F9F9" Style="{StaticResource InformationBorderStyle}">
+    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Padding="30" Style="{StaticResource InformationBorderStyle}">
         <Grid>
             <Grid.ColumnDefinitions>
             </Grid.ColumnDefinitions>

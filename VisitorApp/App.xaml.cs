@@ -41,7 +41,7 @@ namespace CampingApplication.VisitorApp
             CampingSpotService campingSpotService = new(campingSpotRepository);
             serviceProvider.RegisterInstance(campingSpotService);
 
-            IBookingRepository bookingRepository = new BookingRepostoryMock();
+            IBookingRepository bookingRepository = new BookingRepositoryMock();
             BookingService bookingService = new(bookingRepository);
             serviceProvider.RegisterInstance(bookingService);
         }
@@ -57,7 +57,7 @@ namespace CampingApplication.VisitorApp
             CampingSpotService campingSpotService = new(campingSpotRepository);
             serviceProvider.RegisterInstance<CampingSpotService>(campingSpotService);
 
-            IBookingRepository bookingRepository = new BookingRepostoryMock();
+            IBookingRepository bookingRepository = new BookingRepositoryMock();
             BookingService bookingService = new(bookingRepository);
             serviceProvider.RegisterInstance(bookingService);
         }

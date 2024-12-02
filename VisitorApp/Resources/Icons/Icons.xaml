@@ -22,4 +22,10 @@
         </Path>
     </Canvas>
 
+    <Canvas x:Key="AlertIcon" Width="24" Height="24">
+        <Ellipse Canvas.Left="2" Canvas.Top="2" Width="20" Height="20" StrokeThickness="2" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ContentControl}}" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+        <Line X1="12" Y1="8" X2="12" Y2="12" StrokeThickness="2" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ContentControl}}" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+        <Line X1="12" Y1="16" X2="12.01" Y2="16" StrokeThickness="2" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ContentControl}}" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+    </Canvas>
+
 </ResourceDictionary>

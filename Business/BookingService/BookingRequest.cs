@@ -9,6 +9,7 @@ namespace CampingApplication.Business.BookingService
 {
     public class BookingRequest()
     {
+        public required int CampingSpotID { get; set; }
         public required DateTime StartDate { get; set; }
         public required DateTime EndDate { get; set; }
         public required string FirstName { get; set; }

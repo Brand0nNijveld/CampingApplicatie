@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CampingApplication.Business.BookingService
 {
-    public class BookingRepostoryMock : IBookingRepository
+    public class BookingRepositoryMock : IBookingRepository
     {
         public async Task<bool> SaveBookingAsync(BookingRequest request)
         {
