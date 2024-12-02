@@ -41,28 +41,35 @@
 
         <!-- Container for the white rectangle with a border and close button -->
         <Border x:Name="HighlightRectangle" Visibility="Collapsed" Width="400" Height="300" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White" CornerRadius="20">
-            <!-- Close Button inside the rectangle -->
-            <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Width="75" Height="30" Click="CloseRectangle">
-                <Button.Style>
-                    <Style TargetType="Button">
+            <!-- Information about the camping spot -->
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <!-- Example of relevant information -->
+                <TextBlock x:Name="CampingSpotInfo" Text="Camping Spot Information" FontSize="16" Margin="10"/>
+                <TextBlock x:Name="CampingSpotType" Text="" FontSize="14" Margin="5"/>
+                <TextBlock x:Name="CampingSpotPrice" Text="" FontSize="14" Margin="5"/>
+                <TextBlock x:Name="CampingSpotAvailability" Text="" FontSize="14" Margin="5"/>
 
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="DarkGray"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="LightGray" CornerRadius="10">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-                
-                <TextBlock Text="Close" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            </Button>
+                <!-- Close Button inside the rectangle -->
+                <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Width="75" Height="30" Click="CloseRectangle">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="DarkGray"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="LightGray" CornerRadius="10">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <TextBlock Text="Close" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Button>
+            </StackPanel>
         </Border>
 
     </Grid>

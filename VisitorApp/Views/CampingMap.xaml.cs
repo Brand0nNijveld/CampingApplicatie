@@ -9,9 +9,6 @@ using System.Windows.Shapes;
 
 namespace CampingApplication.VisitorApp.Views
 {
-    /// <summary>
-    /// Interaction logic for CampingMap.xaml
-    /// </summary>
     public partial class CampingMap : UserControl
     {
         private CampingMapViewModel? viewModel;
@@ -125,8 +122,14 @@ namespace CampingApplication.VisitorApp.Views
                 // Handle click event 
                 spotVisual.MouseLeftButtonUp += (s, e) =>
                 {
-                    // When a camping spot is clicked, show the white rectangle
+                    // When a camping spot is clicked, show the white rectangle and update information
                     HighlightRectangle.Visibility = Visibility.Visible;
+
+                    //// Update the camping spot info
+                    //CampingSpotInfo.Text = "Camping Spot Information";
+                    //CampingSpotType.Text = $"Type: {spot.Type}";
+                    //CampingSpotPrice.Text = $"Price: ${spot.Price} per night";
+                    //CampingSpotAvailability.Text = $"Available from: {spot.AvailableFrom}";
                 };
 
                 CampingCanvas.Children.Add(spotVisual);
