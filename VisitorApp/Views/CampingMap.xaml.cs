@@ -122,7 +122,7 @@ namespace CampingApplication.VisitorApp.Views
                 Canvas.SetLeft(spotID, textPosX);
                 Canvas.SetTop(spotID, textPosY);
 
-                // Handle click event on the spot
+                // Handle click event 
                 spotVisual.MouseLeftButtonUp += (s, e) =>
                 {
                     // When a camping spot is clicked, show the white rectangle
