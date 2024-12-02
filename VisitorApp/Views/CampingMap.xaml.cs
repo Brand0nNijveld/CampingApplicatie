@@ -1,18 +1,10 @@
 ﻿using CampingApplication.VisitorApp.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace CampingApplication.VisitorApp.Views
@@ -23,13 +15,13 @@ namespace CampingApplication.VisitorApp.Views
     public partial class CampingMap : UserControl
     {
         private CampingMapViewModel? viewModel;
-
         DoubleAnimation fadeInAnimation;
         DoubleAnimation fadeOutAnimation;
 
         public CampingMap()
         {
             InitializeComponent();
+
             fadeInAnimation = new DoubleAnimation
             {
                 From = 0,   // Start from fully opaque
@@ -81,6 +73,12 @@ namespace CampingApplication.VisitorApp.Views
             }
         }
 
+        // This method will hide the rectangle and the button when the close button is clicked
+        private void CloseRectangle(object sender, RoutedEventArgs e)
+        {
+            HighlightRectangle.Visibility = Visibility.Collapsed;
+        }
+
         public void UpdateCanvas()
         {
             if (viewModel == null)
@@ -123,6 +121,13 @@ namespace CampingApplication.VisitorApp.Views
 
                 Canvas.SetLeft(spotID, textPosX);
                 Canvas.SetTop(spotID, textPosY);
+
+                // Handle click event on the spot
+                spotVisual.MouseLeftButtonUp += (s, e) =>
+                {
+                    // When a camping spot is clicked, show the white rectangle
+                    HighlightRectangle.Visibility = Visibility.Visible;
+                };
 
                 CampingCanvas.Children.Add(spotVisual);
                 CampingCanvas.Children.Add(spotID);

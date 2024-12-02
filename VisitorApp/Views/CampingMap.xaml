@@ -13,6 +13,8 @@
             <Canvas.Background>
                 <ImageBrush ImageSource="../Resources/TestMap.jpg" Stretch="Uniform"/>
             </Canvas.Background>
+
+            <!-- Camping spots -->
             <Rectangle Height="60" Canvas.Left="190" Stroke="Black" Canvas.Top="29" Width="81" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Rectangle Height="60" Canvas.Left="86" Stroke="Black" Canvas.Top="29" Width="81" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <Rectangle Height="60" Canvas.Left="86" Stroke="Black" Canvas.Top="103" Width="81" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -25,6 +27,8 @@
             <Rectangle Height="60" Canvas.Left="612" Stroke="Black" Canvas.Top="281" Width="81" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Rectangle Height="60" Canvas.Left="612" Stroke="Black" Canvas.Top="360" Width="81" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         </Canvas>
+
+        <!-- Info Border for unavailable spots -->
         <Border x:Name="NoneAvailableInfo" IsEnabled="False" Opacity="0" Padding="5" CornerRadius="10" BorderThickness="2" BorderBrush="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Border.Background>
                 <SolidColorBrush Color="Black" Opacity="0.5" />
@@ -34,5 +38,32 @@
                 <Label VerticalAlignment="Bottom" HorizontalAlignment="Left" Foreground="White">Geen beschikbare plekken voor deze periode</Label>
             </StackPanel>
         </Border>
+
+        <!-- Container for the white rectangle with a border and close button -->
+        <Border x:Name="HighlightRectangle" Visibility="Collapsed" Width="400" Height="300" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White" CornerRadius="20">
+            <!-- Close Button inside the rectangle -->
+            <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Width="75" Height="30" Click="CloseRectangle">
+                <Button.Style>
+                    <Style TargetType="Button">
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="DarkGray"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="LightGray" CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+                
+                <TextBlock Text="Close" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Button>
+        </Border>
+
     </Grid>
 </UserControl>
