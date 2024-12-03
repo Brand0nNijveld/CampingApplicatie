@@ -20,12 +20,20 @@ namespace CampingApplication.VisitorApp
     /// </summary>
     public partial class TestWindow : Window
     {
+        /// <summary>
+        /// Use this class to test individual windows or components.
+        /// </summary>
         public TestWindow()
         {
             InitializeComponent();
 
-            BookingStepsPanel view = new(12, DateTime.Now, DateTime.Now.AddDays(5));
-            ContentWindow.Children.Add(view);
+            BookingStepsPanel view = new(1, DateTime.Now, DateTime.Now.AddDays(5));
+            setWindow(view);
+        }
+
+        private void setWindow(UIElement element)
+        {
+            ContentWindow.Children.Add(element);
         }
     }
 }

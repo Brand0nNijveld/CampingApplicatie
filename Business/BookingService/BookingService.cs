@@ -16,7 +16,7 @@ namespace CampingApplication.Business.BookingService
             this.repository = repository;
         }
 
-        public async Task<bool> BookAsync(BookingRequest request)
+        public async Task BookAsync(BookingRequest request)
         {
             var errors = BookingValidator.ValidateRequest(request);
 
@@ -25,7 +25,7 @@ namespace CampingApplication.Business.BookingService
                 throw new BookingValidationException(errors);
             }
 
-            return await repository.SaveBookingAsync(request);
+            await repository.SaveBookingAsync(request);
         }
 
         public static int CalculateAmountOfNights(DateTime startDate, DateTime endDate)

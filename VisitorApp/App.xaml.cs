@@ -37,7 +37,7 @@ namespace CampingApplication.VisitorApp
         private void InjectDependencies()
         {
             ServiceProvider serviceProvider = new();
-            
+
             DBconnection dbConnection = new DBconnection();
             ICampingSpotRepository campingSpotRepository = new CampingSpotRepository(dbConnection);
             CampingSpotService campingSpotService = new(campingSpotRepository);
@@ -54,12 +54,13 @@ namespace CampingApplication.VisitorApp
         private void InjectDebugDependencies()
         {
             ServiceProvider serviceProvider = new();
+            DBconnection dbConnection = new();
 
             ICampingSpotRepository campingSpotRepository = new CampingSpotMockRepository();
             CampingSpotService campingSpotService = new(campingSpotRepository);
-            serviceProvider.RegisterInstance<CampingSpotService>(campingSpotService);
+            serviceProvider.RegisterInstance(campingSpotService);
 
-            IBookingRepository bookingRepository = new BookingRepositoryMock();
+            IBookingRepository bookingRepository = new BookingRepository(dbConnection);
             BookingService bookingService = new(bookingRepository);
             serviceProvider.RegisterInstance(bookingService);
         }

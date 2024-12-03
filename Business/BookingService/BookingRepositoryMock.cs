@@ -8,11 +8,9 @@ namespace CampingApplication.Business.BookingService
 {
     public class BookingRepositoryMock : IBookingRepository
     {
-        public async Task<bool> SaveBookingAsync(BookingRequest request)
+        public async Task SaveBookingAsync(BookingRequest request)
         {
             await Task.Delay(1000);
-
-            return true;
         }
     }
 }

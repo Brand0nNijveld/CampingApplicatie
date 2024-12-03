@@ -134,9 +134,7 @@ namespace CampingApplication.VisitorApp.ViewModels
             ButtonState = ButtonState.Loading;
             try
             {
-                bool success = await bookingService.BookAsync(bookingRequest);
-                if (!success)
-                    throw new Exception();
+                await bookingService.BookAsync(bookingRequest);
 
                 BookingSuccessful?.Invoke();
             }
