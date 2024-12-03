@@ -20,22 +20,22 @@ namespace DataAccess
             try
             {
                 string query = @"
-                    SELECT c.Plaatsnummer, c.PositieX, c.PositieY
-                    FROM campingplaats c
+                    SELECT c.SpotNr, c.PositionX, c.PositionY
+                    FROM campingspot c
                     JOIN camping ca ON c.CampingID = ca.CampingID
-                    WHERE c.Plaatsnummer NOT IN (
-                        SELECT b.Plaatsnummer
+                    WHERE c.SpotNr NOT IN (
+                        SELECT b.SpotNr
                         FROM booking b
-                        WHERE b.Begindatum < @Einddatum
-                        AND b.Einddatum > @Begindatum
+                        WHERE b.Startdate < @Enddate
+                        AND b.Enddate > @Startdate
                     );";
 
                 using (_connection.Connection)
                 {
                     using (MySqlCommand command = new MySqlCommand(query, _connection.Connection))
                     {
-                        command.Parameters.AddWithValue("@Begindatum", startDate);
-                        command.Parameters.AddWithValue("@Einddatum", endDate);
+                        command.Parameters.AddWithValue("@Startdate", startDate);
+                        command.Parameters.AddWithValue("@Enddate", endDate);
 
                         _connection.Connection.Open();
                         using (MySqlDataReader reader = command.ExecuteReader())
@@ -43,9 +43,9 @@ namespace DataAccess
                             int i = 0;
                             while (reader.Read())
                             {
-                                int id = reader.GetInt32("Plaatsnummer");
-                                int posX = reader.GetInt32("PositieX");
-                                int posY = reader.GetInt32("PositieY");
+                                int id = reader.GetInt32("SpotNr");
+                                int posX = reader.GetInt32("PositionX");
+                                int posY = reader.GetInt32("PositionY");
 
                                 availableSpots.Add(new CampingSpot(id, posX, posY));
                             }
@@ -60,7 +60,7 @@ namespace DataAccess
                     }
                 }
             }
-            catch (Exception ex) { Console.WriteLine($"Databasefout: {ex.Message}"); }
+            catch (Exception ex) { Console.WriteLine($"Database error: {ex.Message}"); }
 
             return spots;
         }
@@ -69,22 +69,22 @@ namespace DataAccess
         {
             try
             {
-                string query = "SELECT Plaatsnummer, PositieX, PositieY FROM camping WHERE Plaatsnummer = @Plaatsnummer";
+                string query = "SELECT SpotNr, PositionX, PositionY FROM camping WHERE SpotNr = @SpotNr";
 
                 using (_connection.Connection)
                 {
                     using (MySqlCommand command = new MySqlCommand(query, _connection.Connection))
                     {
-                        command.Parameters.AddWithValue("@Plaatsnummer", ID);
+                        command.Parameters.AddWithValue("@SpotNr", ID);
 
                         _connection.Connection.Open();
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                int id = reader.GetInt32("Plaatsnummer");
-                                int posX = reader.GetInt32("PositieX");
-                                int posY = reader.GetInt32("PositieY");
+                                int id = reader.GetInt32("SpotNr");
+                                int posX = reader.GetInt32("PositionX");
+                                int posY = reader.GetInt32("PositionY");
 
                                 CampingSpot result = new CampingSpot(id, posX, posY);
 
@@ -95,7 +95,7 @@ namespace DataAccess
                     }
                 }
             }
-            catch (Exception ex) { Console.WriteLine($"Databasefout: {ex.Message}"); }
+            catch (Exception ex) { Console.WriteLine($"Database error: {ex.Message}"); }
 
             return null;
         }
@@ -106,7 +106,7 @@ namespace DataAccess
 
             try
             {
-                string query = "SELECT Plaatsnummer, PositieX, PositieY FROM Campingplaats";
+                string query = "SELECT SpotNr, PositionX, PositionY FROM campingspot";
 
                 using (_connection.Connection)
                 {
@@ -117,9 +117,9 @@ namespace DataAccess
                         {
                             if (reader.Read())
                             {
-                                int id = reader.GetInt32("Plaatsnummer");
-                                int posX = reader.GetInt32("PositieX");
-                                int posY = reader.GetInt32("PositieY");
+                                int id = reader.GetInt32("SpotNr");
+                                int posX = reader.GetInt32("PositionX");
+                                int posY = reader.GetInt32("PositionY");
 
                                 Spots.Add(new CampingSpot(id, posX, posY));
                             }
@@ -129,7 +129,7 @@ namespace DataAccess
                     }
                 }
             }
-            catch (Exception ex) { Console.WriteLine($"Databasefout: {ex.Message}"); }
+            catch (Exception ex) { Console.WriteLine($"Database error: {ex.Message}"); }
 
             return Spots;
         }
