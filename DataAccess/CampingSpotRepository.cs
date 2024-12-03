@@ -1,23 +1,139 @@
 ﻿using CampingApplication.Business;
 using CampingApplication.Business.CampingSpotService;
+using MySql.Data.MySqlClient;
 
 namespace DataAccess
 {
     public class CampingSpotRepository : ICampingSpotRepository
     {
+        private readonly string _connectionString;
+        private MySqlConnection _connection;
+
+        public CampingSpotRepository()
+        {
+            _connectionString = "server=localhost;uid=root;pwd=;database=campingapplicatie;"; //als je username (uid), password of iets dergelijks anders is moet je dat ff aanpassen voor je eigen connectie
+            _connection = new MySqlConnection(_connectionString);
+        }
+
         public IEnumerable<CampingSpot> GetAvailableSpots(CampingSpot[] spots, DateTime startDate, DateTime endDate)
         {
-            throw new NotImplementedException();
+            List<CampingSpot> availableSpots = new List<CampingSpot>();
+
+            try
+            {
+                string query = @"
+                    SELECT c.Plaatsnummer, c.PositieX, c.PositieY
+                    FROM campingplaats c
+                    JOIN camping ca ON c.CampingID = ca.CampingID
+                    WHERE c.Plaatsnummer NOT IN (
+                        SELECT b.Plaatsnummer
+                        FROM booking b
+                        WHERE b.Begindatum < @Einddatum
+                        AND b.Einddatum > @Begindatum
+                    );";
+
+                using (_connection)
+                {
+                    using (MySqlCommand command = new MySqlCommand(query, _connection))
+                    {
+                        command.Parameters.AddWithValue("@Begindatum", startDate);
+                        command.Parameters.AddWithValue("@Einddatum", endDate);
+
+                        _connection.Open();
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            int i = 0;
+                            while (reader.Read())
+                            {
+                                int id = reader.GetInt32("Plaatsnummer");
+                                int posX = reader.GetInt32("PositieX");
+                                int posY = reader.GetInt32("PositieY");
+
+                                availableSpots.Add(new CampingSpot(id, posX, posY));
+                            }
+                        }
+                        _connection.Close();
+                        Array.Resize(ref spots, availableSpots.Count);
+                        for (int i = 0; i < availableSpots.Count; i++)
+                        {
+                            spots[i] = availableSpots[i];
+                        }
+                        return spots;
+                    }
+                }
+            }
+            catch (Exception ex) { Console.WriteLine($"Databasefout: {ex.Message}"); }
+
+            return spots;
         }
 
         public CampingSpot GetCampingSpot(int ID)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string query = "SELECT Plaatsnummer, PositieX, PositieY FROM camping WHERE Plaatsnummer = @Plaatsnummer";
+
+                using (_connection)
+                {
+                    using (MySqlCommand command = new MySqlCommand(query, _connection))
+                    {
+                        command.Parameters.AddWithValue("@Plaatsnummer", ID);
+
+                        _connection.Open();
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                int id = reader.GetInt32("Plaatsnummer");
+                                int posX = reader.GetInt32("PositieX");
+                                int posY = reader.GetInt32("PositieY");
+
+                                CampingSpot result = new CampingSpot(id, posX, posY);
+
+                                return result;
+                            }
+                        }
+                        _connection.Close();
+                    }
+                }
+            }
+            catch (Exception ex) { Console.WriteLine($"Databasefout: {ex.Message}"); }
+
+            return null;
         }
 
         public IEnumerable<CampingSpot> GetCampingSpots()
         {
-            throw new NotImplementedException();
+            List<CampingSpot> Spots = new List<CampingSpot>();
+
+            try
+            {
+                string query = "SELECT Plaatsnummer, PositieX, PositieY FROM Campingplaats";
+
+                using (_connection)
+                {
+                    using (MySqlCommand command = new MySqlCommand(query, _connection))
+                    {
+                        _connection.Open();
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                int id = reader.GetInt32("Plaatsnummer");
+                                int posX = reader.GetInt32("PositieX");
+                                int posY = reader.GetInt32("PositieY");
+
+                                Spots.Add(new CampingSpot(id, posX, posY));
+                            }
+                        }
+                        _connection.Close();
+                        return Spots;
+                    }
+                }
+            }
+            catch (Exception ex) { Console.WriteLine($"Databasefout: {ex.Message}"); }
+
+            return Spots;
         }
     }
 }
