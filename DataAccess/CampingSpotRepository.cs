@@ -6,13 +6,11 @@ namespace DataAccess
 {
     public class CampingSpotRepository : ICampingSpotRepository
     {
-        private readonly string _connectionString;
-        private MySqlConnection _connection;
+        private DBconnection _connection;
 
-        public CampingSpotRepository()
+        public CampingSpotRepository(DBconnection con) 
         {
-            _connectionString = "server=localhost;uid=root;pwd=;database=campingapplicatie;"; //als je username (uid), password of iets dergelijks anders is moet je dat ff aanpassen voor je eigen connectie
-            _connection = new MySqlConnection(_connectionString);
+            this._connection = con;
         }
 
         public IEnumerable<CampingSpot> GetAvailableSpots(CampingSpot[] spots, DateTime startDate, DateTime endDate)
@@ -32,14 +30,14 @@ namespace DataAccess
                         AND b.Einddatum > @Begindatum
                     );";
 
-                using (_connection)
+                using (_connection.Connection)
                 {
-                    using (MySqlCommand command = new MySqlCommand(query, _connection))
+                    using (MySqlCommand command = new MySqlCommand(query, _connection.Connection))
                     {
                         command.Parameters.AddWithValue("@Begindatum", startDate);
                         command.Parameters.AddWithValue("@Einddatum", endDate);
 
-                        _connection.Open();
+                        _connection.Connection.Open();
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
                             int i = 0;
@@ -52,7 +50,7 @@ namespace DataAccess
                                 availableSpots.Add(new CampingSpot(id, posX, posY));
                             }
                         }
-                        _connection.Close();
+                        _connection.Connection.Close();
                         Array.Resize(ref spots, availableSpots.Count);
                         for (int i = 0; i < availableSpots.Count; i++)
                         {
@@ -73,13 +71,13 @@ namespace DataAccess
             {
                 string query = "SELECT Plaatsnummer, PositieX, PositieY FROM camping WHERE Plaatsnummer = @Plaatsnummer";
 
-                using (_connection)
+                using (_connection.Connection)
                 {
-                    using (MySqlCommand command = new MySqlCommand(query, _connection))
+                    using (MySqlCommand command = new MySqlCommand(query, _connection.Connection))
                     {
                         command.Parameters.AddWithValue("@Plaatsnummer", ID);
 
-                        _connection.Open();
+                        _connection.Connection.Open();
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
@@ -93,7 +91,7 @@ namespace DataAccess
                                 return result;
                             }
                         }
-                        _connection.Close();
+                        _connection.Connection.Close();
                     }
                 }
             }
@@ -110,11 +108,11 @@ namespace DataAccess
             {
                 string query = "SELECT Plaatsnummer, PositieX, PositieY FROM Campingplaats";
 
-                using (_connection)
+                using (_connection.Connection)
                 {
-                    using (MySqlCommand command = new MySqlCommand(query, _connection))
+                    using (MySqlCommand command = new MySqlCommand(query, _connection.Connection))
                     {
-                        _connection.Open();
+                        _connection.Connection.Open();
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
@@ -126,7 +124,7 @@ namespace DataAccess
                                 Spots.Add(new CampingSpot(id, posX, posY));
                             }
                         }
-                        _connection.Close();
+                        _connection.Connection.Close();
                         return Spots;
                     }
                 }
