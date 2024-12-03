@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace EmployeeApp
+namespace CampingApplication.EmployeeApp
 {
     /// <summary>
     /// Interaction logic for App.xaml
