@@ -15,14 +15,15 @@ using System.Windows.Shapes;
 
 namespace CampingApplication.VisitorApp.Views.Booking
 {
-    public delegate void BookButtonHandler();
+    public delegate void ButtonClickHandler();
 
     /// <summary>
     /// Interaction logic for Temp_CampingSpotInfo.xaml
     /// </summary>
     public partial class Temp_CampingSpotInfo : UserControl
     {
-        public event BookButtonHandler? BookButtonClicked;
+        public event ButtonClickHandler? BookButtonClicked;
+        public event ButtonClickHandler? BackButtonClicked;
 
         public Temp_CampingSpotInfo()
         {
@@ -32,6 +33,11 @@ namespace CampingApplication.VisitorApp.Views.Booking
         private void BookButton_Clicked(object sender, RoutedEventArgs e)
         {
             BookButtonClicked?.Invoke();
+        }
+
+        private void BackButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            BackButtonClicked?.Invoke();
         }
     }
 }

@@ -11,9 +11,9 @@ namespace DataAccess
 {
     public class BookingRepository : IBookingRepository
     {
-        private DBconnection connection;
+        private DBConnection connection;
 
-        public BookingRepository(DBconnection con)
+        public BookingRepository(DBConnection con)
         {
             connection = con;
         }
@@ -59,7 +59,7 @@ namespace DataAccess
                 {
                     await transaction.RollbackAsync();
                     Debug.WriteLine(ex.Message);
-                    throw new Exception("Pope");
+                    throw new Exception(ex.Message);
                 }
             }
         }

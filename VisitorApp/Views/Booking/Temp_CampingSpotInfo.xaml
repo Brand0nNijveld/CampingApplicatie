@@ -8,7 +8,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
         <TextBlock>Oogabooga</TextBlock>
         <components:CustomButton Click="BookButton_Clicked">Boek deze plek</components:CustomButton>
+        <components:CustomButton Background="LightGray" Grid.Row="1" Click="BackButton_Clicked">Terug</components:CustomButton>
     </Grid>
 </UserControl>

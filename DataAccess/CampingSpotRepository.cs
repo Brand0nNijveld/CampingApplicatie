@@ -6,9 +6,9 @@ namespace DataAccess
 {
     public class CampingSpotRepository : ICampingSpotRepository
     {
-        private DBconnection _connection;
+        private DBConnection _connection;
 
-        public CampingSpotRepository(DBconnection con) 
+        public CampingSpotRepository(DBConnection con)
         {
             this._connection = con;
         }

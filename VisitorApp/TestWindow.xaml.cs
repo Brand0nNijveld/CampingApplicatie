@@ -27,7 +27,7 @@ namespace CampingApplication.VisitorApp
         {
             InitializeComponent();
 
-            BookingStepsPanel view = new(1, DateTime.Now, DateTime.Now.AddDays(5));
+            ActionPanel view = new();
             setWindow(view);
         }
 

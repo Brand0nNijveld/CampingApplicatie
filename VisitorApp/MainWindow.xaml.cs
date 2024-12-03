@@ -1,5 +1,6 @@
 ﻿using CampingApplication.Business;
 using CampingApplication.VisitorApp.ViewModels;
+using CampingApplication.VisitorApp.Views.Booking;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,6 +29,9 @@ namespace CampingApplication.VisitorApp
 
             CampingMapUserControl.DataContext = viewModel.CampingMapViewModel;
             CampingMapUserControl.SetViewModel(viewModel.CampingMapViewModel);
+
+            ActionPanel.DataContext = viewModel.ActionPanelViewModel;
+            ActionPanel.SetViewModel(viewModel.ActionPanelViewModel);
 
             DateRangePicker.mainViewModel = viewModel;
         }
