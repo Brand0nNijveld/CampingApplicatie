@@ -134,8 +134,8 @@ namespace CampingApplication.VisitorApp.Views
                     CampingSpotLakeDistance.Text = "Afstand tot Meer: 25m";
                     CampingSpotSize.Text = "Grootte van plaats: 30m²";
                     CampingSpotReceptionDistance.Text = "Afstand tot Receptie: 10m";
-                    CampingSpotInfo.Text = "Camping Spot Information";
-                    CampingSpotType.Text = "Tent";
+                    CampingSpotInfo.Text = "Plaats 1 Informatie";
+                    CampingSpotType.Text = "Plaatstype: Tent";
                     CampingSpotPrice.Text = "Prijs per nacht: €50";
                     CampingSpotAvailability.Text = "Beschikbaar vanaf xx/xx/xxxx";
                 };
