@@ -138,6 +138,10 @@ namespace CampingApplication.VisitorApp.ViewModels
 
                 BookingSuccessful?.Invoke();
             }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                Debug.WriteLine("Index out of range: " + ex.Message);
+            }
             catch (BookingValidationException ex)
             {
                 foreach (KeyValuePair<string, string> error in ex.Errors)

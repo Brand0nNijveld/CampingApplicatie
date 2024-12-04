@@ -18,7 +18,15 @@ namespace CampingApplication.Business.BookingService
 
         public async Task BookAsync(BookingRequest request)
         {
-            var errors = BookingValidator.ValidateRequest(request);
+            Dictionary<string, string> errors;
+            try
+            {
+                errors = BookingValidator.ValidateRequest(request);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error during validation: " + ex.Message);
+            }
 
             if (errors.Count != 0)
             {

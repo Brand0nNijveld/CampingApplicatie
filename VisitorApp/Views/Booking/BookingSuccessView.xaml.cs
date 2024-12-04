@@ -15,14 +15,21 @@ using System.Windows.Shapes;
 
 namespace CampingApplication.VisitorApp.Views.Booking
 {
+
     /// <summary>
     /// Interaction logic for BookingDetailsView.xaml
     /// </summary>
     public partial class BookingSuccessView : UserControl
     {
+        public event ButtonClickHandler? DoneButtonClicked;
         public BookingSuccessView()
         {
             InitializeComponent();
+        }
+
+        private void DoneButton_Click(object sender, RoutedEventArgs e)
+        {
+            DoneButtonClicked?.Invoke();
         }
     }
 }

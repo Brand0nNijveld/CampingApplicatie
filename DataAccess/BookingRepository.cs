@@ -58,7 +58,7 @@ namespace DataAccess
                 catch (Exception ex)
                 {
                     await transaction.RollbackAsync();
-                    Debug.WriteLine(ex.Message);
+                    Debug.WriteLine("Error saving booking to database: " + ex.Message);
                     throw new Exception(ex.Message);
                 }
             }

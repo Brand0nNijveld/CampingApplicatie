@@ -40,7 +40,7 @@
                     Geweldig, je bent geboekt!
                 </TextBlock>
 
-                <components:CustomButton Margin="0,30,0,0" >
+                <components:CustomButton Margin="0,30,0,0" Click="DoneButton_Click" >
                     Terug naar kaart
                 </components:CustomButton>
             </StackPanel>

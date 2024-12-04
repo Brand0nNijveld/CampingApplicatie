@@ -96,8 +96,9 @@ namespace CampingApplication.VisitorApp.ViewModels
         {
             BookingView bookingView = new(ID, DateTime.Now, DateTime.Now.AddDays(5), 60);
             bookingView.BackButtonClicked += () => actionPanelViewModel.ClearAndHide();
-            bookingView.ViewModel.BookingSuccessful += () => actionPanelViewModel.CurrentView = 2;
+            bookingView.ViewModel.BookingSuccessful += () => actionPanelViewModel.CurrentView = 1;
             BookingSuccessView bookingSuccessView = new();
+            bookingSuccessView.DoneButtonClicked += () => actionPanelViewModel.ClearAndHide();
 
             actionPanelViewModel.SetSteps([bookingView, bookingSuccessView]);
         }

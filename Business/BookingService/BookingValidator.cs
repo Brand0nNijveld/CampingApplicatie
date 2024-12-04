@@ -15,7 +15,7 @@ namespace CampingApplication.Business.BookingService
             string? firstNameError = ValidateFirstName(request.FirstName);
             if (firstNameError != null)
             {
-                errors[nameof(request.FirstName)] = firstNameError;
+                errors.TryAdd(nameof(request.FirstName), firstNameError);
             }
 
             string? lastNameError = ValidateLastName(request.LastName);

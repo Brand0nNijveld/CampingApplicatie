@@ -122,7 +122,8 @@ namespace CampingApplication.VisitorApp.Views
                 {
                     Text = spot.ID.ToString(),
                     FontSize = 14,
-                    Foreground = new SolidColorBrush(Colors.Black)
+                    Foreground = new SolidColorBrush(Colors.Black),
+                    IsHitTestVisible = false,
                 };
 
                 spotID.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
