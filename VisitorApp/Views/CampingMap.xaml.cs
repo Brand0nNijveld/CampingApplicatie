@@ -1,6 +1,7 @@
 ﻿using CampingApplication.VisitorApp.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -102,7 +103,16 @@ namespace CampingApplication.VisitorApp.Views
                     RadiusX = 5,
                     RadiusY = 5,
                     Fill = spot.Available ? Brushes.Yellow : Brushes.Transparent,
-                    Cursor = Cursors.Hand
+                    Cursor = Cursors.Hand,
+                    IsHitTestVisible = true,
+                };
+
+                Debug.WriteLine("Drawing Camping Spot: " + spot.ID);
+
+                spotVisual.MouseLeftButtonUp += (e, s) =>
+                {
+                    Debug.WriteLine("Clicked cmaping spot");
+                    viewModel?.ShowBookScreen(spot.ID);
                 };
 
                 Canvas.SetLeft(spotVisual, spot.PositionX);
@@ -112,7 +122,8 @@ namespace CampingApplication.VisitorApp.Views
                 {
                     Text = spot.ID.ToString(),
                     FontSize = 14,
-                    Foreground = new SolidColorBrush(Colors.Black)
+                    Foreground = new SolidColorBrush(Colors.Black),
+                    IsHitTestVisible = false,
                 };
 
                 spotID.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
@@ -127,6 +138,10 @@ namespace CampingApplication.VisitorApp.Views
                 CampingCanvas.Children.Add(spotVisual);
                 CampingCanvas.Children.Add(spotID);
             }
+        }
+
+        private void SpotVisual_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
         }
     }
 }

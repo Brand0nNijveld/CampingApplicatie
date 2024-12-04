@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CampingApplication.Business;
+using CampingApplication.Business.CampingSpotService;
 using CampingApplication.VisitorApp.Models;
+using CampingApplication.VisitorApp.Views.Booking;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
     public delegate void AvailabilityHandler(bool available);
-    public class CampingMapViewModel() : INotifyPropertyChanged
+    public class CampingMapViewModel : INotifyPropertyChanged
     {
         public event AvailabilityHandler? AvailabilityChanged;
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -27,6 +30,8 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
         }
 
+        private ActionPanelViewModel actionPanelViewModel;
+
         private string backgroundImage = "";
         public string BackgroundImage
         {
@@ -38,17 +43,20 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
         }
 
-        public CampingMapViewModel(string backgroundImage, List<CampingSpot> campingSpots) : this()
+        public CampingMapViewModel(ActionPanelViewModel actionPanelViewModel)
         {
-            var campingSpotVisuals = new CampingSpotVisualModel[campingSpots.Count];
-            for (int i = 0; i < campingSpots.Count; i++)
+            this.actionPanelViewModel = actionPanelViewModel;
+            var campingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
+            var spots = campingSpotService.GetCampingSpots();
+
+            var campingSpotVisuals = new CampingSpotVisualModel[spots.Count];
+            for (int i = 0; i < spots.Count; i++)
             {
-                CampingSpot spot = campingSpots[i];
+                CampingSpot spot = spots[i];
                 campingSpotVisuals[i] = new(spot.ID, spot.PositionX, spot.PositionY);
             }
 
-            this.campingSpots = new(campingSpotVisuals);
-            this.backgroundImage = backgroundImage;
+            CampingSpots = new(campingSpotVisuals);
         }
 
         public void ClearAvailability()
@@ -82,6 +90,17 @@ namespace CampingApplication.VisitorApp.ViewModels
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this.PropertyChanged, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void ShowBookScreen(int ID)
+        {
+            BookingView bookingView = new(ID, DateTime.Now, DateTime.Now.AddDays(5), 60);
+            bookingView.BackButtonClicked += () => actionPanelViewModel.ClearAndHide();
+            bookingView.ViewModel.BookingSuccessful += () => actionPanelViewModel.CurrentView = 1;
+            BookingSuccessView bookingSuccessView = new();
+            bookingSuccessView.DoneButtonClicked += () => actionPanelViewModel.ClearAndHide();
+
+            actionPanelViewModel.SetSteps([bookingView, bookingSuccessView]);
         }
     }
 }
