@@ -70,10 +70,14 @@ namespace CampingApplication.VisitorApp.Views
             }
         }
 
-        // This method will hide the rectangle and the button when the close button is clicked
-        private void CloseRectangle(object sender, RoutedEventArgs e)
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             HighlightRectangle.Visibility = Visibility.Collapsed;
+        }
+
+        private void BoekenButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Boekingsproces gestart!", "Boeken", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         public void UpdateCanvas()
@@ -125,11 +129,15 @@ namespace CampingApplication.VisitorApp.Views
                     // When a camping spot is clicked, show the white rectangle and update information
                     HighlightRectangle.Visibility = Visibility.Visible;
 
-                    //// Update the camping spot info
-                    //CampingSpotInfo.Text = "Camping Spot Information";
-                    //CampingSpotType.Text = $"Type: {spot.Type}";
-                    //CampingSpotPrice.Text = $"Price: ${spot.Price} per night";
-                    //CampingSpotAvailability.Text = $"Available from: {spot.AvailableFrom}";
+                    // Update the camping spot info
+                    CampingSpotToiletDistance.Text = "Afstand tot Toiletgebouw: 15m";
+                    CampingSpotLakeDistance.Text = "Afstand tot Meer: 25m";
+                    CampingSpotSize.Text = "Grootte van plaats: 30m²";
+                    CampingSpotReceptionDistance.Text = "Afstand tot Receptie: 10m";
+                    CampingSpotInfo.Text = "Camping Spot Information";
+                    CampingSpotType.Text = "Tent";
+                    CampingSpotPrice.Text = "Prijs per nacht: €50";
+                    CampingSpotAvailability.Text = "Beschikbaar vanaf xx/xx/xxxx";
                 };
 
                 CampingCanvas.Children.Add(spotVisual);
