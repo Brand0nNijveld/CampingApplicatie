@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using CampingApplication.Business;
 using CampingApplication.Business.CampingSpotService;
 using CampingApplication.VisitorApp.Models;
@@ -19,7 +20,9 @@ namespace CampingApplication.VisitorApp.ViewModels
         public event AvailabilityHandler? AvailabilityChanged;
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public List<CampingSpot> CampingSpotData { get; private set; }
+        private CampingSpotService campingSpotService;
+
+        public List<CampingSpot> CampingSpotData { get; private set; } = [];
 
         private ObservableCollection<CampingSpotVisualModel> campingSpots = [];
         public ObservableCollection<CampingSpotVisualModel> CampingSpots
@@ -48,18 +51,35 @@ namespace CampingApplication.VisitorApp.ViewModels
         public CampingMapViewModel(ActionPanelViewModel actionPanelViewModel)
         {
             this.actionPanelViewModel = actionPanelViewModel;
-            var campingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
-            var spots = campingSpotService.GetCampingSpots();
-            CampingSpotData = spots;
+            campingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
+            _ = GetCampingSpotsAsync();
+        }
 
-            var campingSpotVisuals = new CampingSpotVisualModel[spots.Count];
-            for (int i = 0; i < spots.Count; i++)
+        private async Task GetCampingSpotsAsync()
+        {
+            try
             {
-                CampingSpot spot = spots[i];
-                campingSpotVisuals[i] = new(spot.ID, spot.PositionX, spot.PositionY);
-            }
+                var spots = await campingSpotService.GetCampingSpotsAsync();
+                CampingSpotData = spots;
 
-            CampingSpots = new(campingSpotVisuals);
+                var campingSpotVisuals = new CampingSpotVisualModel[spots.Count];
+                for (int i = 0; i < spots.Count; i++)
+                {
+                    Debug.WriteLine("Camping spot: " + spots[i].ID);
+                    CampingSpot spot = spots[i];
+                    campingSpotVisuals[i] = new(spot.ID, spot.PositionX, spot.PositionY);
+                }
+
+                // Use Dispatcher to update UI-bound properties or raise events
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    CampingSpots = new ObservableCollection<CampingSpotVisualModel>(campingSpotVisuals);
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
 
         public void ClearAvailability()

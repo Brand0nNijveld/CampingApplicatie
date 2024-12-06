@@ -139,9 +139,5 @@ namespace CampingApplication.VisitorApp.Views
                 CampingCanvas.Children.Add(spotID);
             }
         }
-
-        private void SpotVisual_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-        }
     }
 }

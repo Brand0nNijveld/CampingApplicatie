@@ -58,7 +58,11 @@ namespace DataAccess
                     }
                 }
             }
-            catch (Exception ex) { Console.WriteLine($"Database error: {ex.Message}"); }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Database error getting available spots: {ex.Message}");
+                throw;
+            }
 
             return availableSpots;
         }
@@ -74,8 +78,6 @@ namespace DataAccess
                     using (MySqlCommand command = new MySqlCommand(query, _connection.Connection))
                     {
                         command.Parameters.AddWithValue("@SpotNr", ID);
-
-                        _connection.Connection.Open();
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
@@ -89,19 +91,31 @@ namespace DataAccess
                                 return result;
                             }
                         }
-                        _connection.Connection.Close();
                     }
                 }
             }
-            catch (Exception ex) { Console.WriteLine($"Database error: {ex.Message}"); }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Database error getting camping spot: {ex.Message}");
+                throw;
+            }
 
             return null;
         }
 
+        /// <summary>
+        /// Synchronous database access is not supported. Use GetCampingSpotsAsync instead.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public IEnumerable<CampingSpot> GetCampingSpots()
         {
-            List<CampingSpot> Spots = new List<CampingSpot>();
+            throw new NotImplementedException("Calling a database method synchronously");
+        }
 
+        public async Task<IEnumerable<CampingSpot>> GetCampingSpotsAsync()
+        {
+            List<CampingSpot> Spots = [];
             try
             {
                 string query = "SELECT SpotNr, PositionX, PositionY FROM campingspot";
@@ -111,9 +125,9 @@ namespace DataAccess
                     using (MySqlCommand command = new MySqlCommand(query, _connection.Connection))
                     {
                         _connection.Connection.Open();
-                        using (MySqlDataReader reader = command.ExecuteReader())
+                        using (var reader = await command.ExecuteReaderAsync())
                         {
-                            if (reader.Read())
+                            while (reader.Read())
                             {
                                 int id = reader.GetInt32("SpotNr");
                                 int posX = reader.GetInt32("PositionX");
@@ -127,9 +141,11 @@ namespace DataAccess
                     }
                 }
             }
-            catch (Exception ex) { Console.WriteLine($"Database error: {ex.Message}"); }
-
-            return Spots;
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Database error getting camping spots: {ex.Message}");
+                throw;
+            }
         }
     }
 }

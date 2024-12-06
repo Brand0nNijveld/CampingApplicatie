@@ -6,14 +6,19 @@ namespace UnitTests
 {
     public class CampingSpotServiceTests
     {
-        private CampingSpotService? service;
+        private CampingSpotService service;
+
+        public CampingSpotServiceTests()
+        {
+            service = new(new CampingSpotMockRepository());
+        }
 
         [SetUp]
         public void Setup()
         {
             var mockRepository = new Mock<ICampingSpotRepository>();
             mockRepository
-                .Setup(repo => repo.GetCampingSpots())
+                .Setup(repo => repo.GetCampingSpotsAsync())
                 .Returns(GetMockCampingSpots);
 
             service = new CampingSpotService(mockRepository.Object);
@@ -23,12 +28,13 @@ namespace UnitTests
         [TestCase("2024-11-10", "2024-11-20", 3)]
         [TestCase("2024-11-25", "2024-12-5", 1)]
         [TestCase("2024-11-9", "2024-12-5", 0)]
-        public void GetAvailableCampingSpots_ReturnsCorrectAvailableSpots(string startDateString, string endDateString, int result)
+        public async Task GetAvailableCampingSpots_ReturnsCorrectAvailableSpots(string startDateString, string endDateString, int result)
         {
             DateTime startDate = DateTime.Parse(startDateString);
             DateTime endDate = DateTime.Parse(endDateString);
 
-            var availableSpots = CampingSpotService.GetAvailableSpots([.. service?.GetCampingSpots()], startDate, endDate);
+            var spots = await service.GetCampingSpots();
+            var availableSpots = CampingSpotService.GetAvailableSpots([.. spots], startDate, endDate);
 
             Assert.That(availableSpots.Count(), Is.EqualTo(result), $"There should be exactly {result} available spot(s)");
         }
