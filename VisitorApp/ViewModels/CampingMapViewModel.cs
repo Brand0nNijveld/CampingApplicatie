@@ -19,6 +19,8 @@ namespace CampingApplication.VisitorApp.ViewModels
         public event AvailabilityHandler? AvailabilityChanged;
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        public List<CampingSpot> CampingSpotData { get; private set; }
+
         private ObservableCollection<CampingSpotVisualModel> campingSpots = [];
         public ObservableCollection<CampingSpotVisualModel> CampingSpots
         {
@@ -48,6 +50,7 @@ namespace CampingApplication.VisitorApp.ViewModels
             this.actionPanelViewModel = actionPanelViewModel;
             var campingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
             var spots = campingSpotService.GetCampingSpots();
+            CampingSpotData = spots;
 
             var campingSpotVisuals = new CampingSpotVisualModel[spots.Count];
             for (int i = 0; i < spots.Count; i++)
