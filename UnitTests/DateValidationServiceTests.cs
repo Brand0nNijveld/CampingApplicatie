@@ -15,8 +15,6 @@ namespace UnitTests
 
             var dateResult = DateValidationService.ValidateDates(startDate, endDate);
             Assert.That(result, Is.EqualTo(dateResult));
-
-
         }
     }
 }

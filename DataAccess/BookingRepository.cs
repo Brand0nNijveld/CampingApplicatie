@@ -1,9 +1,12 @@
-﻿using CampingApplication.Business.BookingService;
+﻿using CampingApplication.Business;
+using CampingApplication.Business.BookingService;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +21,36 @@ namespace DataAccess
             connection = con;
         }
 
+        public async Task<IEnumerable<Booking>> GetBookingsInTimeFrameAsync(int campingSpotID, DateTime startDate, DateTime endDate)
+        {
+            List<Booking> bookings = [];
+            MySqlConnection conn = await connection.GetConnectionAsync();
+            string query = @"SELECT BookingID, SpotNr, StartDate, EndDate FROM booking
+                            WHERE SpotNr = 1 
+                            AND ((StartDate >= @StartDate AND EndDate <= @EndDate) 
+                            OR (EndDate >= @StartDate && EndDate <= @EndDate))";
+
+            using (var cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@StartDate", startDate);
+                cmd.Parameters.AddWithValue("@EndDate", startDate);
+                using (var reader = await cmd.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        int ID = reader.GetInt32("BookingID");
+                        int spotNr = reader.GetInt32("SpotNr");
+                        DateTime sDate = reader.GetDateTime("StartDate");
+                        DateTime eDate = reader.GetDateTime("EndDate");
+
+                        bookings.Add(new Booking(ID, sDate, eDate));
+                    }
+                }
+            }
+
+            return bookings;
+        }
+
         public async Task SaveBookingAsync(BookingRequest request)
         {
             MySqlConnection conn = await connection.GetConnectionAsync();
@@ -25,6 +58,13 @@ namespace DataAccess
             {
                 try
                 {
+                    // Check if there are any bookings overlapping
+                    var bookings = await GetBookingsInTimeFrameAsync(request.CampingSpotID, request.StartDate, request.EndDate);
+                    if (bookings.Any())
+                    {
+                        throw new Exception("Already booked for this period.");
+                    }
+
                     string insertBookingQuery = "INSERT INTO booking (SpotNr, StartDate, EndDate) VALUES (@CampingID, @StartDate, @EndDate)";
                     using (var cmd = new MySqlCommand(insertBookingQuery, conn))
                     {

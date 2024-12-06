@@ -1,6 +1,7 @@
 ﻿using CampingApplication.Business;
 using CampingApplication.Business.CampingSpotService;
 using MySql.Data.MySqlClient;
+using System.Data;
 
 namespace DataAccess
 {
@@ -15,6 +16,11 @@ namespace DataAccess
 
         public IEnumerable<CampingSpot> GetAvailableSpots(CampingSpot[] spots, DateTime startDate, DateTime endDate)
         {
+            return [];
+        }
+
+        public async Task<IEnumerable<CampingSpot>> GetAvailableSpotsAsync(DateTime startDate, DateTime endDate)
+        {
             List<CampingSpot> availableSpots = new List<CampingSpot>();
 
             try
@@ -26,9 +32,8 @@ namespace DataAccess
                     WHERE c.SpotNr NOT IN (
                         SELECT b.SpotNr
                         FROM booking b
-                        WHERE b.Startdate < @Enddate
-                        AND b.Enddate > @Startdate
-                    );";
+                        AND ((StartDate >= @StartDate AND EndDate <= @EndDate) 
+                        OR (EndDate >= @StartDate && EndDate <= @EndDate))";
 
                 using (_connection.Connection)
                 {
@@ -38,7 +43,7 @@ namespace DataAccess
                         command.Parameters.AddWithValue("@Enddate", endDate);
 
                         _connection.Connection.Open();
-                        using (MySqlDataReader reader = command.ExecuteReader())
+                        using (var reader = await command.ExecuteReaderAsync())
                         {
                             int i = 0;
                             while (reader.Read())
@@ -50,19 +55,12 @@ namespace DataAccess
                                 availableSpots.Add(new CampingSpot(id, posX, posY));
                             }
                         }
-                        _connection.Connection.Close();
-                        Array.Resize(ref spots, availableSpots.Count);
-                        for (int i = 0; i < availableSpots.Count; i++)
-                        {
-                            spots[i] = availableSpots[i];
-                        }
-                        return spots;
                     }
                 }
             }
             catch (Exception ex) { Console.WriteLine($"Database error: {ex.Message}"); }
 
-            return spots;
+            return availableSpots;
         }
 
         public CampingSpot GetCampingSpot(int ID)
