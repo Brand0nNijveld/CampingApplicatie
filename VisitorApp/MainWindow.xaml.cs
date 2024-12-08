@@ -31,5 +31,10 @@ namespace CampingApplication.VisitorApp
 
             DateRangePicker.mainViewModel = viewModel;
         }
+
+        private void DateRangePicker_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
