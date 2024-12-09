@@ -37,12 +37,5 @@ namespace CampingApplication.EmployeeApp
 
             //DateRangePicker.mainViewModel = viewModel;
         }
-
-        public object SpotInfo { get; internal set; }
-
-        private void DateRangePicker_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

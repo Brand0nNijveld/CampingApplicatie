@@ -9,7 +9,7 @@ using System.Data;
 using System.Data.Common;
 using System.Windows;
 
-namespace CampingApplication.VisitorApp
+namespace CampingApplication.EmployeeApp
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -23,11 +23,11 @@ namespace CampingApplication.VisitorApp
         public App()
         {
 #if DEBUG
-            InjectDependencies();
+            InjectDebugDependencies();
             MainWindow testWindow = new();
             SetWindow(testWindow);
 #else
-            InjectDebugDependencies();
+            InjectDependencies();
             MainWindow window = new();
             SetWindow(window);
 #endif
