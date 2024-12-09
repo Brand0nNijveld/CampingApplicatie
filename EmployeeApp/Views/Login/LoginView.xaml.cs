@@ -15,10 +15,23 @@ namespace CampingApplication.EmployeeApp.Views.Login
         {
             InitializeComponent();
 
-            ViewModel = new LoginViewModel();
-            DataContext = ViewModel;
+            if (App.Current is App app && Business.ServiceProvider.Current != null)
+            {
+                LoginService loginService = Business.ServiceProvider.Current.Resolve<LoginService>();
+                ViewModel = new LoginViewModel();
+            }
+            else
+            {
+                Debug.WriteLine("ServiceProvider isn't initialized");
 
-            ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+            }
+
+            DataContext = ViewModel;
+            if(ViewModel != null)
+            {
+                ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+            }
+
 
             SystemErrorText.MaxHeight = 0;
             SystemErrorText.Opacity = 0;

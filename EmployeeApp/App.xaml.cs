@@ -23,11 +23,11 @@ namespace CampingApplication.VisitorApp
         public App()
         {
 #if DEBUG
-            InjectDebugDependencies();
+            InjectDependencies();
             MainWindow testWindow = new();
             SetWindow(testWindow);
 #else
-            InjectDependencies();
+            InjectDebugDependencies();
             MainWindow window = new();
             SetWindow(window);
 #endif
@@ -39,12 +39,9 @@ namespace CampingApplication.VisitorApp
         private void InjectDependencies()
         {
             ServiceProvider serviceProvider = new();
+            ServiceProvider.Current = serviceProvider;  // Assign to the static Current property
 
             DBConnection dbConnection = new DBConnection();
-            //ICampingSpotRepository campingSpotRepository = new CampingSpotRepository(dbConnection);
-            //CampingSpotService campingSpotService = new(campingSpotRepository);
-            //serviceProvider.RegisterInstance(campingSpotService);
-
             ILoginRepository loginRepository = new LoginRepositoryMock();
             LoginService loginService = new(loginRepository);
             serviceProvider.RegisterInstance(loginService);
@@ -56,6 +53,8 @@ namespace CampingApplication.VisitorApp
         private void InjectDebugDependencies()
         {
             ServiceProvider serviceProvider = new();
+            ServiceProvider.Current = serviceProvider;
+
             DBConnection dbConnection = new();
 
             ICampingSpotRepository campingSpotRepository = new CampingSpotMockRepository();
