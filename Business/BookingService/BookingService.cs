@@ -38,7 +38,7 @@ namespace CampingApplication.Business.BookingService
 
         public static int CalculateAmountOfNights(DateTime startDate, DateTime endDate)
         {
-            return (endDate - startDate).Days - 1;
+            return (endDate - startDate).Days;
         }
 
         public static float CalculateTotalPrice(int amountOfNights, float pricePerNight)
