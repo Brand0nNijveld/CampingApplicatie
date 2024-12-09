@@ -7,11 +7,11 @@ namespace DataAccess
 {
     public class CampingSpotRepository : ICampingSpotRepository
     {
-        private DBConnection _connection;
+        private DBConnection connection;
 
         public CampingSpotRepository(DBConnection con)
         {
-            this._connection = con;
+            this.connection = con;
         }
 
         public IEnumerable<CampingSpot> GetAvailableSpots(CampingSpot[] spots, DateTime startDate, DateTime endDate)
@@ -32,28 +32,24 @@ namespace DataAccess
                     WHERE c.SpotNr NOT IN (
                         SELECT b.SpotNr
                         FROM booking b
-                        AND ((StartDate >= @StartDate AND EndDate <= @EndDate) 
-                        OR (EndDate >= @StartDate && EndDate <= @EndDate))";
+                        WHERE (b.StartDate >= @StartDate AND b.EndDate <= @EndDate)
+                        OR (b.EndDate >= @StartDate AND b.StartDate <= @EndDate)
+                    );";
 
-                using (_connection.Connection)
+                using (MySqlCommand command = new MySqlCommand(query, await connection.GetConnectionAsync()))
                 {
-                    using (MySqlCommand command = new MySqlCommand(query, _connection.Connection))
+                    command.Parameters.AddWithValue("@StartDate", startDate.ToString("yyyy-MM-dd"));
+                    command.Parameters.AddWithValue("@EndDate", endDate.ToString("yyyy-MM-dd"));
+                    using (var reader = await command.ExecuteReaderAsync())
                     {
-                        command.Parameters.AddWithValue("@Startdate", startDate);
-                        command.Parameters.AddWithValue("@Enddate", endDate);
-
-                        _connection.Connection.Open();
-                        using (var reader = await command.ExecuteReaderAsync())
+                        int i = 0;
+                        while (reader.Read())
                         {
-                            int i = 0;
-                            while (reader.Read())
-                            {
-                                int id = reader.GetInt32("SpotNr");
-                                int posX = reader.GetInt32("PositionX");
-                                int posY = reader.GetInt32("PositionY");
+                            int id = reader.GetInt32("SpotNr");
+                            int posX = reader.GetInt32("PositionX");
+                            int posY = reader.GetInt32("PositionY");
 
-                                availableSpots.Add(new CampingSpot(id, posX, posY));
-                            }
+                            availableSpots.Add(new CampingSpot(id, posX, posY));
                         }
                     }
                 }
@@ -73,9 +69,9 @@ namespace DataAccess
             {
                 string query = "SELECT SpotNr, PositionX, PositionY FROM camping WHERE SpotNr = @SpotNr";
 
-                using (_connection.Connection)
+                using (connection.Connection)
                 {
-                    using (MySqlCommand command = new MySqlCommand(query, _connection.Connection))
+                    using (MySqlCommand command = new MySqlCommand(query, connection.Connection))
                     {
                         command.Parameters.AddWithValue("@SpotNr", ID);
                         using (MySqlDataReader reader = command.ExecuteReader())
@@ -120,11 +116,11 @@ namespace DataAccess
             {
                 string query = "SELECT SpotNr, PositionX, PositionY FROM campingspot";
 
-                using (_connection.Connection)
+                using (connection.Connection)
                 {
-                    using (MySqlCommand command = new MySqlCommand(query, _connection.Connection))
+                    using (MySqlCommand command = new MySqlCommand(query, connection.Connection))
                     {
-                        _connection.Connection.Open();
+                        connection.Connection.Open();
                         using (var reader = await command.ExecuteReaderAsync())
                         {
                             while (reader.Read())
@@ -136,7 +132,7 @@ namespace DataAccess
                                 Spots.Add(new CampingSpot(id, posX, posY));
                             }
                         }
-                        _connection.Connection.Close();
+                        connection.Connection.Close();
                         return Spots;
                     }
                 }

@@ -25,14 +25,15 @@ namespace DataAccess
         {
             List<Booking> bookings = [];
             string query = @"SELECT BookingID, SpotNr, StartDate, EndDate FROM booking
-                            WHERE SpotNr = 1 
+                            WHERE SpotNr = @SpotID 
                             AND ((StartDate >= @StartDate AND EndDate <= @EndDate) 
                             OR (EndDate >= @StartDate && EndDate <= @EndDate))";
 
-            using (var cmd = new MySqlCommand(query, connection))
+            using (var cmd = new MySqlCommand(query, await connection.GetConnectionAsync()))
             {
-                cmd.Parameters.AddWithValue("@StartDate", startDate);
-                cmd.Parameters.AddWithValue("@EndDate", startDate);
+                cmd.Parameters.AddWithValue("@SpotID", campingSpotID);
+                cmd.Parameters.AddWithValue("@StartDate", startDate.ToString("yyyy-MM-dd"));
+                cmd.Parameters.AddWithValue("@EndDate", startDate.ToString("yyyy-MM-dd"));
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {
                     while (await reader.ReadAsync())
@@ -58,7 +59,7 @@ namespace DataAccess
                 try
                 {
                     // Check if there are any bookings overlapping
-                    var bookings = await GetBookingsInTimeFrameAsync(conn, request.CampingSpotID, request.StartDate, request.EndDate);
+                    var bookings = await GetBookingsInTimeFrameAsync(request.CampingSpotID, request.StartDate, request.EndDate);
                     if (bookings.Any())
                     {
                         throw new Exception("Already booked for this period.");

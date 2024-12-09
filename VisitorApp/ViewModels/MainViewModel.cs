@@ -26,19 +26,26 @@ namespace CampingApplication.VisitorApp.ViewModels
             CampingMapViewModel = new(ActionPanelViewModel);
         }
 
-        public void CheckAvailableSpots(DateTime startDate, DateTime endDate)
+        public async void CheckAvailableSpots(DateTime startDate, DateTime endDate)
         {
-            var availableSpots = CampingSpotService.GetAvailableSpots([.. CampingMapViewModel.CampingSpotData], startDate, endDate);
-
-            Dictionary<int, CampingSpot> availableDict = [];
-            foreach (var available in availableSpots)
+            try
             {
-                availableDict.TryAdd(available.ID, available);
+                var availableSpots = await CampingSpotService.GetAvailableSpotsAsync(startDate, endDate);
+
+                Dictionary<int, CampingSpot> availableDict = [];
+                foreach (var available in availableSpots)
+                {
+                    availableDict.TryAdd(available.ID, available);
+                }
+
+                Debug.WriteLine($"{availableDict.Count} camping spots available");
+
+                CampingMapViewModel.SetAvailability(availableDict, startDate, endDate);
             }
-
-            Debug.WriteLine($"{availableDict.Count} camping spots available");
-
-            CampingMapViewModel.SetAvailability(availableDict, startDate, endDate);
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
         }
     }
 }

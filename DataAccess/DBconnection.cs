@@ -21,6 +21,7 @@ namespace DataAccess
         {
             if (Connection.State != System.Data.ConnectionState.Open)
             {
+                Connection = new MySqlConnection(_connectionString);
                 await Connection.OpenAsync();
             }
 
