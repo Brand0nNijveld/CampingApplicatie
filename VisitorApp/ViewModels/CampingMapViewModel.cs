@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using CampingApplication.Business;
 using CampingApplication.Business.CampingSpotService;
 using CampingApplication.VisitorApp.Models;
@@ -19,7 +20,9 @@ namespace CampingApplication.VisitorApp.ViewModels
         public event AvailabilityHandler? AvailabilityChanged;
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public List<CampingSpot> CampingSpotData { get; private set; }
+        private CampingSpotService campingSpotService;
+
+        public List<CampingSpot> CampingSpotData { get; private set; } = [];
 
         private ObservableCollection<CampingSpotVisualModel> campingSpots = [];
         public ObservableCollection<CampingSpotVisualModel> CampingSpots
@@ -31,6 +34,9 @@ namespace CampingApplication.VisitorApp.ViewModels
                 OnPropertyChanged(nameof(CampingSpots));
             }
         }
+
+        public DateTime StartDate { get; private set; }
+        public DateTime EndDate { get; private set; }
 
         private ActionPanelViewModel actionPanelViewModel;
 
@@ -48,27 +54,46 @@ namespace CampingApplication.VisitorApp.ViewModels
         public CampingMapViewModel(ActionPanelViewModel actionPanelViewModel)
         {
             this.actionPanelViewModel = actionPanelViewModel;
-            var campingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
-            var spots = campingSpotService.GetCampingSpots();
-            CampingSpotData = spots;
+            campingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
+        }
 
-            var campingSpotVisuals = new CampingSpotVisualModel[spots.Count];
-            for (int i = 0; i < spots.Count; i++)
+        public async Task GetCampingSpotsAsync()
+        {
+            try
             {
-                CampingSpot spot = spots[i];
-                campingSpotVisuals[i] = new(spot.ID, spot.PositionX, spot.PositionY);
-            }
+                var spots = await campingSpotService.GetCampingSpotsAsync();
+                CampingSpotData = spots;
 
-            CampingSpots = new(campingSpotVisuals);
+                var campingSpotVisuals = new CampingSpotVisualModel[spots.Count];
+                for (int i = 0; i < spots.Count; i++)
+                {
+                    Debug.WriteLine("Camping spot: " + spots[i].ID);
+                    CampingSpot spot = spots[i];
+                    campingSpotVisuals[i] = new(spot.ID, spot.PositionX, spot.PositionY);
+                }
+
+                // Use Dispatcher to update UI-bound properties or raise events
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    CampingSpots = new ObservableCollection<CampingSpotVisualModel>(campingSpotVisuals);
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
 
         public void ClearAvailability()
         {
-            SetAvailability([]);
+            SetAvailability([], DateTime.Now, DateTime.Now);
         }
 
-        public void SetAvailability(Dictionary<int, CampingSpot> available)
+        public void SetAvailability(Dictionary<int, CampingSpot> available, DateTime startDate, DateTime endDate)
         {
+            StartDate = startDate;
+            EndDate = endDate;
+
             if (available.Count == 0)
             {
                 AvailabilityChanged?.Invoke(false);
@@ -97,7 +122,7 @@ namespace CampingApplication.VisitorApp.ViewModels
 
         public void ShowBookScreen(int ID)
         {
-            BookingView bookingView = new(ID, DateTime.Now, DateTime.Now.AddDays(5), 60);
+            BookingView bookingView = new(ID, StartDate, EndDate, 60);
             bookingView.BackButtonClicked += () => actionPanelViewModel.ClearAndHide();
             bookingView.ViewModel.BookingSuccessful += () => actionPanelViewModel.CurrentView = 1;
             BookingSuccessView bookingSuccessView = new();

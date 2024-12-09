@@ -38,6 +38,14 @@ namespace CampingApplication.VisitorApp.Views
                 To = 0,     // End at fully transparent
                 Duration = new Duration(TimeSpan.FromSeconds(0.3))
             };
+
+            this.Loaded += CampingMap_Loaded;
+        }
+
+        private async void CampingMap_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (viewModel != null)
+                await viewModel.GetCampingSpotsAsync();
         }
 
         public void SetViewModel(CampingMapViewModel viewModel)
@@ -175,10 +183,6 @@ namespace CampingApplication.VisitorApp.Views
                 //CampingCanvas.Children.Add(spotVisual);
                 CampingCanvas.Children.Add(spotID);
             }
-        }
-
-        private void SpotVisual_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
         }
     }
 }

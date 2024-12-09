@@ -1,6 +1,7 @@
 ﻿using CampingApplication.Business;
 using CampingApplication.Business.BookingService;
 using CampingApplication.VisitorApp.Views.Components;
+using DataAccess.Bookings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -148,6 +149,11 @@ namespace CampingApplication.VisitorApp.ViewModels
                 {
                     SetError(error.Key, error.Value);
                 }
+            }
+            catch (BookingException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                SystemError = "Boeken voor deze periode is niet meer mogelijk.";
             }
             catch (Exception ex)
             {

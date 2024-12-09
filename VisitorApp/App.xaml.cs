@@ -2,6 +2,7 @@
 using CampingApplication.Business.BookingService;
 using CampingApplication.Business.CampingSpotService;
 using CampingApplication.VisitorApp.ViewModels;
+using DataAccess.Bookings;
 using DataAccess;
 using System.Configuration;
 using System.Data;
@@ -56,7 +57,7 @@ namespace CampingApplication.VisitorApp
             ServiceProvider serviceProvider = new();
             DBConnection dbConnection = new();
 
-            ICampingSpotRepository campingSpotRepository = new CampingSpotMockRepository();
+            ICampingSpotRepository campingSpotRepository = new CampingSpotRepository(dbConnection);
             CampingSpotService campingSpotService = new(campingSpotRepository);
             serviceProvider.RegisterInstance(campingSpotService);
 

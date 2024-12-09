@@ -7,11 +7,11 @@ namespace DataAccess
 {
     public class CampingSpotRepository : ICampingSpotRepository
     {
-        private DBConnection _connection;
+        private DBConnection connection;
 
         public CampingSpotRepository(DBConnection con)
         {
-            this._connection = con;
+            this.connection = con;
         }
 
         public IEnumerable<CampingSpot> GetAvailableSpots(CampingSpot[] spots, DateTime startDate, DateTime endDate)
@@ -32,33 +32,33 @@ namespace DataAccess
                     WHERE c.SpotNr NOT IN (
                         SELECT b.SpotNr
                         FROM booking b
-                        AND ((StartDate >= @StartDate AND EndDate <= @EndDate) 
-                        OR (EndDate >= @StartDate && EndDate <= @EndDate))";
+                        WHERE (b.StartDate >= @StartDate AND b.EndDate <= @EndDate)
+                        OR (b.EndDate >= @StartDate AND b.StartDate <= @EndDate)
+                    );";
 
-                using (_connection.Connection)
+                using (MySqlCommand command = new MySqlCommand(query, await connection.GetConnectionAsync()))
                 {
-                    using (MySqlCommand command = new MySqlCommand(query, _connection.Connection))
+                    command.Parameters.AddWithValue("@StartDate", startDate.ToString("yyyy-MM-dd"));
+                    command.Parameters.AddWithValue("@EndDate", endDate.ToString("yyyy-MM-dd"));
+                    using (var reader = await command.ExecuteReaderAsync())
                     {
-                        command.Parameters.AddWithValue("@Startdate", startDate);
-                        command.Parameters.AddWithValue("@Enddate", endDate);
-
-                        _connection.Connection.Open();
-                        using (var reader = await command.ExecuteReaderAsync())
+                        int i = 0;
+                        while (reader.Read())
                         {
-                            int i = 0;
-                            while (reader.Read())
-                            {
-                                int id = reader.GetInt32("SpotNr");
-                                int posX = reader.GetInt32("PositionX");
-                                int posY = reader.GetInt32("PositionY");
+                            int id = reader.GetInt32("SpotNr");
+                            int posX = reader.GetInt32("PositionX");
+                            int posY = reader.GetInt32("PositionY");
 
-                                availableSpots.Add(new CampingSpot(id, posX, posY));
-                            }
+                            availableSpots.Add(new CampingSpot(id, posX, posY));
                         }
                     }
                 }
             }
-            catch (Exception ex) { Console.WriteLine($"Database error: {ex.Message}"); }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Database error getting available spots: {ex.Message}");
+                throw;
+            }
 
             return availableSpots;
         }
@@ -69,13 +69,11 @@ namespace DataAccess
             {
                 string query = "SELECT SpotNr, PositionX, PositionY FROM camping WHERE SpotNr = @SpotNr";
 
-                using (_connection.Connection)
+                using (connection.Connection)
                 {
-                    using (MySqlCommand command = new MySqlCommand(query, _connection.Connection))
+                    using (MySqlCommand command = new MySqlCommand(query, connection.Connection))
                     {
                         command.Parameters.AddWithValue("@SpotNr", ID);
-
-                        _connection.Connection.Open();
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
@@ -89,31 +87,43 @@ namespace DataAccess
                                 return result;
                             }
                         }
-                        _connection.Connection.Close();
                     }
                 }
             }
-            catch (Exception ex) { Console.WriteLine($"Database error: {ex.Message}"); }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Database error getting camping spot: {ex.Message}");
+                throw;
+            }
 
             return null;
         }
 
+        /// <summary>
+        /// Synchronous database access is not supported. Use GetCampingSpotsAsync instead.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public IEnumerable<CampingSpot> GetCampingSpots()
         {
-            List<CampingSpot> Spots = new List<CampingSpot>();
+            throw new NotImplementedException("Calling a database method synchronously");
+        }
 
+        public async Task<IEnumerable<CampingSpot>> GetCampingSpotsAsync()
+        {
+            List<CampingSpot> Spots = [];
             try
             {
                 string query = "SELECT SpotNr, PositionX, PositionY FROM campingspot";
 
-                using (_connection.Connection)
+                using (connection.Connection)
                 {
-                    using (MySqlCommand command = new MySqlCommand(query, _connection.Connection))
+                    using (MySqlCommand command = new MySqlCommand(query, connection.Connection))
                     {
-                        _connection.Connection.Open();
-                        using (MySqlDataReader reader = command.ExecuteReader())
+                        connection.Connection.Open();
+                        using (var reader = await command.ExecuteReaderAsync())
                         {
-                            if (reader.Read())
+                            while (reader.Read())
                             {
                                 int id = reader.GetInt32("SpotNr");
                                 int posX = reader.GetInt32("PositionX");
@@ -122,14 +132,16 @@ namespace DataAccess
                                 Spots.Add(new CampingSpot(id, posX, posY));
                             }
                         }
-                        _connection.Connection.Close();
+                        connection.Connection.Close();
                         return Spots;
                     }
                 }
             }
-            catch (Exception ex) { Console.WriteLine($"Database error: {ex.Message}"); }
-
-            return Spots;
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Database error getting camping spots: {ex.Message}");
+                throw;
+            }
         }
     }
 }

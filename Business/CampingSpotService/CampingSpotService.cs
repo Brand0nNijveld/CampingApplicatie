@@ -14,9 +14,16 @@ namespace CampingApplication.Business.CampingSpotService
             this.repository = repository;
         }
 
-        public List<CampingSpot> GetCampingSpots()
+        public async Task<List<CampingSpot>> GetCampingSpots()
         {
-            return repository.GetCampingSpots().ToList();
+            var spots = await repository.GetCampingSpotsAsync();
+            return spots.ToList();
+        }
+
+        public async Task<List<CampingSpot>> GetCampingSpotsAsync()
+        {
+            var spots = await repository.GetCampingSpotsAsync();
+            return spots.ToList();
         }
 
         public async Task<IEnumerable<CampingSpot>> GetAvailableSpotsAsync(DateTime startDate, DateTime endDate)

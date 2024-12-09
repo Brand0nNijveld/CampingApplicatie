@@ -44,7 +44,7 @@ namespace CampingApplication.Business.BookingService
             if (string.IsNullOrWhiteSpace(str))
                 return "Voornaam is verplicht.";
 
-            if (str.Length < 2)
+            if (str.Length < 3)
                 return "Voornaam is te kort.";
 
             if (str.Length > 30)
@@ -58,7 +58,7 @@ namespace CampingApplication.Business.BookingService
             if (string.IsNullOrWhiteSpace(str))
                 return "Achternaam is verplicht.";
 
-            if (str.Length < 2)
+            if (str.Length < 3)
                 return "Achternaam is te kort.";
 
             if (str.Length > 50)
