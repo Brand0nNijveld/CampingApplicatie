@@ -72,9 +72,9 @@
                     </Border.Background>
                     <StackPanel Orientation="Horizontal">
                         <Viewbox Width="32" Height="32">
-                            <ContentControl Content="{DynamicResource AlertIcon}" Foreground="White" />
+                            <ContentControl Content="{DynamicResource AlertIcon}" Foreground="Red" />
                         </Viewbox>
-                        <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Left" Text="{Binding SystemError}" ></TextBlock>
+                        <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Foreground="Red" HorizontalAlignment="Left" Text="{Binding SystemError}" ></TextBlock>
                     </StackPanel>
                 </Border>
             </StackPanel>
