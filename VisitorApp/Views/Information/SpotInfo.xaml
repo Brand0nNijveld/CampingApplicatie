@@ -3,13 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:SpotInfoViewModel}"
              xmlns:local="clr-namespace:CampingApplication.VisitorApp.Views.Information"
+             xmlns:viewmodels="clr-namespace:CampingApplication.VisitorApp.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <!-- Outer Border -->
         <Border x:Name="HighlightRectangle"  Width="400" Height="350" Background="White"  CornerRadius="15" Padding="15">
             <Grid>
+
                 <!-- Close Button -->
                 <Button x:Name="CloseButton" Content="&#x2715;" 
                  HorizontalAlignment="Right" 
@@ -22,7 +25,7 @@
                  Click="CloseButton_Click" />
 
                 <!-- Title -->
-                <TextBlock x:Name="CampingSpotInfo" Text="Plaats 1 Informatie" 
+                <TextBlock x:Name="CampingSpotInfo" Text="{Binding ID}" 
                     FontSize="20" 
                     FontWeight="Bold" 
                     HorizontalAlignment="Left"/>
@@ -55,13 +58,10 @@
      HorizontalAlignment="Left" Height="158" Margin="10,146,0,0">
                     <Border Background="#F9F9F9" Width="359" Height="297" CornerRadius="10">
                         <StackPanel Orientation="Vertical" >
-                            <TextBlock x:Name="CampingSpotPrice" Text="Prijs: €xx" FontSize="10" Margin="0,5" />
-                            <TextBlock x:Name="CampingSpotReceptionDistance" Text="Afstand naar receptie: xx m" FontSize="10" Margin="0,5" />
-                            <TextBlock x:Name="CampingSpotToiletDistance" Text="Afstand naar toilet: xx m" FontSize="10" Margin="0,5" />
-                            <TextBlock x:Name="CampingSpotLakeDistance" Text="Afstand naar meer: xx m" FontSize="10" Margin="0,5" />
-                            <TextBlock x:Name="CampingSpotSize" Text="Grootte: xx m²" FontSize="10" Margin="0,5" />
-                            <TextBlock x:Name="CampingSpotType" Text="Type plek: Standaard" FontSize="10" Margin="0,5" />
-                            <TextBlock x:Name="CampingSpotAvailability" Text="Beschikbaarheid: Beschikbaar" FontSize="10" Margin="0,5" />
+                            <TextBlock x:Name="CampingSpotPrice" Text="{Binding PricePerNight}" FontSize="10" Margin="0,5" />
+                            <TextBlock x:Name="CampingSpotSize" Text="{Binding Size}" FontSize="10" Margin="0,5" />
+
+
                         </StackPanel>
                     </Border>
                     <!-- Grote Border -->

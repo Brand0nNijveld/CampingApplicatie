@@ -14,6 +14,10 @@ namespace CampingApplication.Business.CampingSpotService
             this.repository = repository;
         }
 
+        public async Task <CampingSpotInfo> GetCampingSpotInfoAsync(int ID) { 
+            return await repository.GetCampingSpotInfoAsync(ID);
+        }
+
         public List<CampingSpot> GetCampingSpots()
         {
             return repository.GetCampingSpots().ToList();

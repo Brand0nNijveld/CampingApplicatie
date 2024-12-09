@@ -10,7 +10,8 @@ namespace CampingApplication.Business.BookingService
     {
         public Task<IEnumerable<Booking>> GetBookingsInTimeFrameAsync(int campingSpotID, DateTime startDate, DateTime endDate)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return null;
         }
 
         public async Task SaveBookingAsync(BookingRequest request)

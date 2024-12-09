@@ -10,6 +10,7 @@ using CampingApplication.Business;
 using CampingApplication.Business.CampingSpotService;
 using CampingApplication.VisitorApp.Models;
 using CampingApplication.VisitorApp.Views.Booking;
+using CampingApplication.VisitorApp.Views.Information;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
@@ -97,13 +98,16 @@ namespace CampingApplication.VisitorApp.ViewModels
 
         public void ShowBookScreen(int ID)
         {
-            BookingView bookingView = new(ID, DateTime.Now, DateTime.Now.AddDays(5), 60);
-            bookingView.BackButtonClicked += () => actionPanelViewModel.ClearAndHide();
-            bookingView.ViewModel.BookingSuccessful += () => actionPanelViewModel.CurrentView = 1;
-            BookingSuccessView bookingSuccessView = new();
-            bookingSuccessView.DoneButtonClicked += () => actionPanelViewModel.ClearAndHide();
+            SpotInfo spotInfo = new(ID);
+            spotInfo.CloseButton_Clicked += () => actionPanelViewModel.ClearAndHide();
 
-            actionPanelViewModel.SetSteps([bookingView, bookingSuccessView]);
+            //BookingView bookingView = new(ID, DateTime.Now, DateTime.Now.AddDays(5), 60);
+            //bookingView.BackButtonClicked += () => actionPanelViewModel.ClearAndHide();
+            //bookingView.ViewModel.BookingSuccessful += () => actionPanelViewModel.CurrentView = 1;
+            //BookingSuccessView bookingSuccessView = new();
+            //bookingSuccessView.DoneButtonClicked += () => actionPanelViewModel.ClearAndHide();
+
+            actionPanelViewModel.SetSteps([spotInfo]);
         }
     }
 }

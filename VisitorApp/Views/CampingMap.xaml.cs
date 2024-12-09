@@ -126,7 +126,7 @@ namespace CampingApplication.VisitorApp.Views
                     var mainWindow = Application.Current.MainWindow as MainWindow;
                     if (mainWindow != null)
                     {
-                        mainWindow.SpotInfo.Visibility = Visibility.Visible;
+                       // mainWindow.SpotInfo.Visibility = Visibility.Visible;
                     }
                 };
 

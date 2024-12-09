@@ -98,6 +98,11 @@ namespace DataAccess
             return null;
         }
 
+        public Task<CampingSpotInfo> GetCampingSpotInfoAsync(int ID)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<CampingSpot> GetCampingSpots()
         {
             List<CampingSpot> Spots = new List<CampingSpot>();
