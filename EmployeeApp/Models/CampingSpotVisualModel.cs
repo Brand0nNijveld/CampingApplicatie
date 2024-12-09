@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CampingApplication.VisitorApp.Models
+namespace CampingApplication.EmployeeApp.Models
 {
     public class CampingSpotVisualModel
     {

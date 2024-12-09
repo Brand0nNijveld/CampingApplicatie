@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="CampingApplication.EmployeeApp.Views.Login.ActionPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CampingApplication.EmployeeApp.Views.Login"
+             xmlns:viewmodels="clr-namespace:CampingApplication.EmployeeApp.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             VerticalAlignment="Stretch"
+             d:DataContext="{d:DesignInstance Type=viewmodels:ActionPanelViewModel}"
+             >
+    <Grid x:Name="ActionPanelBackground" VerticalAlignment="Stretch">
+        <Border Background="#80000000" VerticalAlignment="Stretch" IsHitTestVisible="True" />
+        <Border x:Name="ContentWindow" Padding="15" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="10">
+            <ContentControl x:Name="ContentControl" >
+                <TextBlock>Action Panel</TextBlock>
+            </ContentControl>
+        </Border>
+    </Grid>
+</UserControl>

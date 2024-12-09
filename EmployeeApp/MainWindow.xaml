@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CampingApplication.EmployeeApp"
+        xmlns:login="clr-namespace:CampingApplication.EmployeeApp.Views.Login"
         mc:Ignorable="d"
         Background="#F9F9F9"
        Title="Camping Applicatie" Height="960" Width="1440">
@@ -13,5 +14,10 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <Grid Grid.Row="1" VerticalAlignment="Top">
+            <login:ActionPanel x:Name="ActionPanel" />
+        </Grid>
+
     </Grid>
+    
 </Window>

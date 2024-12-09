@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CampingApplication.Business;
-using CampingApplication.VisitorApp.Models;
+using CampingApplication.EmployeeApp.Models;
 
-namespace CampingApplication.VisitorApp.ViewModels
+namespace CampingApplication.EmployeeApp.ViewModels
 {
     public delegate void AvailabilityHandler(bool available);
     public class CampingMapViewModel() : INotifyPropertyChanged

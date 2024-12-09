@@ -6,37 +6,40 @@ using System.Text;
 using System.Threading.Tasks;
 using CampingApplication.Business;
 using CampingApplication.Business.CampingSpotService;
-using CampingApplication.VisitorApp.Models;
+using CampingApplication.EmployeeApp.Views.Login;
+using CampingApplication.EmployeeApp.Models;
+using CampingApplication.EmployeeApp.ViewModels;
 
-namespace CampingApplication.VisitorApp.ViewModels
+namespace CampingApplication.EmployeeApp.ViewModels
 {
     public class MainViewModel
     {
         public CampingSpotService CampingSpotService { get; private set; }
         public CampingMapViewModel CampingMapViewModel { get; private set; }
-        private List<CampingSpot> campingSpots = [];
+
+        public ActionPanelViewModel ActionPanelViewModel { get; private set; }
 
         public MainViewModel()
         {
             CampingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
-            campingSpots = CampingSpotService.GetCampingSpots();
 
-            CampingMapViewModel = new("../test1.png", campingSpots);
+            ActionPanelViewModel = new();
+            //CampingMapViewModel = new(ActionPanelViewModel);
         }
 
-        public void CheckAvailableSpots(DateTime startDate, DateTime endDate)
-        {
-            var availableSpots = CampingSpotService.GetAvailableSpots([.. campingSpots], startDate, endDate);
+        //public void CheckAvailableSpots(DateTime startDate, DateTime endDate)
+        //{
+        //    var availableSpots = CampingSpotService.GetAvailableSpots([.. CampingMapViewModel.CampingSpotData], startDate, endDate);
 
-            Dictionary<int, CampingSpot> availableDict = [];
-            foreach (var available in availableSpots)
-            {
-                availableDict.TryAdd(available.ID, available);
-            }
+        //    Dictionary<int, CampingSpot> availableDict = [];
+        //    foreach (var available in availableSpots)
+        //    {
+        //        availableDict.TryAdd(available.ID, available);
+        //    }
 
-            Debug.WriteLine($"{availableDict.Count} camping spots available");
+        //    Debug.WriteLine($"{availableDict.Count} camping spots available");
 
-            CampingMapViewModel.SetAvailability(availableDict);
-        }
+        //    CampingMapViewModel.SetAvailability(availableDict);
+        //}
     }
 }
