@@ -5,55 +5,47 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CampingApplication.Business;
+using CampingApplication.Business.CampingSpotService;
+using CampingApplication.VisitorApp.Views.Booking;
 using CampingApplication.VisitorApp.Models;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
     public class MainViewModel
     {
+        public CampingSpotService CampingSpotService { get; private set; }
         public CampingMapViewModel CampingMapViewModel { get; private set; }
-        private List<CampingSpot> campingSpots = [];
+
+        public ActionPanelViewModel ActionPanelViewModel { get; private set; }
 
         public MainViewModel()
         {
-            campingSpots =
-                [
-                    new(1, 612, 360, [new(DateTime.Now.AddDays(1), DateTime.Now.AddDays(6))]),
-                    new(2, 612, 281, [new(DateTime.Now.AddDays(12), DateTime.Now.AddDays(22))]),
-                    new(3, 612, 201,[new(DateTime.Now.AddDays(3), DateTime.Now.AddDays(12))]),
-                    new(4, 612, 115, [new(DateTime.Now.AddDays(1), DateTime.Now.AddDays(6))]),
-                    new(5, 612, 30, [new(DateTime.Now.AddDays(12), DateTime.Now.AddDays(22))]),
-                    new(6, 322, 227,[new(DateTime.Now.AddDays(3), DateTime.Now.AddDays(12))]),
-                    new(7, 322, 145, [new(DateTime.Now.AddDays(1), DateTime.Now.AddDays(6))]),
-                    new(8, 86, 186, [new(DateTime.Now.AddDays(12), DateTime.Now.AddDays(22))]),
-                    new(9, 86, 103, [new(DateTime.Now.AddDays(12), DateTime.Now.AddDays(22))]),
-                    new(10, 86, 29, [new(DateTime.Now.AddDays(12), DateTime.Now.AddDays(22))]),
-                    new(11, 190, 29, [new(DateTime.Now.AddDays(12), DateTime.Now.AddDays(22))]),
-                ];
+            CampingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
 
-            CampingSpotVisualModel[] campingSpotVisuals = new CampingSpotVisualModel[campingSpots.Count];
-            for (int i = 0; i < campingSpots.Count; i++)
-            {
-                CampingSpot spot = campingSpots[i];
-                campingSpotVisuals[i] = new(spot.ID, spot.PositionX, spot.PositionY);
-            }
-
-            CampingMapViewModel = new("../test1.png", campingSpotVisuals);
+            ActionPanelViewModel = new();
+            CampingMapViewModel = new(ActionPanelViewModel);
         }
 
-        public void CheckAvailableSpots(DateTime beginDate, DateTime endDate)
+        public async void CheckAvailableSpots(DateTime startDate, DateTime endDate)
         {
-            var availableSpots = AvailabilityService.GetAvailableCampingSpots([.. campingSpots], beginDate, endDate);
-
-            Dictionary<int, CampingSpot> availableDict = [];
-            foreach (var available in availableSpots)
+            try
             {
-                availableDict.TryAdd(available.ID, available);
+                var availableSpots = await CampingSpotService.GetAvailableSpotsAsync(startDate, endDate);
+
+                Dictionary<int, CampingSpot> availableDict = [];
+                foreach (var available in availableSpots)
+                {
+                    availableDict.TryAdd(available.ID, available);
+                }
+
+                Debug.WriteLine($"{availableDict.Count} camping spots available");
+
+                CampingMapViewModel.SetAvailability(availableDict, startDate, endDate);
             }
-
-            Debug.WriteLine($"{availableDict.Count} camping spots available");
-
-            CampingMapViewModel.SetAvailability(availableDict);
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
         }
     }
 }
