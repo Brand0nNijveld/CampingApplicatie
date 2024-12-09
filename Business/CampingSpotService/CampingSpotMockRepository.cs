@@ -8,6 +8,11 @@ namespace CampingApplication.Business.CampingSpotService
 {
     public class CampingSpotMockRepository : ICampingSpotRepository
     {
+        public string AddCampingSpot(int ID, int X, int Y)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<CampingSpot> GetAvailableSpots(CampingSpot[] spots, DateTime startDate, DateTime endDate)
         {
             return spots.Where(c => c.IsAvailableDuringPeriod(startDate, endDate));

@@ -8,7 +8,7 @@ namespace DataAccess
     {
         private DBconnection _connection;
 
-        public CampingSpotRepository(DBconnection con) 
+        public CampingSpotRepository(DBconnection con)
         {
             this._connection = con;
         }
@@ -133,5 +133,39 @@ namespace DataAccess
 
             return Spots;
         }
+
+        public string AddCampingSpot(int ID, int X, int Y)
+        {
+            
+            try
+            {
+                string query = "INSERT INTO campingspot (SpotNr, PositionX, PositionY) VALUES (@SpotNr, @PositionX, @PositionY)";
+
+                using (_connection.Connection)
+                {
+                    using (MySqlCommand command = new MySqlCommand(query, _connection.Connection))
+                    {
+                        command.Parameters.AddWithValue("@SpotNr", ID);
+                        command.Parameters.AddWithValue("@PositionX", X);
+                        command.Parameters.AddWithValue("@PositionY", Y);
+
+                        _connection.Connection.Open();
+
+                        _connection.Connection.Close();
+                    }
+                }
+                if (GetCampingSpot(ID) != null)
+                {
+                    return "Toevoegen gelukt!";   
+                }
+                else
+                {
+                    return "Toevoegen niet gelukt";
+                }
+
+            }
+            catch (Exception ex) { return $"Database error: {ex.Message}"; }
+        }
+
     }
 }

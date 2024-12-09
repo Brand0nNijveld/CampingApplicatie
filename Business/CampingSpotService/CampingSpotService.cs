@@ -23,5 +23,10 @@ namespace CampingApplication.Business.CampingSpotService
         {
             return repository.GetAvailableSpots(spots, startDate, endDate);
         }
+
+        public string AddCampingSpot(int ID, int X, int Y)
+        {
+            return repository.AddCampingSpot(ID, X, Y);
+        }
     }
 }
