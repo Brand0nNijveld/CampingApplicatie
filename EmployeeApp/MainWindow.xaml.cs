@@ -26,6 +26,8 @@ namespace CampingApplication.EmployeeApp
             InitializeComponent();
             viewModel = new();
             DataContext = viewModel;
+            var loginView = new LoginView();
+            this.Content = loginView;
 
             //CampingMapUserControl.DataContext = viewModel.CampingMapViewModel;
             //CampingMapUserControl.SetViewModel(viewModel.CampingMapViewModel);

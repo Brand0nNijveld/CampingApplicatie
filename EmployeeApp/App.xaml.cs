@@ -3,6 +3,7 @@ using CampingApplication.Business.LoginService;
 using CampingApplication.Business.CampingSpotService;
 using CampingApplication.EmployeeApp;
 using CampingApplication.EmployeeApp.ViewModels;
+using DataAccess;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
@@ -22,7 +23,7 @@ namespace CampingApplication.VisitorApp
         public App()
         {
 #if DEBUG
-            InjectDependencies();
+            InjectDebugDependencies();
             MainWindow testWindow = new();
             SetWindow(testWindow);
 #else
@@ -39,6 +40,11 @@ namespace CampingApplication.VisitorApp
         {
             ServiceProvider serviceProvider = new();
 
+            DBConnection dbConnection = new DBConnection();
+            //ICampingSpotRepository campingSpotRepository = new CampingSpotRepository(dbConnection);
+            //CampingSpotService campingSpotService = new(campingSpotRepository);
+            //serviceProvider.RegisterInstance(campingSpotService);
+
             ILoginRepository loginRepository = new LoginRepositoryMock();
             LoginService loginService = new(loginRepository);
             serviceProvider.RegisterInstance(loginService);
@@ -47,6 +53,19 @@ namespace CampingApplication.VisitorApp
         /// <summary>
         /// Inject test dependencies to isolate user controls, or to not interact with database
         /// </summary>
+        private void InjectDebugDependencies()
+        {
+            ServiceProvider serviceProvider = new();
+            DBConnection dbConnection = new();
+
+            ICampingSpotRepository campingSpotRepository = new CampingSpotMockRepository();
+            CampingSpotService campingSpotService = new(campingSpotRepository);
+            serviceProvider.RegisterInstance(campingSpotService);
+
+            ILoginRepository loginRepository = new LoginRepository(dbConnection);
+            LoginService loginService = new(loginRepository);
+            serviceProvider.RegisterInstance(loginService);
+        }
 
         private void SetWindow(Window window)
         {

@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Business\CampingApplication.Business.csproj" />
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -21,7 +21,7 @@ namespace CampingApplication.EmployeeApp.ViewModels
 
         public MainViewModel()
         {
-            CampingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
+            //CampingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
 
             ActionPanelViewModel = new();
             //CampingMapViewModel = new(ActionPanelViewModel);

@@ -9,14 +9,7 @@
         Background="#F9F9F9"
        Title="Camping Applicatie" Height="960" Width="1440">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <Grid Grid.Row="1" VerticalAlignment="Top">
-            <login:ActionPanel x:Name="ActionPanel" />
-        </Grid>
+        <login:ActionPanel x:Name="ActionPanel" />
 
     </Grid>
     
