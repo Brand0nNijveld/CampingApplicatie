@@ -38,7 +38,7 @@ namespace CampingApplication.VisitorApp.ViewModels
 
             Debug.WriteLine($"{availableDict.Count} camping spots available");
 
-            CampingMapViewModel.SetAvailability(availableDict);
+            CampingMapViewModel.SetAvailability(availableDict, startDate, endDate);
         }
     }
 }

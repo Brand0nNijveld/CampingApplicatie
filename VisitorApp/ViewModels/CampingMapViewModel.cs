@@ -35,6 +35,9 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
         }
 
+        public DateTime StartDate { get; private set; }
+        public DateTime EndDate { get; private set; }
+
         private ActionPanelViewModel actionPanelViewModel;
 
         private string backgroundImage = "";
@@ -52,10 +55,9 @@ namespace CampingApplication.VisitorApp.ViewModels
         {
             this.actionPanelViewModel = actionPanelViewModel;
             campingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
-            _ = GetCampingSpotsAsync();
         }
 
-        private async Task GetCampingSpotsAsync()
+        public async Task GetCampingSpotsAsync()
         {
             try
             {
@@ -84,11 +86,14 @@ namespace CampingApplication.VisitorApp.ViewModels
 
         public void ClearAvailability()
         {
-            SetAvailability([]);
+            SetAvailability([], DateTime.Now, DateTime.Now);
         }
 
-        public void SetAvailability(Dictionary<int, CampingSpot> available)
+        public void SetAvailability(Dictionary<int, CampingSpot> available, DateTime startDate, DateTime endDate)
         {
+            StartDate = startDate;
+            EndDate = endDate;
+
             if (available.Count == 0)
             {
                 AvailabilityChanged?.Invoke(false);
@@ -117,7 +122,7 @@ namespace CampingApplication.VisitorApp.ViewModels
 
         public void ShowBookScreen(int ID)
         {
-            BookingView bookingView = new(ID, DateTime.Now, DateTime.Now.AddDays(5), 60);
+            BookingView bookingView = new(ID, StartDate, EndDate, 60);
             bookingView.BackButtonClicked += () => actionPanelViewModel.ClearAndHide();
             bookingView.ViewModel.BookingSuccessful += () => actionPanelViewModel.CurrentView = 1;
             BookingSuccessView bookingSuccessView = new();
