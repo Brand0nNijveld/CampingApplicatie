@@ -10,7 +10,7 @@ using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess
+namespace DataAccess.Bookings
 {
     public class BookingRepository : IBookingRepository
     {
@@ -23,17 +23,21 @@ namespace DataAccess
 
         public async Task<IEnumerable<Booking>> GetBookingsInTimeFrameAsync(int campingSpotID, DateTime startDate, DateTime endDate)
         {
-            List<Booking> bookings = [];
-            string query = @"SELECT BookingID, SpotNr, StartDate, EndDate FROM booking
-                            WHERE SpotNr = @SpotID 
-                            AND ((StartDate >= @StartDate AND EndDate <= @EndDate) 
-                            OR (EndDate >= @StartDate && EndDate <= @EndDate))";
+            List<Booking> bookings = new List<Booking>();
+
+            string query = @"SELECT BookingID, SpotNr, StartDate, EndDate
+                     FROM booking
+                     WHERE SpotNr = @SpotID
+                     AND (
+                         (StartDate < @EndDate AND EndDate > @StartDate)
+                     )";
 
             using (var cmd = new MySqlCommand(query, await connection.GetConnectionAsync()))
             {
                 cmd.Parameters.AddWithValue("@SpotID", campingSpotID);
-                cmd.Parameters.AddWithValue("@StartDate", startDate.ToString("yyyy-MM-dd"));
-                cmd.Parameters.AddWithValue("@EndDate", startDate.ToString("yyyy-MM-dd"));
+                cmd.Parameters.AddWithValue("@StartDate", startDate);
+                cmd.Parameters.AddWithValue("@EndDate", endDate);
+
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {
                     while (await reader.ReadAsync())
@@ -60,9 +64,10 @@ namespace DataAccess
                 {
                     // Check if there are any bookings overlapping
                     var bookings = await GetBookingsInTimeFrameAsync(request.CampingSpotID, request.StartDate, request.EndDate);
-                    if (bookings.Any())
+                    Debug.WriteLine("Bookings found: " + bookings.Count());
+                    if (bookings.Count() > 0)
                     {
-                        throw new Exception("Already booked for this period.");
+                        throw new BookingException("You are trying to book for a period that already has bookings.", BookingExceptionType.AlreadyBooked);
                     }
 
                     string insertBookingQuery = "INSERT INTO booking (SpotNr, StartDate, EndDate) VALUES (@CampingID, @StartDate, @EndDate)";
@@ -99,7 +104,7 @@ namespace DataAccess
                 {
                     await transaction.RollbackAsync();
                     Debug.WriteLine("Error saving booking to database: " + ex.Message);
-                    throw new Exception(ex.Message);
+                    throw;
                 }
             }
         }

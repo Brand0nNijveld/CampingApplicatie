@@ -2,6 +2,7 @@
 using CampingApplication.Business.BookingService;
 using CampingApplication.Business.CampingSpotService;
 using CampingApplication.VisitorApp.ViewModels;
+using DataAccess.Bookings;
 using DataAccess;
 using System.Configuration;
 using System.Data;
