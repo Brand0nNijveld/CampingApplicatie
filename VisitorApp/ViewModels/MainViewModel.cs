@@ -15,7 +15,6 @@ namespace CampingApplication.VisitorApp.ViewModels
     {
         public CampingSpotService CampingSpotService { get; private set; }
         public CampingMapViewModel CampingMapViewModel { get; private set; }
-        private List<CampingSpot> campingSpots = [];
 
         public ActionPanelViewModel ActionPanelViewModel { get; private set; }
 
@@ -29,7 +28,7 @@ namespace CampingApplication.VisitorApp.ViewModels
 
         public void CheckAvailableSpots(DateTime startDate, DateTime endDate)
         {
-            var availableSpots = CampingSpotService.GetAvailableSpots([.. campingSpots], startDate, endDate);
+            var availableSpots = CampingSpotService.GetAvailableSpots([.. CampingMapViewModel.CampingSpotData], startDate, endDate);
 
             Dictionary<int, CampingSpot> availableDict = [];
             foreach (var available in availableSpots)
