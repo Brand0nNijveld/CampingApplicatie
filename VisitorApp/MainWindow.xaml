@@ -1,12 +1,11 @@
-﻿<Window x:Class="CampingApplication.VisitorApp.MainWindow"
+<Window x:Class="CampingApplication.VisitorApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CampingApplication.VisitorApp"
         xmlns:views="clr-namespace:CampingApplication.VisitorApp.Views"
-        xmlns:information="clr-namespace:CampingApplication.VisitorApp.Views.Information"
-       
+        xmlns:booking="clr-namespace:CampingApplication.VisitorApp.Views.Booking"
         mc:Ignorable="d"
        Title="Camping Applicatie" Height="960" Width="1440">
     <Grid>
@@ -15,14 +14,12 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <views:DateRangePicker Grid.Row="0" x:Name="DateRangePicker" Loaded="DateRangePicker_Loaded"/>
+        <views:DateRangePicker Grid.Row="0" x:Name="DateRangePicker"/>
         <Grid Grid.Row="1" VerticalAlignment="Top">
-            <Viewbox Grid.Row="1" VerticalAlignment="Top">
+            <Viewbox VerticalAlignment="Top">
                 <views:CampingMap Padding="50" x:Name="CampingMapUserControl" />
             </Viewbox>
-
-            <information:SpotInfo x:Name="SpotInfo" />
+            <booking:ActionPanel x:Name="ActionPanel" />
         </Grid>
-
     </Grid>
 </Window>

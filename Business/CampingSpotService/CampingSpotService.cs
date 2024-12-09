@@ -19,9 +19,15 @@ namespace CampingApplication.Business.CampingSpotService
             return repository.GetCampingSpots().ToList();
         }
 
-        public IEnumerable<CampingSpot> GetAvailableSpots(CampingSpot[] spots, DateTime startDate, DateTime endDate)
+        public async Task<IEnumerable<CampingSpot>> GetAvailableSpotsAsync(DateTime startDate, DateTime endDate)
         {
-            return repository.GetAvailableSpots(spots, startDate, endDate);
+            return await repository.GetAvailableSpotsAsync(startDate, endDate);
+        }
+
+        // Assumes the caming spots has the booking data in memory.
+        public static IEnumerable<CampingSpot> GetAvailableSpots(CampingSpot[] spots, DateTime startDate, DateTime endDate)
+        {
+            return spots.Where(c => c.IsAvailableDuringPeriod(startDate, endDate));
         }
     }
 }

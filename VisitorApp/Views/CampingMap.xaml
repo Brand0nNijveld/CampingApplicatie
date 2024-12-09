@@ -28,8 +28,7 @@
             <Rectangle Height="60" Canvas.Left="612" Stroke="Black" Canvas.Top="360" Width="81" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         </Canvas>
 
-        <!-- Info Border for unavailable spots -->
-        <Border x:Name="NoneAvailableInfo" IsEnabled="False" Opacity="0" Padding="5" CornerRadius="10" BorderThickness="2" BorderBrush="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Border x:Name="NoneAvailableInfo" IsHitTestVisible="False" IsEnabled="False" Opacity="0" Padding="5" CornerRadius="10" BorderThickness="2" BorderBrush="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Border.Background>
                 <SolidColorBrush Color="Black" Opacity="0.5" />
             </Border.Background>
