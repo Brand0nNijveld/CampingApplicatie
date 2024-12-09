@@ -122,13 +122,42 @@ namespace CampingApplication.VisitorApp.ViewModels
 
         public void ShowBookScreen(int ID)
         {
+            if (StartDate >= EndDate)
+                return;
+
             BookingView bookingView = new(ID, StartDate, EndDate, 60);
             bookingView.BackButtonClicked += () => actionPanelViewModel.ClearAndHide();
-            bookingView.ViewModel.BookingSuccessful += () => actionPanelViewModel.CurrentView = 1;
+            bookingView.ViewModel.BookingSuccessful += () =>
+            {
+                actionPanelViewModel.CurrentView = 1;
+                GetAvailability();
+            };
             BookingSuccessView bookingSuccessView = new();
             bookingSuccessView.DoneButtonClicked += () => actionPanelViewModel.ClearAndHide();
 
             actionPanelViewModel.SetSteps([bookingView, bookingSuccessView]);
+        }
+
+        public async void GetAvailability()
+        {
+            try
+            {
+                var availableSpots = await campingSpotService.GetAvailableSpotsAsync(StartDate, EndDate);
+
+                Dictionary<int, CampingSpot> availableDict = [];
+                foreach (var available in availableSpots)
+                {
+                    availableDict.TryAdd(available.ID, available);
+                }
+
+                Debug.WriteLine($"{availableDict.Count} camping spots available");
+
+                SetAvailability(availableDict, StartDate, EndDate);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
         }
     }
 }

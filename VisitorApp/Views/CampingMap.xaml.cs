@@ -124,7 +124,8 @@ namespace CampingApplication.VisitorApp.Views
                 spotVisual.MouseLeftButtonUp += (e, s) =>
                 {
                     Debug.WriteLine("Clicked cmaping spot");
-                    viewModel?.ShowBookScreen(spot.ID);
+                    if (spot.Available)
+                        viewModel?.ShowBookScreen(spot.ID);
                 };
 
                 // Add the visual to the CampingCanvas
