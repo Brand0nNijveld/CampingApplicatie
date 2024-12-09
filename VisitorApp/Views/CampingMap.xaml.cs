@@ -1,35 +1,30 @@
 ﻿using CampingApplication.VisitorApp.ViewModels;
+using CampingApplication.VisitorApp.Views.Information;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace CampingApplication.VisitorApp.Views
 {
-    /// <summary>
-    /// Interaction logic for CampingMap.xaml
-    /// </summary>
     public partial class CampingMap : UserControl
     {
         private CampingMapViewModel? viewModel;
-
         DoubleAnimation fadeInAnimation;
         DoubleAnimation fadeOutAnimation;
 
         public CampingMap()
         {
             InitializeComponent();
+
             fadeInAnimation = new DoubleAnimation
             {
                 From = 0,   // Start from fully opaque
@@ -43,6 +38,14 @@ namespace CampingApplication.VisitorApp.Views
                 To = 0,     // End at fully transparent
                 Duration = new Duration(TimeSpan.FromSeconds(0.3))
             };
+
+            this.Loaded += CampingMap_Loaded;
+        }
+
+        private async void CampingMap_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (viewModel != null)
+                await viewModel.GetCampingSpotsAsync();
         }
 
         public void SetViewModel(CampingMapViewModel viewModel)
@@ -81,6 +84,16 @@ namespace CampingApplication.VisitorApp.Views
             }
         }
 
+        //private void CloseButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    HighlightRectangle.Visibility = Visibility.Collapsed;
+        //}
+
+        private void BoekenButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Boekingsproces gestart!", "Boeken", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
         public void UpdateCanvas()
         {
             if (viewModel == null)
@@ -102,8 +115,22 @@ namespace CampingApplication.VisitorApp.Views
                     RadiusX = 5,
                     RadiusY = 5,
                     Fill = spot.Available ? Brushes.Yellow : Brushes.Transparent,
-                    Cursor = Cursors.Hand
+                    Cursor = Cursors.Hand,
+                    IsHitTestVisible = true,
                 };
+
+                Debug.WriteLine("Drawing Camping Spot: " + spot.ID);
+
+                spotVisual.MouseLeftButtonUp += (e, s) =>
+                {
+                    Debug.WriteLine("Clicked cmaping spot");
+                    viewModel?.ShowBookScreen(spot.ID);
+                };
+
+                // Add the visual to the CampingCanvas
+                CampingCanvas.Children.Add(spotVisual);
+
+
 
                 Canvas.SetLeft(spotVisual, spot.PositionX);
                 Canvas.SetTop(spotVisual, spot.PositionY);
@@ -112,7 +139,8 @@ namespace CampingApplication.VisitorApp.Views
                 {
                     Text = spot.ID.ToString(),
                     FontSize = 14,
-                    Foreground = new SolidColorBrush(Colors.Black)
+                    Foreground = new SolidColorBrush(Colors.Black),
+                    IsHitTestVisible = false,
                 };
 
                 spotID.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
@@ -124,7 +152,24 @@ namespace CampingApplication.VisitorApp.Views
                 Canvas.SetLeft(spotID, textPosX);
                 Canvas.SetTop(spotID, textPosY);
 
-                CampingCanvas.Children.Add(spotVisual);
+                // Handle click event 
+                //spotVisual.MouseLeftButtonUp += (s, e) =>
+                //{
+                //    // When a camping spot is clicked, show the white rectangle and update information
+                //    HighlightRectangle.Visibility = Visibility.Visible;
+
+                //    // Update the camping spot info
+                //    CampingSpotToiletDistance.Text = "Afstand tot Toiletgebouw: 15m";
+                //    CampingSpotLakeDistance.Text = "Afstand tot Meer: 25m";
+                //    CampingSpotSize.Text = "Grootte van plaats: 30m²";
+                //    CampingSpotReceptionDistance.Text = "Afstand tot Receptie: 10m";
+                //    CampingSpotInfo.Text = "Plaats 1 Informatie";
+                //    CampingSpotType.Text = "Plaatstype: Tent";
+                //    CampingSpotPrice.Text = "Prijs per nacht: €50";
+                //    CampingSpotAvailability.Text = "Beschikbaar vanaf xx/xx/xxxx";
+                //};
+
+                //CampingCanvas.Children.Add(spotVisual);
                 CampingCanvas.Children.Add(spotID);
             }
         }

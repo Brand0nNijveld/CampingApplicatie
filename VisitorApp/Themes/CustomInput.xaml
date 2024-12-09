@@ -1,0 +1,79 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:CampingApplication.VisitorApp.Views.Components"
+                    >
+    <Style x:Key="SmallLabel" TargetType="Label">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Margin" Value="0,0,0,5"/>
+        <Setter Property="Padding" Value="0"/>
+    </Style>
+
+    <Style TargetType="local:CustomInput">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="Padding" Value="8" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="MinWidth" Value="200" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:CustomInput">
+                    <StackPanel>
+                        <Label Style="{StaticResource SmallLabel}" Opacity="0.5" Content="{TemplateBinding Label}"/>
+                        <Border Background="White" CornerRadius="5" BorderBrush="Transparent">
+                            <ScrollViewer FontSize="16" x:Name="PART_ContentHost" />
+                        </Border>
+
+                        <TextBlock 
+                            Margin="0,5,0,0"
+                            FontSize="14"
+                            MaxHeight="0"
+                            x:Name="ErrorMessageText"
+                            Text="{TemplateBinding ErrorMessage}"
+                            Foreground="Red"
+                            Opacity="0"
+                           >
+                        </TextBlock>
+
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="ErrorStates">
+                                <!-- Default state (no error message) -->
+                                <VisualState x:Name="Default">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                        Storyboard.TargetName="ErrorMessageText"
+                                        Storyboard.TargetProperty="Opacity"
+                                        To="0"
+                                        Duration="0:0:0.3" />
+                                        <DoubleAnimation
+                                        Storyboard.TargetName="ErrorMessageText"
+                                        Storyboard.TargetProperty="MaxHeight"
+                                        To="0"
+                                        Duration="0:0:0.3" />
+                                    </Storyboard>
+                                </VisualState>
+
+                                <!-- Default state (no error message) -->
+                                <VisualState x:Name="Error">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                        Storyboard.TargetName="ErrorMessageText"
+                                        Storyboard.TargetProperty="Opacity"
+                                        To="1"
+                                        Duration="0:0:0.3" />
+                                        <DoubleAnimation
+                                        Storyboard.TargetName="ErrorMessageText"
+                                        Storyboard.TargetProperty="MaxHeight"
+                                        To="40"
+                                        Duration="0:0:0.3" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+
+
+                        </VisualStateManager.VisualStateGroups>
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
