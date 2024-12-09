@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="CampingApplication.EmployeeApp.Views.CampingMap"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CampingApplication.EmployeeApp.Views" 
+             xmlns:viewmodels="clr-namespace:CampingApplication.EmployeeApp.ViewModels" 
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <Canvas Name="CampingCanvas" Width="800" Height="450">
+            <Canvas.Background>
+                <ImageBrush ImageSource="../Resources/TestMap.jpg" Stretch="Uniform"/>
+            </Canvas.Background>
+
+            <!-- Camping spots -->
+            <Rectangle Height="60" Canvas.Left="190" Stroke="Black" Canvas.Top="29" Width="81" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Rectangle Height="60" Canvas.Left="86" Stroke="Black" Canvas.Top="29" Width="81" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Rectangle Height="60" Canvas.Left="86" Stroke="Black" Canvas.Top="103" Width="81" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Rectangle Height="60" Canvas.Left="86" Stroke="Black" Canvas.Top="186" Width="81" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Rectangle Height="60" Canvas.Left="322" Stroke="Black" Canvas.Top="145" Width="81" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Rectangle Height="60" Canvas.Left="322" Stroke="Black" Canvas.Top="227" Width="81" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Rectangle Height="60" Canvas.Left="612" Stroke="Black" Canvas.Top="30" Width="81" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Rectangle Height="60" Canvas.Left="612" Stroke="Black" Canvas.Top="115" Width="81" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Rectangle Height="60" Canvas.Left="612" Stroke="Black" Canvas.Top="201" Width="81" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Rectangle Height="60" Canvas.Left="612" Stroke="Black" Canvas.Top="281" Width="81" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Rectangle Height="60" Canvas.Left="612" Stroke="Black" Canvas.Top="360" Width="81" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        </Canvas>
+
+        <Border x:Name="NoneAvailableInfo" IsHitTestVisible="False" IsEnabled="False" Opacity="0" Padding="5" CornerRadius="10" BorderThickness="2" BorderBrush="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Border.Background>
+                <SolidColorBrush Color="Black" Opacity="0.5" />
+            </Border.Background>
+            <StackPanel Orientation="Horizontal" >
+                <Image Source="/Resources/TestMap.jpg"/>
+                <Label VerticalAlignment="Bottom" HorizontalAlignment="Left" Foreground="White">Geen beschikbare plekken voor deze periode</Label>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

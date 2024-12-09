@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,7 @@ namespace CampingApplication.Business
         public ServiceProvider()
         {
             current = this;
+            Debug.WriteLine("Initialized service provider");
         }
 
         private readonly Dictionary<Type, object> _services = [];
