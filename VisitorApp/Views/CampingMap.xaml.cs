@@ -127,17 +127,6 @@ namespace CampingApplication.VisitorApp.Views
                     viewModel?.ShowBookScreen(spot.ID);
                 };
 
-                spotVisual.MouseLeftButtonUp += (s, e) =>
-                {
-                    Debug.WriteLine("Clicked camping spot");
-
-                    var mainWindow = Application.Current.MainWindow as MainWindow;
-                    if (mainWindow != null)
-                    {
-                        mainWindow.SpotInfo.Visibility = Visibility.Visible;
-                    }
-                };
-
                 // Add the visual to the CampingCanvas
                 CampingCanvas.Children.Add(spotVisual);
 
