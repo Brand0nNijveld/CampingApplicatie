@@ -73,7 +73,8 @@ namespace CampingApplication.VisitorApp.ViewModels
                 }
 
                 // Use Dispatcher to update UI-bound properties or raise events
-                Application.Current.Dispatcher.Invoke(() =>
+                .Cu
+                rrent.Dispatcher.Invoke(() =>
                 {
                     CampingSpots = new ObservableCollection<CampingSpotVisualModel>(campingSpotVisuals);
                 });
