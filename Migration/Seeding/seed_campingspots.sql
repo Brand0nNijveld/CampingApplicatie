@@ -1,3 +1,6 @@
+INSERT INTO camping (CampingName, CampingID)
+VALUES("TestCamping", 1);
+
 INSERT INTO campingspot (SpotNr, CampingID, PositionX, PositionY)
 VALUES 
 (1, 1, 612, 360),

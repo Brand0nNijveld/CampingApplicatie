@@ -129,7 +129,7 @@ namespace CampingApplication.VisitorApp.ViewModels
             bookingView.BackButtonClicked += () => actionPanelViewModel.ClearAndHide();
             bookingView.ViewModel.BookingSuccessful += () =>
             {
-                actionPanelViewModel.CurrentView = 1;
+                actionPanelViewModel.Next();
                 GetAvailability();
             };
             BookingSuccessView bookingSuccessView = new();
