@@ -44,7 +44,7 @@ namespace CampingApplication.VisitorApp
             CampingSpotService campingSpotService = new(campingSpotRepository);
             serviceProvider.RegisterInstance(campingSpotService);
 
-            IBookingRepository bookingRepository = new BookingRepositoryMock();
+            IBookingRepository bookingRepository = new BookingRepository(dbConnection);
             BookingService bookingService = new(bookingRepository);
             serviceProvider.RegisterInstance(bookingService);
         }
