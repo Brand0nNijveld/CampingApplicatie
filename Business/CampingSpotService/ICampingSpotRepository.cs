@@ -13,7 +13,6 @@ namespace CampingApplication.Business.CampingSpotService
         public CampingSpot GetCampingSpot(int ID);
 
         public IEnumerable<CampingSpot> GetAvailableSpots(CampingSpot[] spots, DateTime startDate, DateTime endDate);
-        public CampingSpot GetCampingSpot(int ID);
         public string AddCampingSpot(int ID, int X, int Y);
         public Task<IEnumerable<CampingSpot>> GetAvailableSpotsAsync(DateTime startDate, DateTime endDate);
     }

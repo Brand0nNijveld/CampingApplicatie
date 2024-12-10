@@ -1,6 +1,5 @@
 ﻿using CampingApplication.Business;
 using CampingApplication.Business.CampingSpotService;
-using CampingApplication.VisitorApp.ViewModels;
 using DataAccess;
 using System;
 using System.Collections.Generic;
@@ -26,7 +25,6 @@ namespace CampingApplication.VisitorApp.Views
         public CampingSpotService CampingSpotService { get; private set; }
 
         private bool waitingForClick = false;
-        public MainViewModel? mainViewModel;
 
         private int Xcordinate;
         private int Ycordinate;

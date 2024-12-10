@@ -151,17 +151,17 @@ namespace DataAccess
             {
                 string query = "INSERT INTO campingspot (SpotNr, PositionX, PositionY) VALUES (@SpotNr, @PositionX, @PositionY)";
 
-                using (_connection.Connection)
+                using (connection.Connection)
                 {
-                    using (MySqlCommand command = new MySqlCommand(query, _connection.Connection))
+                    using (MySqlCommand command = new MySqlCommand(query, connection.Connection))
                     {
                         command.Parameters.AddWithValue("@SpotNr", ID);
                         command.Parameters.AddWithValue("@PositionX", X);
                         command.Parameters.AddWithValue("@PositionY", Y);
 
-                        _connection.Connection.Open();
+                        connection.Connection.Open();
 
-                        _connection.Connection.Close();
+                        connection.Connection.Close();
                     }
                 }
                 if (GetCampingSpot(ID) != null)
