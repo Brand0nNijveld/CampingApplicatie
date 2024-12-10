@@ -15,12 +15,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace CampingApplication.VisitorApp.Views
+namespace CampingApplication.EmployeeApp.Views.AddCampingSpot
 {
     /// <summary>
-    /// Interaction logic for TempEmployeeButton.xaml
+    /// Interaction logic for AddCampingSpot.xaml
     /// </summary>
-    public partial class TempEmployeeButton : UserControl
+    public partial class AddCampingSpot : UserControl
     {
         public CampingSpotService CampingSpotService { get; private set; }
 
@@ -31,7 +31,7 @@ namespace CampingApplication.VisitorApp.Views
         private int SpotNr;
 
 
-        public TempEmployeeButton()
+        public AddCampingSpot()
         {
             InitializeComponent();
             CampingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
@@ -62,8 +62,8 @@ namespace CampingApplication.VisitorApp.Views
                     Width = 20;
                     Height = 20;
                 };
-                Canvas.SetLeft(newButton, position.X - 10);
-                Canvas.SetTop(newButton, position.Y - 10);
+                Canvas.SetLeft(newButton, position.X);
+                Canvas.SetTop(newButton, position.Y);
                 AddSpot.Children.Add(newButton);
 
                 waitingForClick = false;
