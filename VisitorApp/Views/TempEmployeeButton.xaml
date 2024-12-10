@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:CampingApplication.VisitorApp.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Canvas Name="AddSpot" MouseLeftButtonDown="Canvas_MouseLeftButtonDown">
+    <Canvas Name="AddSpot" MouseLeftButtonDown="Canvas_MouseLeftButtonDown" Margin="0,0,0,409" VerticalAlignment="Top">
         <Button Content="Toevoegen plaats" Canvas.Left="0" Canvas.Top="0" Click="Plaats_Click"/>
         <TextBlock x:Name="AddNotification" Canvas.Left="0" TextWrapping="Wrap" Text="" Canvas.Top="18" Width="96" HorizontalAlignment="Center" VerticalAlignment="Top" Background="White"/>
         <Button Content="Opslaan" Canvas.Left="715" HorizontalAlignment="Left" VerticalAlignment="Center" Click="Opslaan_Click" Width="85"/>
