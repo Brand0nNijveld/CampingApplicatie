@@ -9,8 +9,12 @@ namespace CampingApplication.Business.CampingSpotService
     public interface ICampingSpotRepository
     {
         public IEnumerable<CampingSpot> GetCampingSpots();
+        public Task<IEnumerable<CampingSpot>> GetCampingSpotsAsync();
+        public CampingSpot GetCampingSpot(int ID);
+
         public IEnumerable<CampingSpot> GetAvailableSpots(CampingSpot[] spots, DateTime startDate, DateTime endDate);
         public CampingSpot GetCampingSpot(int ID);
         public string AddCampingSpot(int ID, int X, int Y);
+        public Task<IEnumerable<CampingSpot>> GetAvailableSpotsAsync(DateTime startDate, DateTime endDate);
     }
 }

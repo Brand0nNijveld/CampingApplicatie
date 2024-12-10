@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,11 +9,30 @@ namespace CampingApplication.Business
 {
     public class ServiceProvider
     {
-        public static ServiceProvider Current;
+        private static ServiceProvider? current;
+        public static ServiceProvider Current
+        {
+            get
+            {
+                if (current == null)
+                {
+                    throw new Exception("ServiceProvider has not been initialized.");
+                }
+                else
+                {
+                    return current;
+                }
+            }
+            set
+            {
+                current = value;
+            }
+        }
 
         public ServiceProvider()
         {
-            Current = this;
+            current = this;
+            Debug.WriteLine("Initialized service provider");
         }
 
         private readonly Dictionary<Type, object> _services = [];
@@ -27,6 +47,11 @@ namespace CampingApplication.Business
         // Register an instance
         public void RegisterInstance<TInterface>(TInterface instance)
         {
+            if (instance == null)
+            {
+                return;
+            }
+
             _services[typeof(TInterface)] = instance;
         }
 
