@@ -24,7 +24,7 @@ namespace CampingApplication.EmployeeApp
         {
 #if DEBUG
             InjectDebugDependencies();
-            MainWindow testWindow = new();
+            TestWindow testWindow = new();
             SetWindow(testWindow);
 #else
             InjectDependencies();

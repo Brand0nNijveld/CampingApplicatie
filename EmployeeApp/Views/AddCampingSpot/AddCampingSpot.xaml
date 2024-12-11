@@ -10,6 +10,7 @@
         <Button Content="Toevoegen plaats" Canvas.Left="0" Canvas.Top="0" Click="Plaats_Click"/>
         <TextBlock x:Name="AddNotification" Canvas.Left="0" TextWrapping="Wrap" Text="" Canvas.Top="18" Width="96" HorizontalAlignment="Center" VerticalAlignment="Top" Background="White"/>
         <Button Content="Opslaan" Canvas.Left="715" HorizontalAlignment="Left" VerticalAlignment="Center" Click="Opslaan_Click" Width="85"/>
-        <TextBox x:Name="SpotNumber" Canvas.Left="715" TextWrapping="Wrap" Text="Plaatsnummer" Canvas.Top="18" Width="85" Height="14" HorizontalAlignment="Left" VerticalAlignment="Center" TextChanged="SpotNumber_TextChanged"/>
+        <TextBox x:Name="SpotNumber" Canvas.Left="715" TextWrapping="Wrap" Text="" Canvas.Top="18" Width="85" Height="14" HorizontalAlignment="Center" VerticalAlignment="Top" TextChanged="SpotNumber_TextChanged"/>
+        <Canvas x:Name="Spots" Height="450" Width="800"/>
     </Canvas>
 </UserControl>
