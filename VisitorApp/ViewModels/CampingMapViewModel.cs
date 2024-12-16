@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using CampingApplication.Business;
 using CampingApplication.Business.CampingSpotService;
-using CampingApplication.VisitorApp.Models;
 using CampingApplication.VisitorApp.Views.Booking;
 
 namespace CampingApplication.VisitorApp.ViewModels
@@ -24,8 +23,8 @@ namespace CampingApplication.VisitorApp.ViewModels
 
         public List<CampingSpot> CampingSpotData { get; private set; } = [];
 
-        private ObservableCollection<CampingSpotVisualModel> campingSpots = [];
-        public ObservableCollection<CampingSpotVisualModel> CampingSpots
+        private ObservableCollection<CampingSpotViewModel> campingSpots = [];
+        public ObservableCollection<CampingSpotViewModel> CampingSpots
         {
             get => campingSpots;
             set
@@ -64,18 +63,18 @@ namespace CampingApplication.VisitorApp.ViewModels
                 var spots = await campingSpotService.GetCampingSpotsAsync();
                 CampingSpotData = spots;
 
-                var campingSpotVisuals = new CampingSpotVisualModel[spots.Count];
+                var campingSpotVisuals = new CampingSpotViewModel[spots.Count];
                 for (int i = 0; i < spots.Count; i++)
                 {
                     Debug.WriteLine("Camping spot: " + spots[i].ID);
                     CampingSpot spot = spots[i];
-                    campingSpotVisuals[i] = new(spot.ID, spot.PositionX, spot.PositionY);
+                    campingSpotVisuals[i] = new(spot.ID, spot.PositionX, spot.PositionY, this);
                 }
 
                 // Use Dispatcher to update UI-bound properties or raise events
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    CampingSpots = new ObservableCollection<CampingSpotVisualModel>(campingSpotVisuals);
+                    CampingSpots = new ObservableCollection<CampingSpotViewModel>(campingSpotVisuals);
                 });
             }
             catch (Exception ex)
@@ -103,15 +102,20 @@ namespace CampingApplication.VisitorApp.ViewModels
             {
                 if (available.ContainsKey(visual.ID))
                 {
-                    visual.Available = true;
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        visual.Available = true;
+                    });
                 }
                 else
                 {
-                    visual.Available = false;
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        visual.Available = false;
+                    });
                 }
             }
 
-            OnPropertyChanged(nameof(CampingSpots));
             AvailabilityChanged?.Invoke(true);
         }
 

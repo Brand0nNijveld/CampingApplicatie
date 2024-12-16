@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="CampingApplication.VisitorApp.Views.Map.CampingSpotView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CampingApplication.VisitorApp.Views.Map"
+             xmlns:viewmodels="clr-namespace:CampingApplication.VisitorApp.ViewModels"
+             d:DataContext=""
+             mc:Ignorable="d" 
+             Width="81" Height="60"
+             >
+    <Border x:Name="SpotBorder"
+                    Background="Transparent"
+                    CornerRadius="5"
+                    Cursor="Hand"
+                    MouseLeftButtonDown="CampingSpot_Clicked">
+        <TextBlock Text="{Binding ID}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    </Border>
+</UserControl>

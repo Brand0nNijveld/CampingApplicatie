@@ -11,7 +11,7 @@
     <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <Canvas Name="CampingCanvas" Width="800" Height="450">
             <Canvas.Background>
-                <ImageBrush ImageSource="../Resources/TestMap.jpg" Stretch="Uniform"/>
+                <ImageBrush ImageSource="../../Resources/TestMap.jpg" Stretch="Uniform"/>
             </Canvas.Background>
 
             <!-- Camping spots -->

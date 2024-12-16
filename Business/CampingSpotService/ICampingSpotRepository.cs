@@ -8,7 +8,6 @@ namespace CampingApplication.Business.CampingSpotService
 {
     public interface ICampingSpotRepository
     {
-        public IEnumerable<CampingSpot> GetCampingSpots();
         public Task<IEnumerable<CampingSpot>> GetCampingSpotsAsync();
         public CampingSpot GetCampingSpot(int ID);
 
