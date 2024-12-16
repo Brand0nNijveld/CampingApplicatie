@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
-    public class CampingSpotViewModel : INotifyPropertyChanged
+    public class FacilityViewModel : INotifyPropertyChanged
     {
-        private readonly CampingMapViewModel campingMapViewModel;
-
         private int id;
         public int ID
         {
@@ -45,28 +43,17 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
         }
 
-        private bool available;
-        public bool Available
+        public FacilityType Type
         {
-            get => available;
-            set
-            {
-                available = value;
-                OnPropertyChanged(nameof(Available));
-            }
+            get; private set;
         }
 
-        public CampingSpotViewModel(CampingMapViewModel campingMapViewModel, CampingSpot spot)
+        public FacilityViewModel(Facility facility)
         {
-            this.ID = spot.ID;
-            this.PositionX = spot.PositionX;
-            this.PositionY = spot.PositionY;
-            this.campingMapViewModel = campingMapViewModel;
-        }
-
-        public void ShowDetails()
-        {
-            campingMapViewModel.ShowBookScreen(ID);
+            ID = facility.ID;
+            positionX = facility.PositionX;
+            positionY = facility.PositionY;
+            Type = facility.Type;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

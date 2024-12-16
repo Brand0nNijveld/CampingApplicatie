@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CampingApplication.VisitorApp.Views" 
+             xmlns:map="clr-namespace:CampingApplication.VisitorApp.Views.Map" 
              xmlns:viewmodels="clr-namespace:CampingApplication.VisitorApp.ViewModels" 
              d:DataContext="{d:DesignInstance Type=viewmodels:CampingMapViewModel}"
              mc:Ignorable="d" 
@@ -13,6 +14,8 @@
             <Canvas.Background>
                 <ImageBrush ImageSource="../../Resources/TestMap.jpg" Stretch="Uniform"/>
             </Canvas.Background>
+
+            <map:FacilityView Canvas.Left="382" Canvas.Top="42" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
             <!-- Camping spots -->
             <Rectangle Height="60" Canvas.Left="190" Stroke="Black" Canvas.Top="29" Width="81" HorizontalAlignment="Left" VerticalAlignment="Center"/>

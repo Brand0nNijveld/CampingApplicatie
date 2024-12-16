@@ -7,6 +7,7 @@ using DataAccess;
 using System.Configuration;
 using System.Data;
 using System.Windows;
+using CampingApplication.Business.FacilityService;
 
 namespace CampingApplication.VisitorApp
 {
@@ -60,6 +61,10 @@ namespace CampingApplication.VisitorApp
             ICampingSpotRepository campingSpotRepository = new CampingSpotRepository(dbConnection);
             CampingSpotService campingSpotService = new(campingSpotRepository);
             serviceProvider.RegisterInstance(campingSpotService);
+
+            IFacilityRepository facilityRepository = new FacilityMockRepository();
+            FacilityService facilityService = new(facilityRepository);
+            serviceProvider.RegisterInstance(facilityService);
 
             IBookingRepository bookingRepository = new BookingRepository(dbConnection);
             BookingService bookingService = new(bookingRepository);

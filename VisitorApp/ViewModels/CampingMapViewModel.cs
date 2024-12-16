@@ -9,30 +9,30 @@ using System.Threading.Tasks;
 using System.Windows;
 using CampingApplication.Business;
 using CampingApplication.Business.CampingSpotService;
+using CampingApplication.Business.FacilityService;
 using CampingApplication.VisitorApp.Views.Booking;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
+    public delegate void MapLoadHandler();
+    public delegate void MapLoadErrorHandler();
     public delegate void AvailabilityHandler(bool available);
     public class CampingMapViewModel : INotifyPropertyChanged
     {
         public event AvailabilityHandler? AvailabilityChanged;
+        public event MapLoadHandler? MapLoaded;
+        public event MapLoadErrorHandler? MapLoadError;
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         private CampingSpotService campingSpotService;
+        private FacilityService facilityService;
+
+        public List<Facility> FacilityData { get; private set; } = [];
+        public List<FacilityViewModel> Facilities = [];
 
         public List<CampingSpot> CampingSpotData { get; private set; } = [];
-
-        private ObservableCollection<CampingSpotViewModel> campingSpots = [];
-        public ObservableCollection<CampingSpotViewModel> CampingSpots
-        {
-            get => campingSpots;
-            set
-            {
-                campingSpots = value;
-                OnPropertyChanged(nameof(CampingSpots));
-            }
-        }
+        public List<CampingSpotViewModel> CampingSpots = [];
 
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
@@ -54,32 +54,40 @@ namespace CampingApplication.VisitorApp.ViewModels
         {
             this.actionPanelViewModel = actionPanelViewModel;
             campingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
+            facilityService = ServiceProvider.Current.Resolve<FacilityService>();
         }
 
-        public async Task GetCampingSpotsAsync()
+        public async Task GetMapDataAsync()
         {
             try
             {
                 var spots = await campingSpotService.GetCampingSpotsAsync();
                 CampingSpotData = spots;
 
-                var campingSpotVisuals = new CampingSpotViewModel[spots.Count];
-                for (int i = 0; i < spots.Count; i++)
+                var facilities = await facilityService.GetFacilitiesAsync();
+                FacilityData = facilities;
+
+                var campingSpotViewModels = new List<CampingSpotViewModel>();
+                foreach (var spot in spots)
                 {
-                    Debug.WriteLine("Camping spot: " + spots[i].ID);
-                    CampingSpot spot = spots[i];
-                    campingSpotVisuals[i] = new(spot.ID, spot.PositionX, spot.PositionY, this);
+                    campingSpotViewModels.Add(new(this, spot));
                 }
 
-                // Use Dispatcher to update UI-bound properties or raise events
-                Application.Current.Dispatcher.Invoke(() =>
+                var facilityViewModels = new List<FacilityViewModel>();
+                foreach (var facility in facilities)
                 {
-                    CampingSpots = new ObservableCollection<CampingSpotViewModel>(campingSpotVisuals);
-                });
+                    facilityViewModels.Add(new(facility));
+                }
+
+                CampingSpots = campingSpotViewModels;
+                Facilities = facilityViewModels;
+
+                MapLoaded?.Invoke();
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
+                MapLoadError?.Invoke();
             }
         }
 
@@ -98,7 +106,7 @@ namespace CampingApplication.VisitorApp.ViewModels
                 AvailabilityChanged?.Invoke(false);
             }
 
-            foreach (var visual in campingSpots)
+            foreach (var visual in CampingSpots)
             {
                 if (available.ContainsKey(visual.ID))
                 {

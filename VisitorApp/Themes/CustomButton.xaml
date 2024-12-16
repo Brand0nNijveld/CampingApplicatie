@@ -18,7 +18,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="local:CustomButton">
                     <!-- Background -->
-                    <Border x:Name="CustomButton" Background="{TemplateBinding Background}" 
+                    <Border x:Name="CustomButton" Background="{DynamicResource Primary}" 
                             CornerRadius="5" 
                             BorderThickness="0"
                             BorderBrush="{TemplateBinding BorderBrush}">

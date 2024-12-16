@@ -40,20 +40,32 @@ namespace CampingApplication.VisitorApp.Views
                 Duration = new Duration(TimeSpan.FromSeconds(0.3))
             };
 
-            this.Loaded += CampingMap_Loaded;
+            this.Loaded += UI_Loaded;
         }
 
-        private async void CampingMap_Loaded(object sender, RoutedEventArgs e)
+        private async void UI_Loaded(object sender, RoutedEventArgs e)
         {
             if (viewModel != null)
-                await viewModel.GetCampingSpotsAsync();
+                await viewModel.GetMapDataAsync();
         }
 
         public void SetViewModel(CampingMapViewModel viewModel)
         {
             this.viewModel = viewModel;
-            viewModel.PropertyChanged += ViewModel_PropertyChanged;
             viewModel.AvailabilityChanged += OnAvailabilityChanged;
+
+            viewModel.MapLoaded += ViewModel_MapLoaded;
+            viewModel.MapLoadError += ViewModel_MapLoadError;
+        }
+
+        private void ViewModel_MapLoadError()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ViewModel_MapLoaded()
+        {
+            DrawMap();
         }
 
         private void OnAvailabilityChanged(bool available)
@@ -75,15 +87,6 @@ namespace CampingApplication.VisitorApp.Views
             }
         }
 
-        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(viewModel.CampingSpots))
-            {
-                Debug.WriteLine("Drawing map");
-                DrawMap();
-            }
-        }
-
         public void DrawMap()
         {
             if (viewModel == null)
@@ -94,17 +97,24 @@ namespace CampingApplication.VisitorApp.Views
             CampingCanvas.Children.Clear();
 
             // Draw camping spots
-            foreach (var spot in viewModel.CampingSpots)
+            foreach (var campingSpot in viewModel.CampingSpots)
             {
-                var campingSpot = new CampingSpotView(spot);
+                var campingSpotView = new CampingSpotView(campingSpot);
 
-                Canvas.SetLeft(campingSpot, spot.PositionX);
-                Canvas.SetTop(campingSpot, spot.PositionY);
-                CampingCanvas.Children.Add(campingSpot);
+                Canvas.SetLeft(campingSpotView, campingSpot.PositionX);
+                Canvas.SetTop(campingSpotView, campingSpot.PositionY);
+                CampingCanvas.Children.Add(campingSpotView);
             }
 
             // Draw facilities
+            foreach (var facility in viewModel.Facilities)
+            {
+                var facilityView = new FacilityView();
 
+                Canvas.SetLeft(facilityView, facility.PositionX);
+                Canvas.SetTop(facilityView, facility.PositionY);
+                CampingCanvas.Children.Add(facilityView);
+            }
         }
     }
 }
