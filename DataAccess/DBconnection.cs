@@ -14,29 +14,33 @@ namespace DataAccess
 
         public DBConnection(string connectionString = "server=localhost;uid=root;pwd=;database=campingapplicatie;")
         {
+            if (string.IsNullOrWhiteSpace(connectionString))
+                throw new ArgumentException("Connection string cannot be null or empty.", nameof(connectionString));
+
             _connectionString = connectionString;
         }
 
-        
+        // Returns a closed connection; the caller is responsible for opening it
         public MySqlConnection GetConnection()
         {
             return new MySqlConnection(_connectionString);
         }
 
-      
+        // Returns a closed connection asynchronously; the caller is responsible for opening it
         public async Task<MySqlConnection> GetConnectionAsync()
         {
             var connection = new MySqlConnection(_connectionString);
             try
             {
-                Debug.WriteLine("Opening database connection asynchronously...");
-                await connection.OpenAsync();
-                Debug.WriteLine("Database connection successfully opened.");
+                // Log connection creation for debugging purposes
+                Debug.WriteLine("Creating a new database connection (async)...");
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error opening database connection: {ex.Message}");
-                throw;  
+                // Ensure the connection object is disposed if something goes wrong
+                Debug.WriteLine($"Error creating database connection: {ex.Message}");
+                connection.Dispose();
+                throw;
             }
 
             return connection;

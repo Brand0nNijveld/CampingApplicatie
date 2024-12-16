@@ -8,15 +8,16 @@ namespace DataAccess
 {
     public class CampingSpotRepository : ICampingSpotRepository
     {
-        private readonly DBConnection _connection;
+        private readonly DBConnection _dbConnection;
 
-        public CampingSpotRepository(DBConnection con)
+        public CampingSpotRepository(DBConnection dbConnection)
         {
-            this._connection = con;
+            _dbConnection = dbConnection;
         }
 
         public IEnumerable<CampingSpot> GetAvailableSpots(CampingSpot[] spots, DateTime startDate, DateTime endDate)
         {
+            // Dummy implementation, returns an empty array
             return Array.Empty<CampingSpot>();
         }
 
@@ -37,26 +38,29 @@ namespace DataAccess
 
             try
             {
-                using var connection = await _connection.GetConnectionAsync();
+                using var connection = await _dbConnection.GetConnectionAsync();
+                await connection.OpenAsync(); // Verantwoordelijkheid voor openen ligt bij de repository
+
                 using var command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@StartDate", startDate);
                 command.Parameters.AddWithValue("@EndDate", endDate);
 
-                await connection.OpenAsync();
-
                 using var reader = await command.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
                 {
-                    var id = reader.GetInt32("SpotNr");
-                    var posX = reader.GetInt32("PositionX");
-                    var posY = reader.GetInt32("PositionY");
-
-                    availableSpots.Add(new CampingSpot(id, posX, posY));
+                    availableSpots.Add(new CampingSpot(
+                        reader.GetInt32("SpotNr"),
+                        reader.GetInt32("PositionX"),
+                        reader.GetInt32("PositionY")
+                    ));
                 }
+                // Ensure the connection is closed after the operation
+                connection.Close();  // Close the connection
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Database error: {ex.Message}");
+                throw; // Rethrow exception for higher-level handling
             }
 
             return availableSpots;
@@ -69,7 +73,9 @@ namespace DataAccess
 
             try
             {
-                using var connection = await _connection.GetConnectionAsync(); 
+                using var connection = await _dbConnection.GetConnectionAsync();
+                await connection.OpenAsync(); // Verantwoordelijkheid voor openen ligt bij de repository
+
                 using var command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@SpotNr", ID);
 
@@ -83,10 +89,13 @@ namespace DataAccess
                         reader.GetBoolean("Electricity")
                     );
                 }
+                // Ensure the connection is closed after the operation
+                connection.Close();  // Close the connection
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Database error: {ex.Message}");
+                throw; // Rethrow exception for higher-level handling
             }
 
             if (campingSpotInfo == null)
@@ -97,7 +106,6 @@ namespace DataAccess
             return campingSpotInfo;
         }
 
-
         public CampingSpot GetCampingSpot(int ID)
         {
             CampingSpot campingSpot = null;
@@ -105,11 +113,11 @@ namespace DataAccess
 
             try
             {
-                using var connection = _connection.GetConnection();
+                using var connection = _dbConnection.GetConnection();
+                connection.Open(); // Verantwoordelijkheid voor openen ligt bij de repository
+
                 using var command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@SpotNr", ID);
-
-                connection.Open();
 
                 using var reader = command.ExecuteReader();
                 if (reader.Read())
@@ -120,10 +128,13 @@ namespace DataAccess
                         reader.GetInt32("PositionY")
                     );
                 }
+                // Ensure the connection is closed after the operation
+                connection.Close();  // Close the connection
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Database error: {ex.Message}");
+                throw; // Rethrow exception for higher-level handling
             }
 
             return campingSpot;
@@ -136,29 +147,31 @@ namespace DataAccess
 
             try
             {
-                using var connection = _connection.GetConnection();
+                using var connection = _dbConnection.GetConnection();
+                connection.Open(); // Verantwoordelijkheid voor openen ligt bij de repository
+
                 using var command = new MySqlCommand(query, connection);
-
-                connection.Open();
-
                 using var reader = command.ExecuteReader();
+
                 while (reader.Read())
                 {
-                    var spot = new CampingSpot(
+                    spots.Add(new CampingSpot(
                         reader.GetInt32("SpotNr"),
                         reader.GetInt32("PositionX"),
                         reader.GetInt32("PositionY")
-                    );
-
-                    spots.Add(spot);
+                    ));
                 }
+                // Ensure the connection is closed after the operation
+                connection.Close();  // Close the connection
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Database error: {ex.Message}");
+                throw; // Rethrow exception for higher-level handling
             }
 
             return spots;
         }
     }
 }
+
