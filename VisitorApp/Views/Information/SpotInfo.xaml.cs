@@ -22,30 +22,41 @@ namespace CampingApplication.VisitorApp.Views.Information
     /// </summary>
     public partial class SpotInfo : UserControl
     {
-
+        // Event to handle the close button click
         public event ButtonClickHandler? CloseButton_Clicked;
 
+        // ViewModel property for data binding
         public SpotInfoViewModel SpotInfoViewModel { get; set; }
+
+        // Constructor
         public SpotInfo(int ID)
         {
             InitializeComponent();
+
+            // Initialize the ViewModel and pass the ID
             SpotInfoViewModel = new SpotInfoViewModel(ID);
+
+            // Set the DataContext for data binding
             DataContext = SpotInfoViewModel;
+
+            // Subscribe to Loaded event to load data when the control is loaded
             this.Loaded += SpotInfo_Loaded;
-          
-            Visibility = Visibility.Visible; 
+
+            // Make sure the control is visible
+            Visibility = Visibility.Visible;
         }
 
+        // Async method called when the UserControl is loaded
         private async void SpotInfo_Loaded(object sender, RoutedEventArgs e)
         {
-            await SpotInfoViewModel.GetCampingSpotInfoAsync();
-           
+            // Call the async method to fetch the camping spot data
+            await SpotInfoViewModel.LoadCampingSpotInfoAsync();
         }
 
-        // Close the control when the Close button is clicked
+        // Close button click handler
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            CloseButton_Clicked?.Invoke();    // Hide the control
+            CloseButton_Clicked?.Invoke();  // Invoke the event when the close button is clicked
         }
     }
 }

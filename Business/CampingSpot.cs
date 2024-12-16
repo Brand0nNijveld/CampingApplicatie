@@ -11,7 +11,10 @@ namespace CampingApplication.Business
         public int ID { get; private set; }
         public int PositionX { get; private set; }
         public int PositionY { get; private set; }
+
+        public CampingSpotInfo Info { get; set; }
         public List<Booking> Bookings { get; private set; } = [];
+
 
         public CampingSpot(int ID, int x, int y)
         {

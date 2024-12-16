@@ -25,21 +25,18 @@ namespace CampingApplication.VisitorApp
             MainWindow testWindow = new();
             SetWindow(testWindow);
 #else
-            InjectDependencies();
-            MainWindow window = new();
-            SetWindow(window);
+        InjectDependencies(); // This will inject the actual database repository in production
+        MainWindow window = new();
+        SetWindow(window);
 #endif
         }
 
-        /// <summary>
-        /// Inject dependencies for production app
-        /// </summary>
         private void InjectDependencies()
         {
             ServiceProvider serviceProvider = new();
 
             DBConnection dbConnection = new DBConnection();
-            ICampingSpotRepository campingSpotRepository = new CampingSpotRepository(dbConnection);
+            ICampingSpotRepository campingSpotRepository = new CampingSpotRepository(dbConnection);  // Actual repository
             CampingSpotService campingSpotService = new(campingSpotRepository);
             serviceProvider.RegisterInstance(campingSpotService);
 
@@ -48,15 +45,13 @@ namespace CampingApplication.VisitorApp
             serviceProvider.RegisterInstance(bookingService);
         }
 
-        /// <summary>
-        /// Inject test dependencies to isolate user controls, or to not interact with database
-        /// </summary>
         private void InjectDebugDependencies()
         {
             ServiceProvider serviceProvider = new();
-            DBConnection dbConnection = new();
+            DBConnection dbConnection = new DBConnection();  // Use actual DB connection
 
-            ICampingSpotRepository campingSpotRepository = new CampingSpotMockRepository();
+            // Use real repository even in Debug mode
+            ICampingSpotRepository campingSpotRepository = new CampingSpotRepository(dbConnection);  // Actual repository for debug
             CampingSpotService campingSpotService = new(campingSpotRepository);
             serviceProvider.RegisterInstance(campingSpotService);
 
@@ -64,6 +59,7 @@ namespace CampingApplication.VisitorApp
             BookingService bookingService = new(bookingRepository);
             serviceProvider.RegisterInstance(bookingService);
         }
+
 
         private void SetWindow(Window window)
         {

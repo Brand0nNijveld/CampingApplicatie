@@ -25,7 +25,7 @@ namespace CampingApplication.Business.CampingSpotService
         public async Task<CampingSpotInfo> GetCampingSpotInfoAsync(int ID)
         {
             await Task.Delay(100);
-            return new CampingSpotInfo(ID, 150, 30);
+            return new CampingSpotInfo(ID, 30, false, true);
         }
 
         public IEnumerable<CampingSpot> GetCampingSpots()

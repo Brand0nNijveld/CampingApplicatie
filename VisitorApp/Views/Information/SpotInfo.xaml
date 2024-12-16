@@ -7,80 +7,122 @@
              xmlns:local="clr-namespace:CampingApplication.VisitorApp.Views.Information"
              xmlns:viewmodels="clr-namespace:CampingApplication.VisitorApp.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="520" d:DesignWidth="500">
     <Grid>
-        <!-- Outer Border -->
-        <Border x:Name="HighlightRectangle"  Width="400" Height="350" Background="White"  CornerRadius="15" Padding="15">
+
+        <Border x:Name="HighlightRectangle" Background="White" CornerRadius="15" Padding="0">
             <Grid>
 
-                <!-- Close Button -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+
+                    <RowDefinition Height="Auto" />
+
+                    <RowDefinition Height="Auto" />
+
+                    <RowDefinition Height="Auto" />
+
+                    <RowDefinition Height="Auto" />
+
+                </Grid.RowDefinitions>
+
                 <Button x:Name="CloseButton" Content="&#x2715;" 
-                 HorizontalAlignment="Right" 
-                 VerticalAlignment="Top" 
-                 Background="Transparent" 
-                 BorderThickness="0" 
-                 FontSize="14" 
-                 Foreground="Gray" 
-                 Margin="0,0,5,0" 
-                 Click="CloseButton_Click" />
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Top" 
+                        Background="Transparent" 
+                        BorderThickness="0" 
+                        FontSize="14" 
+                        Foreground="Gray" 
+                        Margin="0,0,5,0" 
+                        Click="CloseButton_Click"
+                        Grid.Row="0"/>
 
-                <!-- Title -->
+                <TextBlock x:Name="CampingSpotInfoText" Text="Informatie Plaats " 
+                           FontSize="20" 
+                           FontWeight="Bold" 
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Padding="10, 0, 0, 0"
+                           Grid.Row="1"/>
+
                 <TextBlock x:Name="CampingSpotInfo" Text="{Binding ID}" 
-                    FontSize="20" 
-                    FontWeight="Bold" 
-                    HorizontalAlignment="Left"/>
+                           FontSize="20" 
+                           FontWeight="Bold" 
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="180, 0, 0, 0"
+                           Grid.Row="1"/>
 
-                <!-- Photos Section -->
                 <StackPanel x:Name="PhotoSection" Orientation="Horizontal" 
-                     HorizontalAlignment="Center" 
-                     VerticalAlignment="Top" 
-                     Margin="0,30,0,0">
-                    <Border Background="#F9F9F9" Width="100" Height="100" CornerRadius="10" Margin="17,0">
-                        <TextBlock Text="Foto 1" 
-                            VerticalAlignment="Center" 
-                            HorizontalAlignment="Center" />
-                    </Border>
-                    <Border Background="#F9F9F9" Width="100" Height="100" CornerRadius="10" Margin="17,0">
-                        <TextBlock Text="Foto 2" 
-                            VerticalAlignment="Center" 
-                            HorizontalAlignment="Center" />
-                    </Border>
-                    <Border Background="#F9F9F9" Width="100" Height="100" CornerRadius="10" Margin="17,0">
-                        <TextBlock Text="Foto 3" 
-                            VerticalAlignment="Center" 
-                            HorizontalAlignment="Center" />
-                    </Border>
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Top" 
+                            Margin="0,10,0,0" 
+                            Grid.Row="2">
+                    <WrapPanel HorizontalAlignment="Center" >
+                        <Border Background="#F9F9F9" Width="150" Height="150" CornerRadius="10" Margin="0, 0, 10, 0">
+                            <TextBlock Text="Foto 1" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        </Border>
+                        <Border Background="#F9F9F9" Width="150" Height="150" CornerRadius="10" Margin="10, 0, 10, 0">
+                            <TextBlock Text="Foto 2" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        </Border>
+                        <Border Background="#F9F9F9" Width="150" Height="150" CornerRadius="10" Margin="10, 0, 0, 0">
+                            <TextBlock Text="Foto 3" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        </Border>
+                    </WrapPanel>
                 </StackPanel>
 
-                <!-- Information Section -->
-                <StackPanel x:Name="CampingSpotDetails" Orientation="Vertical" 
-     VerticalAlignment="Top" 
-     HorizontalAlignment="Left" Height="158" Margin="10,146,0,0">
-                    <Border Background="#F9F9F9" Width="359" Height="297" CornerRadius="10">
-                        <StackPanel Orientation="Vertical" >
-                            <TextBlock x:Name="CampingSpotPrice" Text="{Binding PricePerNight}" FontSize="10" Margin="0,5" />
-                            <TextBlock x:Name="CampingSpotSize" Text="{Binding Size}" FontSize="10" Margin="0,5" />
+                <StackPanel x:Name="CampingSpotDetails" Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,15,0,0" Grid.Row="3" >
+                    <Border Background="#F9F9F9" Width="495" Height="250" CornerRadius="10">
+                        <Grid>
+                            <TextBlock Text="Type: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,10,0,0" FontSize="16"/>
+                            <TextBlock Text="{Binding Type}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,10,10,0" FontSize="16" Padding="0, 0, 10, 0"/>
 
+                            <TextBlock Text="Grootte: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,45,0,0" FontSize="16"/>
+                            <TextBlock Text="" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,45,10,0" FontSize="16" Padding="0, 0, 10, 0"/>
 
-                        </StackPanel>
+                            <Border Background="LightGray" Height="1" Margin="15,29,15,205" />
+
+                            <TextBlock Text="Prijs per nacht: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,75,0,0" FontSize="16"/>
+                            <TextBlock Text="{Binding PricePerNight}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,75,10,0" FontSize="16" Padding="0, 0, 10, 0"/>
+
+                            <Border Background="LightGray" Height="1" Margin="15,29,15,145" />
+
+                            <TextBlock Text="Aantal nachten: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,105,0,0" FontSize="16"/>
+                            <TextBlock Text="" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,105,10,0" FontSize="16" Padding="0, 0, 10, 0"/>
+
+                            <Border Background="LightGray" Height="1" Margin="15,29,15,85" />
+
+                            <TextBlock Text="Hond: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,135,0,0" FontSize="16"/>
+                            <TextBlock Text="{Binding Pets}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,135,10,0" FontSize="16" Padding="0, 0, 10, 0"/>
+
+                            <Border Background="LightGray" Height="1" Margin="15,29,15,25" />
+
+                            <TextBlock Text="Electriciteit: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,165,0,0" FontSize="16"/>
+                            <TextBlock Text="{Binding Electricity}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,165,10,0" FontSize="16" Padding="0, 0, 10, 0"/>
+
+                            <Border Background="LightGray" Height="1" Margin="15,29,15,-35" />
+
+                            <Border Background="Gray" Height="1" Margin="15,130,15,-35" />
+
+                            <TextBlock Text="Totaal Prijs:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,220,0,0" FontSize="16" FontWeight="Bold"/>
+                            <TextBlock Text="" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,185,10,-35" FontSize="16"/>
+                        </Grid>
                     </Border>
-                    <!-- Grote Border -->
-                    <!-- Grote Border -->
                 </StackPanel>
-
-                <!-- Button Section -->
 
                 <Button x:Name="BookButton" Content="Boeken" 
-                 HorizontalAlignment="Right" 
-                 VerticalAlignment="Bottom" 
-                 Background="#007BFF" 
-                 Foreground="White" 
-                 FontSize="10" 
-                 FontWeight="Bold" 
-                 Width="60" Height="20">
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Bottom" 
+                        Background="#007BFF" 
+                        Foreground="White" 
+                        FontSize="18"
+                        Margin="0,10, 0, 0"
+                        FontWeight="Medium" 
+                        Width="120" Height="40"
+                        Grid.Row="4">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
-                            <Border Background="#007BFF" CornerRadius="10" Padding="5" BorderThickness="0">
+                            <Border Background="#007BFF" CornerRadius="20" Padding="5" BorderThickness="0">
                                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                             </Border>
                         </ControlTemplate>
@@ -88,6 +130,5 @@
                 </Button>
             </Grid>
         </Border>
-
     </Grid>
 </UserControl>

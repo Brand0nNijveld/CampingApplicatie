@@ -12,12 +12,19 @@ namespace CampingApplication.Business
         public int ID { get; private set; }
 
         public double PricePerNight { get; private set; }
-        public double Size { get; private set; }
+        
+        public bool Pets { get; private set; }
+        public bool Electricity { get; private set; }
+        //public string Type { get; private set; }
 
-        public CampingSpotInfo(int ID, double PricePerNight, double Size) {
+
+        public CampingSpotInfo(int ID, double PricePerNight, bool Pets, bool Electricity)
+        {
             this.ID = ID;
             this.PricePerNight = PricePerNight;
-            this.Size = Size;
+            this.Pets = Pets;
+            this.Electricity = Electricity;
+            //this.Type = Type;
         }
     }
 }

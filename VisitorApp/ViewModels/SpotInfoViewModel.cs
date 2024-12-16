@@ -14,76 +14,133 @@ namespace CampingApplication.VisitorApp.ViewModels
 {
     public class SpotInfoViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
+        private readonly CampingSpotService _campingSpotService;
 
-        private CampingSpotService campingSpotService;
-
-
-        public int ID {
+        private int id;
+        public int ID
+        {
             get => id;
-
-            set {
+            set
+            {
                 id = value;
                 OnPropertyChanged(nameof(ID));
             }
         }
-        private int id;
 
-        public double Size
+        private string description;
+        public string Description
         {
-            get => size;
-
+            get => description;
             set
             {
-                size = value;
-                OnPropertyChanged(nameof(Size));
+                description = value;
+                OnPropertyChanged(nameof(Description));
             }
         }
-        private double size;
 
+        //private double size;
+        //public double Size
+        //{
+        //    get => size;
+        //    set
+        //    {
+        //        size = value;
+        //        OnPropertyChanged(nameof(Size));
+        //    }
+        //}
+
+        private double pricePerNight;
         public double PricePerNight
         {
             get => pricePerNight;
-
             set
             {
                 pricePerNight = value;
                 OnPropertyChanged(nameof(PricePerNight));
             }
         }
-        private double pricePerNight;
 
-        public SpotInfoViewModel(int ID)
+        private bool pets;
+        public bool Pets
         {
-            this.ID = ID;
-            campingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
+            get => pets;
+            set
+            {
+                pets = value;
+                OnPropertyChanged(nameof(Pets));
+            }
+        }
+
+        private bool electricity;
+        public bool Electricity
+        {
+            get => electricity;
+            set
+            {
+                electricity = value;
+                OnPropertyChanged(nameof(Electricity));
+            }
+        }
+
+        private string type;
+        public string Type
+        {
+            get => type;
+            set
+            {
+                type = value;
+                OnPropertyChanged(nameof(Type));
+            }
+        }
+
+        
+        public SpotInfoViewModel(int id)
+        {
+            ID = id;
+            _campingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
 
         }
 
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this.PropertyChanged, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public async Task GetCampingSpotInfoAsync()
+        
+        public async Task LoadCampingSpotInfoAsync()
         {
             try
             {
-                var spot = await campingSpotService.GetCampingSpotInfoAsync(ID);
-                Size = spot.Size;
-                PricePerNight = spot.PricePerNight;
+               
+                var spot = await _campingSpotService.GetCampingSpotInfoAsync(ID);
 
- 
-                // Use Dispatcher to update UI-bound properties or raise events
-                //Application.Current.Dispatcher.Invoke(() =>
-                //{
-                //    CampingSpots = new ObservableCollection<CampingSpotVisualModel>(campingSpotVisuals);
-                //});
+                if (spot != null)
+                {
+                    Debug.WriteLine($"camping info found for ID: {ID}");
+                    PricePerNight = spot.PricePerNight;
+                    Pets = spot.Pets;
+                    Electricity = spot.Electricity;
+                }
+                else
+                {
+                    Debug.WriteLine($"No camping info found for ID: {ID}");
+                    //PricePerNight = 50.0;
+                    //Pets = false;
+                    //Electricity = false;
+                }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                Debug.WriteLine($"Error loading camping info for ID {ID}: {ex.Message}");
             }
         }
+
+
+
+        
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+       
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+
     }
 }

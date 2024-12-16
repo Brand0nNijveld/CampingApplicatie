@@ -2,12 +2,13 @@
 using CampingApplication.Business.CampingSpotService;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.Diagnostics;
 
 namespace DataAccess
 {
     public class CampingSpotRepository : ICampingSpotRepository
     {
-        private DBConnection _connection;
+        private readonly DBConnection _connection;
 
         public CampingSpotRepository(DBConnection con)
         {
@@ -16,125 +17,148 @@ namespace DataAccess
 
         public IEnumerable<CampingSpot> GetAvailableSpots(CampingSpot[] spots, DateTime startDate, DateTime endDate)
         {
-            return [];
+            return Array.Empty<CampingSpot>();
         }
 
         public async Task<IEnumerable<CampingSpot>> GetAvailableSpotsAsync(DateTime startDate, DateTime endDate)
         {
-            List<CampingSpot> availableSpots = new List<CampingSpot>();
+            var availableSpots = new List<CampingSpot>();
+            string query = @"
+                SELECT c.SpotNr, c.PositionX, c.PositionY
+                FROM campingspot c
+                JOIN camping ca ON c.CampingID = ca.CampingID
+                WHERE c.SpotNr NOT IN (
+                    SELECT b.SpotNr
+                    FROM booking b
+                    WHERE 
+                        (StartDate >= @StartDate AND EndDate <= @EndDate) 
+                        OR (EndDate >= @StartDate AND EndDate <= @EndDate)
+                )";
 
             try
             {
-                string query = @"
-                    SELECT c.SpotNr, c.PositionX, c.PositionY
-                    FROM campingspot c
-                    JOIN camping ca ON c.CampingID = ca.CampingID
-                    WHERE c.SpotNr NOT IN (
-                        SELECT b.SpotNr
-                        FROM booking b
-                        AND ((StartDate >= @StartDate AND EndDate <= @EndDate) 
-                        OR (EndDate >= @StartDate && EndDate <= @EndDate))";
+                using var connection = await _connection.GetConnectionAsync();
+                using var command = new MySqlCommand(query, connection);
+                command.Parameters.AddWithValue("@StartDate", startDate);
+                command.Parameters.AddWithValue("@EndDate", endDate);
 
-                using (_connection.Connection)
+                await connection.OpenAsync();
+
+                using var reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
                 {
-                    using (MySqlCommand command = new MySqlCommand(query, _connection.Connection))
-                    {
-                        command.Parameters.AddWithValue("@Startdate", startDate);
-                        command.Parameters.AddWithValue("@Enddate", endDate);
+                    var id = reader.GetInt32("SpotNr");
+                    var posX = reader.GetInt32("PositionX");
+                    var posY = reader.GetInt32("PositionY");
 
-                        _connection.Connection.Open();
-                        using (var reader = await command.ExecuteReaderAsync())
-                        {
-                            int i = 0;
-                            while (reader.Read())
-                            {
-                                int id = reader.GetInt32("SpotNr");
-                                int posX = reader.GetInt32("PositionX");
-                                int posY = reader.GetInt32("PositionY");
-
-                                availableSpots.Add(new CampingSpot(id, posX, posY));
-                            }
-                        }
-                    }
+                    availableSpots.Add(new CampingSpot(id, posX, posY));
                 }
             }
-            catch (Exception ex) { Console.WriteLine($"Database error: {ex.Message}"); }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Database error: {ex.Message}");
+            }
 
             return availableSpots;
         }
 
-        public CampingSpot GetCampingSpot(int ID)
+        public async Task<CampingSpotInfo> GetCampingSpotInfoAsync(int ID)
         {
+            CampingSpotInfo campingSpotInfo = null;
+            string query = "SELECT SpotNr, PricePerNight, Pets, Electricity FROM spotinfo WHERE SpotNr = @SpotNr";
+
             try
             {
-                string query = "SELECT SpotNr, PositionX, PositionY FROM camping WHERE SpotNr = @SpotNr";
+                using var connection = await _connection.GetConnectionAsync(); 
+                using var command = new MySqlCommand(query, connection);
+                command.Parameters.AddWithValue("@SpotNr", ID);
 
-                using (_connection.Connection)
+                using var reader = await command.ExecuteReaderAsync();
+                if (await reader.ReadAsync())
                 {
-                    using (MySqlCommand command = new MySqlCommand(query, _connection.Connection))
-                    {
-                        command.Parameters.AddWithValue("@SpotNr", ID);
-
-                        _connection.Connection.Open();
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                int id = reader.GetInt32("SpotNr");
-                                int posX = reader.GetInt32("PositionX");
-                                int posY = reader.GetInt32("PositionY");
-
-                                CampingSpot result = new CampingSpot(id, posX, posY);
-
-                                return result;
-                            }
-                        }
-                        _connection.Connection.Close();
-                    }
+                    campingSpotInfo = new CampingSpotInfo(
+                        reader.GetInt32("SpotNr"),
+                        reader.GetDouble("PricePerNight"),
+                        reader.GetBoolean("Pets"),
+                        reader.GetBoolean("Electricity")
+                    );
                 }
             }
-            catch (Exception ex) { Console.WriteLine($"Database error: {ex.Message}"); }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Database error: {ex.Message}");
+            }
 
-            return null;
+            if (campingSpotInfo == null)
+            {
+                Debug.WriteLine($"No camping info found for ID: {ID}");
+            }
+
+            return campingSpotInfo;
         }
 
-        public Task<CampingSpotInfo> GetCampingSpotInfoAsync(int ID)
+
+        public CampingSpot GetCampingSpot(int ID)
         {
-            throw new NotImplementedException();
+            CampingSpot campingSpot = null;
+            string query = "SELECT SpotNr, PositionX, PositionY FROM campingspot WHERE SpotNr = @SpotNr";
+
+            try
+            {
+                using var connection = _connection.GetConnection();
+                using var command = new MySqlCommand(query, connection);
+                command.Parameters.AddWithValue("@SpotNr", ID);
+
+                connection.Open();
+
+                using var reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    campingSpot = new CampingSpot(
+                        reader.GetInt32("SpotNr"),
+                        reader.GetInt32("PositionX"),
+                        reader.GetInt32("PositionY")
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Database error: {ex.Message}");
+            }
+
+            return campingSpot;
         }
 
         public IEnumerable<CampingSpot> GetCampingSpots()
         {
-            List<CampingSpot> Spots = new List<CampingSpot>();
+            var spots = new List<CampingSpot>();
+            string query = "SELECT SpotNr, PositionX, PositionY FROM campingspot";
 
             try
             {
-                string query = "SELECT SpotNr, PositionX, PositionY FROM campingspot";
+                using var connection = _connection.GetConnection();
+                using var command = new MySqlCommand(query, connection);
 
-                using (_connection.Connection)
+                connection.Open();
+
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    using (MySqlCommand command = new MySqlCommand(query, _connection.Connection))
-                    {
-                        _connection.Connection.Open();
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                int id = reader.GetInt32("SpotNr");
-                                int posX = reader.GetInt32("PositionX");
-                                int posY = reader.GetInt32("PositionY");
+                    var spot = new CampingSpot(
+                        reader.GetInt32("SpotNr"),
+                        reader.GetInt32("PositionX"),
+                        reader.GetInt32("PositionY")
+                    );
 
-                                Spots.Add(new CampingSpot(id, posX, posY));
-                            }
-                        }
-                        _connection.Connection.Close();
-                        return Spots;
-                    }
+                    spots.Add(spot);
                 }
             }
-            catch (Exception ex) { Console.WriteLine($"Database error: {ex.Message}"); }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Database error: {ex.Message}");
+            }
 
-            return Spots;
+            return spots;
         }
     }
 }

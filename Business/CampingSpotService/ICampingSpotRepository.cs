@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace CampingApplication.Business.CampingSpotService
 {
     public interface ICampingSpotRepository
@@ -14,5 +15,6 @@ namespace CampingApplication.Business.CampingSpotService
         public CampingSpot GetCampingSpot(int ID);
 
         public Task<CampingSpotInfo> GetCampingSpotInfoAsync (int ID);
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,9 +15,14 @@ namespace CampingApplication.Business.CampingSpotService
             this.repository = repository;
         }
 
-        public async Task <CampingSpotInfo> GetCampingSpotInfoAsync(int ID) { 
+        public async Task <CampingSpotInfo> GetCampingSpotInfoAsync(int ID) {
+            
             return await repository.GetCampingSpotInfoAsync(ID);
+        
+
         }
+
+
 
         public List<CampingSpot> GetCampingSpots()
         {

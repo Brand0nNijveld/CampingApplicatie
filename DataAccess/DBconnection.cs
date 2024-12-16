@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,22 +10,36 @@ namespace DataAccess
 {
     public class DBConnection
     {
-        private string _connectionString = "server=localhost;uid=root;pwd=;database=campingapplicatie;"; //als je username (uid), password of iets dergelijks anders is moet je dat ff aanpassen voor je eigen connectie;
-        public MySqlConnection Connection { get; private set; }
+        private readonly string _connectionString;
 
-        public DBConnection()
+        public DBConnection(string connectionString = "server=localhost;uid=root;pwd=;database=campingapplicatie;")
         {
-            Connection = new MySqlConnection(_connectionString);
+            _connectionString = connectionString;
         }
 
+        
+        public MySqlConnection GetConnection()
+        {
+            return new MySqlConnection(_connectionString);
+        }
+
+      
         public async Task<MySqlConnection> GetConnectionAsync()
         {
-            if (Connection.State != System.Data.ConnectionState.Open)
+            var connection = new MySqlConnection(_connectionString);
+            try
             {
-                await Connection.OpenAsync();
+                Debug.WriteLine("Opening database connection asynchronously...");
+                await connection.OpenAsync();
+                Debug.WriteLine("Database connection successfully opened.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error opening database connection: {ex.Message}");
+                throw;  
             }
 
-            return Connection;
+            return connection;
         }
     }
 }
