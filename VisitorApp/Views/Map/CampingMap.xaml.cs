@@ -109,7 +109,7 @@ namespace CampingApplication.VisitorApp.Views
             // Draw facilities
             foreach (var facility in viewModel.Facilities)
             {
-                var facilityView = new FacilityView();
+                var facilityView = new FacilityView(facility);
 
                 Canvas.SetLeft(facilityView, facility.PositionX);
                 Canvas.SetTop(facilityView, facility.PositionY);

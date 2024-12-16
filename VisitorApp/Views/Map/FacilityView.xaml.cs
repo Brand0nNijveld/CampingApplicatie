@@ -23,9 +23,13 @@ namespace CampingApplication.VisitorApp.Views.Map
     /// </summary>
     public partial class FacilityView : UserControl
     {
-        public FacilityView()
+        private readonly FacilityViewModel viewModel;
+
+        public FacilityView(FacilityViewModel viewModel)
         {
             InitializeComponent();
+
+            this.viewModel = viewModel;
         }
     }
 }
