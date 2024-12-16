@@ -97,5 +97,14 @@ namespace CampingApplication.VisitorApp.Views.Booking
         {
             BackButtonClicked?.Invoke();
         }
+
+        private void Pets_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void Electricity_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
