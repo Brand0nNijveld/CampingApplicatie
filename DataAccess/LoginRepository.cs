@@ -26,7 +26,7 @@ namespace DataAccess
 
             // Query to validate the user based on username and password
             string query = @"SELECT COUNT(1) 
-                             FROM users 
+                             FROM employee 
                              WHERE Username = @Username 
                              AND Password = @Password";
 

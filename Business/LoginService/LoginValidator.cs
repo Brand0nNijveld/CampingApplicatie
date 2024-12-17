@@ -43,17 +43,8 @@ namespace CampingApplication.Business.LoginService
             if (string.IsNullOrWhiteSpace(password))
                 return "Wachtwoord is verplicht.";
 
-            if (password.Length < 8)
-                return "Wachtwoord moet minstens 8 tekens bevatten.";
-
-            if (!System.Text.RegularExpressions.Regex.IsMatch(password, @"[A-Z]"))
-                return "Wachtwoord moet minstens één hoofdletter bevatten.";
-
-            if (!System.Text.RegularExpressions.Regex.IsMatch(password, @"[a-z]"))
-                return "Wachtwoord moet minstens één kleine letter bevatten.";
-
-            if (!System.Text.RegularExpressions.Regex.IsMatch(password, @"\d"))
-                return "Wachtwoord moet minstens één cijfer bevatten.";
+            if (password.Length < 3)
+                return "Wachtwoord moet minstens 3 tekens bevatten.";
 
             return null;
         }

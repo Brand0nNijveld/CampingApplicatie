@@ -1,5 +1,6 @@
 ﻿using CampingApplication.Business.LoginService;
 using CampingApplication.EmployeeApp.ViewModels;
+using CampingApplication.EmployeeApp.Views.MainMenu;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,21 +24,34 @@ namespace CampingApplication.EmployeeApp.Views.Login
             else
             {
                 Debug.WriteLine("ServiceProvider isn't initialized");
-
             }
 
             DataContext = ViewModel;
-            if(ViewModel != null)
+
+            if (ViewModel != null)
             {
                 ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+                ViewModel.LoginSuccessful += OnLoginSuccessful;
             }
-
 
             SystemErrorText.MaxHeight = 0;
             SystemErrorText.Opacity = 0;
             SystemErrorText.MouseLeftButtonUp += SystemErrorText_MouseLeftButtonUp;
         }
 
+        private void OnLoginSuccessful()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                var mainMenuView = new MainMenuView(); 
+                var parentWindow = Window.GetWindow(this);
+
+                if (parentWindow != null)
+                {
+                    parentWindow.Content = mainMenuView; 
+                }
+            });
+        }
         private void SystemErrorText_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (ViewModel.SystemError != null)
