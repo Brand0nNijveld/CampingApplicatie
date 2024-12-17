@@ -52,28 +52,13 @@ namespace CampingApplication.VisitorApp.Views
         {
             this.viewModel = viewModel;
             viewModel.PropertyChanged += ViewModel_PropertyChanged;
-            viewModel.AvailabilityChanged += OnAvailabilityChanged;
 
             UpdateCanvas();
         }
 
-        private void OnAvailabilityChanged(bool available)
+        public void Map_Clicked(object? sender, EventArgs e)
         {
-            if (available)
-            {
-                if (NoneAvailableInfo.Opacity == 1)
-                {
-                    NoneAvailableInfo.BeginAnimation(OpacityProperty, fadeOutAnimation);
-                }
-            }
-            else
-            {
-                if (NoneAvailableInfo.Opacity == 0)
-                {
-                    NoneAvailableInfo.IsEnabled = true;
-                    NoneAvailableInfo.BeginAnimation(OpacityProperty, fadeInAnimation);
-                }
-            }
+
         }
 
         private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -173,6 +158,13 @@ namespace CampingApplication.VisitorApp.Views
                 //CampingCanvas.Children.Add(spotVisual);
                 CampingCanvas.Children.Add(spotID);
             }
+        }
+
+        private void CampingCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var pos = e.GetPosition((Canvas)sender);
+            Debug.WriteLine(pos.X);
+            Debug.WriteLine(pos.Y);
         }
     }
 }

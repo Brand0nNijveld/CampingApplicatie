@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <Canvas Name="CampingCanvas" Width="800" Height="450">
+        <Canvas MouseLeftButtonDown="CampingCanvas_MouseLeftButtonDown" Name="CampingCanvas" Width="800" Height="450">
             <Canvas.Background>
                 <ImageBrush ImageSource="../Resources/TestMap.jpg" Stretch="Uniform"/>
             </Canvas.Background>

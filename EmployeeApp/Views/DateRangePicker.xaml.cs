@@ -64,8 +64,6 @@ namespace CampingApplication.EmployeeApp.Views
                 {
                     ResultTextBlock.Text = "De einddatum en begindatum mogen niet gelijk zijn.";
                 }
-
-                mainViewModel?.CampingMapViewModel.ClearAvailability();
             }
             else
             {

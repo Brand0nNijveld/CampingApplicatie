@@ -178,8 +178,12 @@ namespace CampingApplication.EmployeeApp.Views
             }
         }
 
-        private void SpotVisual_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void CampingCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            // mouse position
+            var pos = e.GetPosition((Canvas)sender);
+            Debug.WriteLine(pos.X);
+            Debug.WriteLine(pos.Y);
         }
     }
 }
