@@ -39,19 +39,28 @@ namespace CampingApplication.EmployeeApp.Views.Login
             SystemErrorText.MouseLeftButtonUp += SystemErrorText_MouseLeftButtonUp;
         }
 
+        private void PasswordBoxControl_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel != null && sender is PasswordBox passwordBox)
+            {
+                ViewModel.Password = passwordBox.Password;
+            }
+        }
+
         private void OnLoginSuccessful()
         {
             Dispatcher.Invoke(() =>
             {
-                var mainMenuView = new MainMenuView(); 
+                var mainMenuView = new MainMenuView();
                 var parentWindow = Window.GetWindow(this);
 
                 if (parentWindow != null)
                 {
-                    parentWindow.Content = mainMenuView; 
+                    parentWindow.Content = mainMenuView;
                 }
             });
         }
+
         private void SystemErrorText_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (ViewModel.SystemError != null)
@@ -67,12 +76,10 @@ namespace CampingApplication.EmployeeApp.Views.Login
                 Debug.WriteLine(e.PropertyName + ": " + ViewModel.SystemError);
                 if (!string.IsNullOrEmpty(ViewModel.SystemError))
                 {
-                    // Show error
                     AnimateError(1, 60);
                 }
                 else
                 {
-                    // Hide error
                     AnimateError(0, 0);
                 }
             }
