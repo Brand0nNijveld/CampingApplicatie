@@ -30,6 +30,7 @@ namespace CampingApplication.VisitorApp.Views.Map
             InitializeComponent();
 
             this.viewModel = viewModel;
+            DataContext = viewModel;
         }
     }
 }

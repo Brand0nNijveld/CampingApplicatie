@@ -15,7 +15,6 @@
                 <ImageBrush ImageSource="../../Resources/TestMap.jpg" Stretch="Uniform"/>
             </Canvas.Background>
 
-            <map:FacilityView Canvas.Left="382" Canvas.Top="42" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
             <!-- Camping spots -->
             <Rectangle Height="60" Canvas.Left="190" Stroke="Black" Canvas.Top="29" Width="81" HorizontalAlignment="Left" VerticalAlignment="Center"/>

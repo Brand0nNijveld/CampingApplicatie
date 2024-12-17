@@ -9,7 +9,10 @@ namespace CampingApplication.Business
 {
     public enum FacilityType
     {
-        Toilet,
+        Reception,
+        Restroom,
+        Shower,
+        Playground,
         Unknown,
     }
 
@@ -36,12 +39,21 @@ namespace CampingApplication.Business
 
             switch (type.ToLower())
             {
-                case "toilet":
-                    this.Type = FacilityType.Toilet;
+                case "reception":
+                    this.Type = FacilityType.Reception;
+                    break;
+                case "restroom":
+                    this.Type = FacilityType.Restroom;
+                    break;
+                case "shower":
+                    this.Type = FacilityType.Shower;
+                    break;
+                case "playground":
+                    this.Type = FacilityType.Playground;
                     break;
                 default:
                     this.Type = FacilityType.Unknown;
-                    Debug.WriteLine("Assigned unknown type to facility!");
+                    Debug.WriteLine($"Assigned unknown type to facility! ({type})");
                     break;
             };
         }

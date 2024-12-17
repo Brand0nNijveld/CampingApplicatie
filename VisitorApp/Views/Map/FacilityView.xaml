@@ -8,7 +8,7 @@
              xmlns:svg="http://sharpvectors.codeplex.com/svgc/"
              mc:Ignorable="d"
              Width="35" Height="35"
-             >
+             d:DataContext="{d:DesignInstance Type=viewmodels:FacilityViewModel}"             >
     <!-- Border for the Facility -->
     <Border CornerRadius="100" Background="{DynamicResource Primary}" Padding="8">
         <ContentControl Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -17,7 +17,7 @@
                     <Setter Property="ContentTemplate">
                         <Setter.Value>
                             <DataTemplate>
-                                <svg:SvgViewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="pack://application:,,,/Resources/Icons/restroom.svg" />
+                                <TextBlock FontWeight="ExtraBold" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Text="?" />
                             </DataTemplate>
                         </Setter.Value>
                     </Setter>
@@ -25,7 +25,7 @@
 
                     <Style.Triggers>
                         <!-- Trigger for type 'Restroom' -->
-                        <DataTrigger Binding="{Binding FacilityType, ElementName=FacilityControl}" Value="Restroom">
+                        <DataTrigger Binding="{Binding Type}" Value="Restroom">
                             <Setter Property="ContentTemplate">
                                 <Setter.Value>
                                     <DataTemplate>
@@ -36,23 +36,38 @@
                         </DataTrigger>
 
                         <!-- Trigger for type 'Shower' -->
-                        <DataTrigger Binding="{Binding FacilityType, ElementName=FacilityControl}" Value="Shower">
+                        <DataTrigger Binding="{Binding Type}" Value="Shower">
                             <Setter Property="ContentTemplate">
                                 <Setter.Value>
                                     <DataTemplate>
-                                        <svg:SvgViewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="pack://application:,,,/Resources/Icons/restroom.svg" />
+                                        <ContentControl Foreground="White">
+                                            <svg:SvgViewbox MessageFillBrush="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="pack://application:,,,/Resources/Icons/shower.svg" />
+                                        </ContentControl>
                                     </DataTemplate>
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>
 
                         <!-- Trigger for type 'Playground' -->
-                        <DataTrigger Binding="{Binding FacilityType, ElementName=FacilityControl}" Value="Playground">
-                            <Setter Property="Content" Value="🎠" />
-                            <!-- Playground Icon -->
+                        <DataTrigger Binding="{Binding Type}" Value="Playground">
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <svg:SvgViewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="pack://application:,,,/Resources/Icons/playground.svg" />
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
                         </DataTrigger>
 
-                        <!-- Add more facility types as needed -->
+                        <DataTrigger Binding="{Binding Type}" Value="Reception">
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <TextBlock FontWeight="ExtraBold" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Text="R" />
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </ContentControl.Style>

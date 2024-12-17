@@ -43,9 +43,15 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
         }
 
-        public FacilityType Type
+        private string type;
+        public string Type
         {
-            get; private set;
+            get => type;
+            set
+            {
+                type = value;
+                OnPropertyChanged(nameof(Type));
+            }
         }
 
         public FacilityViewModel(Facility facility)
@@ -53,7 +59,7 @@ namespace CampingApplication.VisitorApp.ViewModels
             ID = facility.ID;
             positionX = facility.PositionX;
             positionY = facility.PositionY;
-            Type = facility.Type;
+            type = facility.Type.ToString();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
