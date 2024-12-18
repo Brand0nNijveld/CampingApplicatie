@@ -1,4 +1,5 @@
-﻿using CampingApplication.Client.Shared.Helpers;
+﻿using CampingApplication.Business.PathFinding;
+using CampingApplication.Client.Shared.Helpers;
 using CampingApplication.VisitorApp.ViewModels;
 using CampingApplication.VisitorApp.Views.Information;
 using CampingApplication.VisitorApp.Views.Map;
@@ -30,8 +31,9 @@ namespace CampingApplication.VisitorApp.Views
 
             // Load the image
             var bitmap = new BitmapImage(new Uri("Resources/TestMap2.png", UriKind.Relative));
+            MapImage.ImageSource = bitmap;
 
-            // Set canvas size to match the image dimensions
+            // Set canvas size to match the image dimensions for correct scale conversion
             CampingCanvas.Width = bitmap.PixelWidth;
             CampingCanvas.Height = bitmap.PixelHeight;
 
@@ -94,7 +96,7 @@ namespace CampingApplication.VisitorApp.Views
 
         private void ViewModel_MapLoadError()
         {
-            throw new NotImplementedException();
+            Debug.WriteLine("FAILED LOADING MAP");
         }
 
         private void ViewModel_MapLoaded()
@@ -150,6 +152,9 @@ namespace CampingApplication.VisitorApp.Views
                 Debug.WriteLine("Setting facility position: " + facility.PositionX + ", " + facility.PositionY);
                 CampingCanvas.Children.Add(facilityView);
             }
+
+            PathView pathView = new(CampingCanvas);
+            pathView.DrawMainPath();
         }
 
         private void CampingCanvas_MouseMove(object sender, MouseEventArgs e)

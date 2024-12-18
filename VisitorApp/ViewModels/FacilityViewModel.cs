@@ -58,7 +58,7 @@ namespace CampingApplication.VisitorApp.ViewModels
         public FacilityViewModel(Facility facility)
         {
             ID = facility.ID;
-            int pixelsPerMeter = CampingMapViewModel.PIXELS_PER_METER;
+            double pixelsPerMeter = CampingMapViewModel.PIXELS_PER_METER;
             positionX = MapConversionHelper.MetersToPixels(facility.XCoordinate, pixelsPerMeter);
             positionY = MapConversionHelper.MetersToPixels(facility.YCoordinate, pixelsPerMeter);
 

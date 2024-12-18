@@ -31,26 +31,24 @@
             100 meter
         </TextBlock>
 
-        <TextBlock x:Name="MapWidth" FontSize="20" Margin="0,0,0,20" Grid.Column="1" HorizontalAlignment="Center" Text="" />
+        <TextBlock x:Name="MapWidth" FontSize="20" Margin="0,0,0,20" Grid.Column="1" HorizontalAlignment="Center" Text="" >70 meter</TextBlock>
 
         <Canvas ClipToBounds="True" MouseMove="CampingCanvas_MouseMove" Grid.Row="1" Grid.Column="1" Name="CampingCanvas" Margin="0,0,0,0">
             <Canvas.Background>
-                <ImageBrush x:Name="MapImage" ImageSource="../../Resources/TestMap.jpg" Stretch="Fill"/>
+                <ImageBrush x:Name="MapImage" ImageSource="../../Resources/TestMap2.png" Stretch="Fill"/>
             </Canvas.Background>
+            <Path Stroke="Black" StrokeThickness="10" Fill="Transparent">
+                <Path.Data>
+                    <PathGeometry>
+                        <PathFigure StartPoint="50,50">
+                            <BezierSegment Point1="100,20" Point2="200,80" Point3="250,50" IsStroked="True" IsSmoothJoin="True"/>
+                            <LineSegment Point="300,150" />
+                            <BezierSegment Point1="350,200" Point2="250,300" Point3="150,200" IsStroked="True" IsSmoothJoin="True"/>
+                        </PathFigure>
+                    </PathGeometry>
+                </Path.Data>
+            </Path>
 
-
-            <!-- Camping spots -->
-            <Rectangle Height="60" Canvas.Left="190" Stroke="Black" Canvas.Top="29" Width="81" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <Rectangle Height="60" Canvas.Left="86" Stroke="Black" Canvas.Top="29" Width="81" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Rectangle Height="60" Canvas.Left="86" Stroke="Black" Canvas.Top="103" Width="81" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Rectangle Height="60" Canvas.Left="86" Stroke="Black" Canvas.Top="186" Width="81" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Rectangle Height="60" Canvas.Left="322" Stroke="Black" Canvas.Top="145" Width="81" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Rectangle Height="60" Canvas.Left="322" Stroke="Black" Canvas.Top="227" Width="81" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Rectangle Height="60" Canvas.Left="612" Stroke="Black" Canvas.Top="30" Width="81" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Rectangle Height="60" Canvas.Left="612" Stroke="Black" Canvas.Top="115" Width="81" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Rectangle Height="60" Canvas.Left="612" Stroke="Black" Canvas.Top="201" Width="81" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Rectangle Height="60" Canvas.Left="612" Stroke="Black" Canvas.Top="281" Width="81" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Rectangle Height="60" Canvas.Left="612" Stroke="Black" Canvas.Top="360" Width="81" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         </Canvas>
 
         <Border Grid.Column="1" Grid.Row="1" x:Name="NoneAvailableInfo" IsHitTestVisible="False" IsEnabled="False" Opacity="0" Padding="8" CornerRadius="10" BorderThickness="2" BorderBrush="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">

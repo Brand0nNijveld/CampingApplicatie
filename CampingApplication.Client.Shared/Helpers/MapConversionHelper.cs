@@ -8,12 +8,12 @@ namespace CampingApplication.Client.Shared.Helpers
 {
     public static class MapConversionHelper
     {
-        public static double PixelsToMeters(double pixels, int pixelsPerMeter)
+        public static double PixelsToMeters(double pixels, double pixelsPerMeter)
         {
             return pixels / pixelsPerMeter;
         }
 
-        public static int MetersToPixels(double meters, int pixelsPerMeter)
+        public static int MetersToPixels(double meters, double pixelsPerMeter)
         {
             return (int)Math.Round(meters * pixelsPerMeter);
         }

@@ -46,6 +46,28 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
         }
 
+        private int width;
+        public int Width
+        {
+            get => width;
+            set
+            {
+                width = value;
+                OnPropertyChanged(nameof(Width));
+            }
+        }
+
+        private int height;
+        public int Height
+        {
+            get => height;
+            set
+            {
+                height = value;
+                OnPropertyChanged(nameof(Height));
+            }
+        }
+
         private bool available;
         public bool Available
         {
@@ -59,10 +81,15 @@ namespace CampingApplication.VisitorApp.ViewModels
 
         public CampingSpotViewModel(CampingMapViewModel campingMapViewModel, CampingSpot spot)
         {
-            this.ID = spot.ID;
-            int pixelsPerMeter = CampingMapViewModel.PIXELS_PER_METER;
-            this.PositionX = MapConversionHelper.MetersToPixels(spot.XCoordinate, pixelsPerMeter);
-            this.PositionY = MapConversionHelper.MetersToPixels(spot.YCoordinate, pixelsPerMeter);
+            ID = spot.ID;
+
+            double pixelsPerMeter = CampingMapViewModel.PIXELS_PER_METER;
+            PositionX = MapConversionHelper.MetersToPixels(spot.XCoordinate, pixelsPerMeter);
+            PositionY = MapConversionHelper.MetersToPixels(spot.YCoordinate, pixelsPerMeter);
+
+            Width = MapConversionHelper.MetersToPixels(spot.Width, pixelsPerMeter);
+            Height = MapConversionHelper.MetersToPixels(spot.Height, pixelsPerMeter);
+
             this.campingMapViewModel = campingMapViewModel;
         }
 
