@@ -9,10 +9,33 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:CampingMapViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <Canvas Name="CampingCanvas" Width="800" Height="450">
+    <Grid ClipToBounds="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="MapHeight" FontSize="20" VerticalAlignment="Center" Grid.Row="1" RenderTransformOrigin="0.5,0.5">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBlock.RenderTransform>
+            100 meter
+        </TextBlock>
+
+        <TextBlock x:Name="MapWidth" FontSize="20" Margin="0,0,0,20" Grid.Column="1" HorizontalAlignment="Center" Text="" />
+
+        <Canvas ClipToBounds="True" MouseMove="CampingCanvas_MouseMove" Grid.Row="1" Grid.Column="1" Name="CampingCanvas" Margin="0,0,0,0">
             <Canvas.Background>
-                <ImageBrush ImageSource="../../Resources/TestMap.jpg" Stretch="Uniform"/>
+                <ImageBrush x:Name="MapImage" ImageSource="../../Resources/TestMap.jpg" Stretch="Fill"/>
             </Canvas.Background>
 
 
@@ -30,13 +53,13 @@
             <Rectangle Height="60" Canvas.Left="612" Stroke="Black" Canvas.Top="360" Width="81" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         </Canvas>
 
-        <Border x:Name="NoneAvailableInfo" IsHitTestVisible="False" IsEnabled="False" Opacity="0" Padding="5" CornerRadius="10" BorderThickness="2" BorderBrush="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Border Grid.Column="1" Grid.Row="1" x:Name="NoneAvailableInfo" IsHitTestVisible="False" IsEnabled="False" Opacity="0" Padding="8" CornerRadius="10" BorderThickness="2" BorderBrush="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Border.Background>
                 <SolidColorBrush Color="Black" Opacity="0.5" />
             </Border.Background>
             <StackPanel Orientation="Horizontal" >
                 <Image Source="../../Resources/Icons/info.svg"/>
-                <Label VerticalAlignment="Bottom" HorizontalAlignment="Left" Foreground="White">Geen beschikbare plekken voor deze periode</Label>
+                <Label FontSize="30" VerticalAlignment="Bottom" HorizontalAlignment="Left" Foreground="White">Geen beschikbare plekken voor deze periode</Label>
             </StackPanel>
         </Border>
 

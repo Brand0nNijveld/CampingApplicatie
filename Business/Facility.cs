@@ -16,27 +16,17 @@ namespace CampingApplication.Business
         Unknown,
     }
 
-    public class Facility
+    public class Facility : MapEntity
     {
-        public int ID { get; private set; }
         public FacilityType Type { get; private set; }
-        public int PositionX { get; private set; }
-        public int PositionY { get; private set; }
 
-        public Facility(int ID, FacilityType type, int posX, int posY)
+        public Facility(int ID, double posX, double posY, FacilityType type) : base(ID, posX, posY)
         {
-            this.ID = ID;
             this.Type = type;
-            this.PositionX = posX;
-            this.PositionY = posY;
         }
 
-        public Facility(int ID, string type, int posX, int posY)
+        public Facility(int ID, int posX, int posY, string type) : base(ID, posX, posY)
         {
-            this.ID = ID;
-            this.PositionX = posX;
-            this.PositionY = posY;
-
             switch (type.ToLower())
             {
                 case "reception":

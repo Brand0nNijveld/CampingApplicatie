@@ -10,6 +10,7 @@ using System.Windows;
 using CampingApplication.Business;
 using CampingApplication.Business.CampingSpotService;
 using CampingApplication.Business.FacilityService;
+using CampingApplication.Client.Shared.Helpers;
 using CampingApplication.VisitorApp.Views.Booking;
 
 namespace CampingApplication.VisitorApp.ViewModels
@@ -19,6 +20,8 @@ namespace CampingApplication.VisitorApp.ViewModels
     public delegate void AvailabilityHandler(bool available);
     public class CampingMapViewModel : INotifyPropertyChanged
     {
+        public const int PIXELS_PER_METER = 25;
+
         public event AvailabilityHandler? AvailabilityChanged;
         public event MapLoadHandler? MapLoaded;
         public event MapLoadErrorHandler? MapLoadError;
@@ -39,14 +42,25 @@ namespace CampingApplication.VisitorApp.ViewModels
 
         private ActionPanelViewModel actionPanelViewModel;
 
-        private string backgroundImage = "";
-        public string BackgroundImage
+        private double mapWidthInMeters = 0;
+        public double MapWidthInMeters
         {
-            get => backgroundImage;
+            get => mapWidthInMeters;
             set
             {
-                backgroundImage = value;
-                OnPropertyChanged(nameof(BackgroundImage));
+                mapWidthInMeters = value;
+                OnPropertyChanged(nameof(MapWidthInMeters));
+            }
+        }
+
+        private double mapHeightInMeters = 0;
+        public double MapHeightInMeters
+        {
+            get => mapHeightInMeters;
+            set
+            {
+                mapHeightInMeters = value;
+                OnPropertyChanged(nameof(MapHeightInMeters));
             }
         }
 
@@ -61,20 +75,20 @@ namespace CampingApplication.VisitorApp.ViewModels
         {
             try
             {
-                var spots = await campingSpotService.GetCampingSpotsAsync();
-                CampingSpotData = spots;
-
-                var facilities = await facilityService.GetFacilitiesAsync();
-                FacilityData = facilities;
+                var getCampingSpots = campingSpotService.GetCampingSpotsAsync();
+                var getFacilities = facilityService.GetFacilitiesAsync();
+                await Task.WhenAll(getCampingSpots, getFacilities);
+                CampingSpotData = await getCampingSpots;
+                FacilityData = await getFacilities;
 
                 var campingSpotViewModels = new List<CampingSpotViewModel>();
-                foreach (var spot in spots)
+                foreach (var spot in CampingSpotData)
                 {
                     campingSpotViewModels.Add(new(this, spot));
                 }
 
                 var facilityViewModels = new List<FacilityViewModel>();
-                foreach (var facility in facilities)
+                foreach (var facility in FacilityData)
                 {
                     facilityViewModels.Add(new(facility));
                 }
@@ -89,6 +103,12 @@ namespace CampingApplication.VisitorApp.ViewModels
                 Debug.WriteLine(ex.Message);
                 MapLoadError?.Invoke();
             }
+        }
+
+        public void SetWidthAndHeight(double widthInPixels, double heightInPixels)
+        {
+            MapWidthInMeters = MapConversionHelper.PixelsToMeters(widthInPixels, PIXELS_PER_METER);
+            MapHeightInMeters = MapConversionHelper.PixelsToMeters(heightInPixels, PIXELS_PER_METER);
         }
 
         public void ClearAvailability()

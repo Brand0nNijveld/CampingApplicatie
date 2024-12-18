@@ -1,4 +1,5 @@
-﻿using CampingApplication.VisitorApp.ViewModels;
+﻿using CampingApplication.Client.Shared.Helpers;
+using CampingApplication.VisitorApp.ViewModels;
 using CampingApplication.VisitorApp.Views.Information;
 using CampingApplication.VisitorApp.Views.Map;
 using System;
@@ -12,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace CampingApplication.VisitorApp.Views
@@ -25,6 +27,13 @@ namespace CampingApplication.VisitorApp.Views
         public CampingMap()
         {
             InitializeComponent();
+
+            // Load the image
+            var bitmap = new BitmapImage(new Uri("Resources/TestMap2.png", UriKind.Relative));
+
+            // Set canvas size to match the image dimensions
+            CampingCanvas.Width = bitmap.PixelWidth;
+            CampingCanvas.Height = bitmap.PixelHeight;
 
             fadeInAnimation = new DoubleAnimation
             {
@@ -56,6 +65,31 @@ namespace CampingApplication.VisitorApp.Views
 
             viewModel.MapLoaded += ViewModel_MapLoaded;
             viewModel.MapLoadError += ViewModel_MapLoadError;
+            viewModel.PropertyChanged += ViewModel_PropertyChanged;
+
+            viewModel.SetWidthAndHeight(CampingCanvas.Width, CampingCanvas.Height);
+        }
+
+        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (viewModel == null)
+            {
+                return;
+            }
+
+            if (e.PropertyName == nameof(viewModel.MapWidthInMeters))
+            {
+                MapWidth.Text = FormatMeters(viewModel.MapWidthInMeters);
+            }
+            else if (e.PropertyName == nameof(viewModel.MapHeightInMeters))
+            {
+                MapHeight.Text = FormatMeters(viewModel.MapHeightInMeters);
+            }
+        }
+
+        private string FormatMeters(double meters)
+        {
+            return Math.Floor(meters) + " meter";
         }
 
         private void ViewModel_MapLoadError()
@@ -113,8 +147,17 @@ namespace CampingApplication.VisitorApp.Views
 
                 Canvas.SetLeft(facilityView, facility.PositionX);
                 Canvas.SetTop(facilityView, facility.PositionY);
+                Debug.WriteLine("Setting facility position: " + facility.PositionX + ", " + facility.PositionY);
                 CampingCanvas.Children.Add(facilityView);
             }
+        }
+
+        private void CampingCanvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            var pos = e.GetPosition(CampingCanvas);
+            double xCoordinate = MapConversionHelper.PixelsToMeters(pos.X, CampingMapViewModel.PIXELS_PER_METER);
+            double yCoordinate = MapConversionHelper.PixelsToMeters(pos.Y, CampingMapViewModel.PIXELS_PER_METER);
+            Debug.WriteLine("Real world mouse position: (x)" + xCoordinate + ", (y)" + yCoordinate);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CampingApplication.Business;
+using CampingApplication.Client.Shared.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -59,8 +60,9 @@ namespace CampingApplication.VisitorApp.ViewModels
         public CampingSpotViewModel(CampingMapViewModel campingMapViewModel, CampingSpot spot)
         {
             this.ID = spot.ID;
-            this.PositionX = spot.PositionX;
-            this.PositionY = spot.PositionY;
+            int pixelsPerMeter = CampingMapViewModel.PIXELS_PER_METER;
+            this.PositionX = MapConversionHelper.MetersToPixels(spot.XCoordinate, pixelsPerMeter);
+            this.PositionY = MapConversionHelper.MetersToPixels(spot.YCoordinate, pixelsPerMeter);
             this.campingMapViewModel = campingMapViewModel;
         }
 

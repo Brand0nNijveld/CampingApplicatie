@@ -50,7 +50,6 @@
             <SolidColorBrush x:Key="Radius">#F2F2F2</SolidColorBrush>
 
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/DatePickerStyles.xaml" />
                 <ResourceDictionary Source="Themes/Themes.xaml" />
                 <ResourceDictionary Source="Resources/Icons/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
