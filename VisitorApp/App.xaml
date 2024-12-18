@@ -28,10 +28,30 @@
                 <Setter Property="FontFamily" Value="{StaticResource GlobalFont}" />
             </Style>
 
+            <SolidColorBrush x:Key="Background">#F2F2F2</SolidColorBrush>
+            <SolidColorBrush x:Key="Foreground">#1A1A1A</SolidColorBrush>
+            <SolidColorBrush x:Key="Card">#E5E5E5</SolidColorBrush>
+            <SolidColorBrush x:Key="CardForeground">#1A1A1A</SolidColorBrush>
+            <SolidColorBrush x:Key="Popover">#F2F2F2</SolidColorBrush>
+            <SolidColorBrush x:Key="PopoverForeground">#F2F2F2</SolidColorBrush>
+            <SolidColorBrush x:Key="Primary">#0066FF</SolidColorBrush>
+            <SolidColorBrush x:Key="PrimaryForeground">#FFFFFF</SolidColorBrush>
+            <SolidColorBrush x:Key="Secondary">#1A66B3</SolidColorBrush>
+            <SolidColorBrush x:Key="SecondaryForeground">#000000</SolidColorBrush>
+            <SolidColorBrush x:Key="Muted">#D1D1D1</SolidColorBrush>
+            <SolidColorBrush x:Key="MutedForeground">#4D4D4D</SolidColorBrush>
+            <SolidColorBrush x:Key="Accent">#D1D1D1</SolidColorBrush>
+            <SolidColorBrush x:Key="AccentForeground">#1A1A1A</SolidColorBrush>
+            <SolidColorBrush x:Key="Destructive">#FF6633</SolidColorBrush>
+            <SolidColorBrush x:Key="DestructiveForeground">#E5E5E5</SolidColorBrush>
+            <SolidColorBrush x:Key="Border">#A3A3A3</SolidColorBrush>
+            <SolidColorBrush x:Key="Input">#333333</SolidColorBrush>
+            <SolidColorBrush x:Key="Ring">#0066FF</SolidColorBrush>
+            <SolidColorBrush x:Key="Radius">#F2F2F2</SolidColorBrush>
+
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="./Resources/DatePickerStyles.xaml" />
-                <ResourceDictionary Source="./Themes/Themes.xaml" />
-                <ResourceDictionary Source="./Resources/Icons/Icons.xaml" />
+                <ResourceDictionary Source="Themes/Themes.xaml" />
+                <ResourceDictionary Source="Resources/Icons/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -44,7 +44,7 @@ namespace CampingApplication.EmployeeApp.ViewModels
             for (int i = 0; i < campingSpots.Count; i++)
             {
                 CampingSpot spot = campingSpots[i];
-                campingSpotVisuals[i] = new(spot.ID, spot.PositionX, spot.PositionY);
+                campingSpotVisuals[i] = new(spot.ID, spot.XCoordinate, spot.YCoordinate);
             }
 
             this.campingSpots = new(campingSpotVisuals);

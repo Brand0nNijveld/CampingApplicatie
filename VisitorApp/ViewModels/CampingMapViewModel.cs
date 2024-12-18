@@ -9,45 +9,58 @@ using System.Threading.Tasks;
 using System.Windows;
 using CampingApplication.Business;
 using CampingApplication.Business.CampingSpotService;
-using CampingApplication.VisitorApp.Models;
+using CampingApplication.Business.FacilityService;
+using CampingApplication.Client.Shared.Helpers;
 using CampingApplication.VisitorApp.Views.Booking;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
+    public delegate void MapLoadHandler();
+    public delegate void MapLoadErrorHandler();
     public delegate void AvailabilityHandler(bool available);
     public class CampingMapViewModel : INotifyPropertyChanged
     {
+        public const double PIXELS_PER_METER = 25;
+
         public event AvailabilityHandler? AvailabilityChanged;
+        public event MapLoadHandler? MapLoaded;
+        public event MapLoadErrorHandler? MapLoadError;
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         private CampingSpotService campingSpotService;
+        private FacilityService facilityService;
+
+        public List<Facility> FacilityData { get; private set; } = [];
+        public List<FacilityViewModel> Facilities = [];
 
         public List<CampingSpot> CampingSpotData { get; private set; } = [];
-
-        private ObservableCollection<CampingSpotVisualModel> campingSpots = [];
-        public ObservableCollection<CampingSpotVisualModel> CampingSpots
-        {
-            get => campingSpots;
-            set
-            {
-                campingSpots = value;
-                OnPropertyChanged(nameof(CampingSpots));
-            }
-        }
+        public List<CampingSpotViewModel> CampingSpots = [];
 
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
 
         private ActionPanelViewModel actionPanelViewModel;
 
-        private string backgroundImage = "";
-        public string BackgroundImage
+        private double mapWidthInMeters = 0;
+        public double MapWidthInMeters
         {
-            get => backgroundImage;
+            get => mapWidthInMeters;
             set
             {
-                backgroundImage = value;
-                OnPropertyChanged(nameof(BackgroundImage));
+                mapWidthInMeters = value;
+                OnPropertyChanged(nameof(MapWidthInMeters));
+            }
+        }
+
+        private double mapHeightInMeters = 0;
+        public double MapHeightInMeters
+        {
+            get => mapHeightInMeters;
+            set
+            {
+                mapHeightInMeters = value;
+                OnPropertyChanged(nameof(MapHeightInMeters));
             }
         }
 
@@ -55,33 +68,47 @@ namespace CampingApplication.VisitorApp.ViewModels
         {
             this.actionPanelViewModel = actionPanelViewModel;
             campingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
+            facilityService = ServiceProvider.Current.Resolve<FacilityService>();
         }
 
-        public async Task GetCampingSpotsAsync()
+        public async Task GetMapDataAsync()
         {
             try
             {
-                var spots = await campingSpotService.GetCampingSpotsAsync();
-                CampingSpotData = spots;
+                var getCampingSpots = campingSpotService.GetCampingSpotsAsync();
+                var getFacilities = facilityService.GetFacilitiesAsync();
+                await Task.WhenAll(getCampingSpots, getFacilities);
+                CampingSpotData = await getCampingSpots;
+                FacilityData = await getFacilities;
 
-                var campingSpotVisuals = new CampingSpotVisualModel[spots.Count];
-                for (int i = 0; i < spots.Count; i++)
+                var campingSpotViewModels = new List<CampingSpotViewModel>();
+                foreach (var spot in CampingSpotData)
                 {
-                    Debug.WriteLine("Camping spot: " + spots[i].ID);
-                    CampingSpot spot = spots[i];
-                    campingSpotVisuals[i] = new(spot.ID, spot.PositionX, spot.PositionY);
+                    campingSpotViewModels.Add(new(this, spot));
                 }
 
-                // Use Dispatcher to update UI-bound properties or raise events
-                Application.Current.Dispatcher.Invoke(() =>
+                var facilityViewModels = new List<FacilityViewModel>();
+                foreach (var facility in FacilityData)
                 {
-                    CampingSpots = new ObservableCollection<CampingSpotVisualModel>(campingSpotVisuals);
-                });
+                    facilityViewModels.Add(new(facility));
+                }
+
+                CampingSpots = campingSpotViewModels;
+                Facilities = facilityViewModels;
+
+                MapLoaded?.Invoke();
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
+                MapLoadError?.Invoke();
             }
+        }
+
+        public void SetWidthAndHeight(double widthInPixels, double heightInPixels)
+        {
+            MapWidthInMeters = MapConversionHelper.PixelsToMeters(widthInPixels, PIXELS_PER_METER);
+            MapHeightInMeters = MapConversionHelper.PixelsToMeters(heightInPixels, PIXELS_PER_METER);
         }
 
         public void ClearAvailability()
@@ -99,19 +126,24 @@ namespace CampingApplication.VisitorApp.ViewModels
                 AvailabilityChanged?.Invoke(false);
             }
 
-            foreach (var visual in campingSpots)
+            foreach (var visual in CampingSpots)
             {
                 if (available.ContainsKey(visual.ID))
                 {
-                    visual.Available = true;
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        visual.Available = true;
+                    });
                 }
                 else
                 {
-                    visual.Available = false;
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        visual.Available = false;
+                    });
                 }
             }
 
-            OnPropertyChanged(nameof(CampingSpots));
             AvailabilityChanged?.Invoke(true);
         }
 

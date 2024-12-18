@@ -33,15 +33,15 @@ namespace UnitTests
             DateTime startDate = DateTime.Parse(startDateString);
             DateTime endDate = DateTime.Parse(endDateString);
 
-            var spots = await service.GetCampingSpots();
+            var spots = await service.GetCampingSpotsAsync();
             var availableSpots = CampingSpotService.GetAvailableSpots([.. spots], startDate, endDate);
 
             Assert.That(availableSpots.Count(), Is.EqualTo(result), $"There should be exactly {result} available spot(s)");
         }
 
-        private IEnumerable<CampingSpot> GetMockCampingSpots()
+        private Task<IEnumerable<CampingSpot>> GetMockCampingSpots()
         {
-            return new List<CampingSpot>
+            var spots = new List<CampingSpot>
             (
                 [
             new CampingSpot(
@@ -69,6 +69,8 @@ namespace UnitTests
                     new(1, DateTime.Parse("2024-12-1"), DateTime.Parse("2024-12-7"))
                 ]
             )]);
+
+            return Task.FromResult<IEnumerable<CampingSpot>>(spots);
         }
     }
 }

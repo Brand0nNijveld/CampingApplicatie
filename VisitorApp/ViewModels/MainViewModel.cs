@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using CampingApplication.Business;
 using CampingApplication.Business.CampingSpotService;
 using CampingApplication.VisitorApp.Views.Booking;
-using CampingApplication.VisitorApp.Models;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
