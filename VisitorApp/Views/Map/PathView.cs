@@ -3,6 +3,7 @@ using CampingApplication.Client.Shared.Helpers;
 using CampingApplication.VisitorApp.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -18,38 +19,45 @@ namespace CampingApplication.VisitorApp.Views.Map
     {
         private Canvas canvas;
 
+        public PathViewModel ViewModel { get; private set; }
         public Path MainPath { get; private set; } = new();
-        private Graph mainGraph = new();
 
         public PathView(Canvas canvas)
         {
             this.canvas = canvas;
+            ViewModel = new();
 
-            var startNode = new Node(0, 33.95, 50);
-            var node1 = new Node(1, 33.95, 37.2);
-            var node2 = new Node(2, 15.3, 37.2);
-            var node3 = new Node(3, 15.3, 5.3);
-            var node4 = new Node(4, 41.6, 37.2);
-            var node5 = new Node(5, 41.6, 44.97);
-            var node6 = new Node(6, 41.6, 5.3);
-            var node7 = new Node(7, 29.8, 37.2);
-            var node8 = new Node(8, 29.8, 20.4);
-            var node9 = new Node(9, 50, 5.3);
-            var node10 = new Node(10, 50, 20);
-            mainGraph.ConnectNodes(startNode, node1);
-            mainGraph.ConnectNodes(node1, node2);
-            mainGraph.ConnectNodes(node2, node3);
-            mainGraph.ConnectNodes(node2, node4);
-            mainGraph.ConnectNodes(node4, node5);
-            mainGraph.ConnectNodes(node4, node6);
-            mainGraph.ConnectNodes(node1, node7);
-            mainGraph.ConnectNodes(node7, node8);
-            mainGraph.ConnectNodes(node6, node9);
-            mainGraph.ConnectNodeToClosestEdge(node10);
+            ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+        }
+
+        private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ViewModel.RouteGraphs))
+            {
+                for (int i = 0; i < ViewModel.RouteGraphs.Count; i++)
+                {
+                    SolidColorBrush color = new();
+                    var routeGraph = ViewModel.RouteGraphs[i];
+                    if (i == 1)
+                    {
+                        color = Brushes.Blue;
+                    }
+                    else if (i == 2)
+                    {
+                        color = Brushes.Yellow;
+                    }
+
+                    var route = DrawPath(routeGraph, color, 15);
+                    canvas.Children.Add(route);
+
+                    //DrawNodes(routeGraph);
+                }
+            }
         }
 
         public void DrawMainPath()
         {
+            Graph mainGraph = ViewModel.MainGraph;
             MainPath = DrawPath(mainGraph, Brushes.Black, 70, 0.2);
             canvas.Children.Add(MainPath);
 
@@ -60,7 +68,7 @@ namespace CampingApplication.VisitorApp.Views.Map
         public void AddClosestConnection(double x, double y)
         {
             Node from = new(-1, x, y);
-            mainGraph.ConnectNodeToClosestEdge(from);
+            ViewModel.MainGraph.ConnectNodeToClosestEdge(from);
             if (MainPath != null)
             {
                 canvas.Children.Remove(MainPath);
@@ -72,7 +80,17 @@ namespace CampingApplication.VisitorApp.Views.Map
         private Path DrawPath(Graph graph, SolidColorBrush color, int strokeThickness = 30, double opacity = 1)
         {
             PathGeometry pathGeometry = new();
-            List<PathFigure> pathFigures = GeneratePathList(graph.AdjacencyList.First().Key);
+            Node? startNode;
+            if (graph.StartNode != null)
+            {
+                startNode = graph.StartNode;
+            }
+            else
+            {
+                startNode = graph.AdjacencyList.First().Key;
+            }
+
+            List<PathFigure> pathFigures = GeneratePathList(startNode);
 
             foreach (var path in pathFigures)
             {

@@ -18,6 +18,7 @@ namespace CampingApplication.VisitorApp.ViewModels
     public delegate void MapLoadHandler();
     public delegate void MapLoadErrorHandler();
     public delegate void AvailabilityHandler(bool available);
+    public delegate void SelectedCampingSpotHandler(CampingSpotViewModel? campingSpot);
     public class CampingMapViewModel : INotifyPropertyChanged
     {
         public const double PIXELS_PER_METER = 25;
@@ -25,6 +26,7 @@ namespace CampingApplication.VisitorApp.ViewModels
         public event AvailabilityHandler? AvailabilityChanged;
         public event MapLoadHandler? MapLoaded;
         public event MapLoadErrorHandler? MapLoadError;
+        public event SelectedCampingSpotHandler? SelectedCampingSpotChanged;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -34,8 +36,20 @@ namespace CampingApplication.VisitorApp.ViewModels
         public List<Facility> FacilityData { get; private set; } = [];
         public List<FacilityViewModel> Facilities = [];
 
-        public List<CampingSpot> CampingSpotData { get; private set; } = [];
+        public Dictionary<int, CampingSpot> CampingSpotData { get; private set; } = [];
         public List<CampingSpotViewModel> CampingSpots = [];
+
+        private CampingSpotViewModel? selectedCampingSpot;
+        public CampingSpotViewModel? SelectedCampingSpot
+        {
+            get => selectedCampingSpot;
+            set
+            {
+                selectedCampingSpot = value;
+                OnPropertyChanged(nameof(SelectedCampingSpot));
+                SelectedCampingSpotChanged?.Invoke(selectedCampingSpot);
+            }
+        }
 
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
@@ -64,8 +78,6 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
         }
 
-        public CampingSpotViewModel? SelectedCampingSpot { get; private set; }
-
         public CampingMapViewModel(ActionPanelViewModel actionPanelViewModel)
         {
             this.actionPanelViewModel = actionPanelViewModel;
@@ -80,13 +92,15 @@ namespace CampingApplication.VisitorApp.ViewModels
                 var getCampingSpots = campingSpotService.GetCampingSpotsAsync();
                 var getFacilities = facilityService.GetFacilitiesAsync();
                 await Task.WhenAll(getCampingSpots, getFacilities);
-                CampingSpotData = await getCampingSpots;
+                var campingSpots = await getCampingSpots;
+                CampingSpotData = [];
                 FacilityData = await getFacilities;
 
                 var campingSpotViewModels = new List<CampingSpotViewModel>();
-                foreach (var spot in CampingSpotData)
+                foreach (var spot in campingSpots)
                 {
                     campingSpotViewModels.Add(new(this, spot));
+                    CampingSpotData.TryAdd(spot.ID, spot);
                 }
 
                 var facilityViewModels = new List<FacilityViewModel>();
@@ -158,6 +172,7 @@ namespace CampingApplication.VisitorApp.ViewModels
         public void SelectCampingSpot(CampingSpotViewModel campingSpot)
         {
             SelectedCampingSpot = campingSpot;
+            Debug.WriteLine("Selected camping spot with ID: " + campingSpot.ID);
 
             //if (StartDate >= EndDate)
             //    return;

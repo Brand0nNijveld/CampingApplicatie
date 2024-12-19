@@ -67,6 +67,7 @@ namespace CampingApplication.VisitorApp.Views
         public void SetViewModel(CampingMapViewModel viewModel)
         {
             this.viewModel = viewModel;
+            pathView.ViewModel.CampingMapViewModel = viewModel;
             viewModel.AvailabilityChanged += OnAvailabilityChanged;
 
             viewModel.MapLoaded += ViewModel_MapLoaded;
@@ -157,7 +158,7 @@ namespace CampingApplication.VisitorApp.Views
                 CampingCanvas.Children.Add(facilityView);
             }
 
-            pathView.DrawMainPath();
+            pathView?.DrawMainPath();
         }
 
         private void CampingCanvas_MouseUp(object sender, MouseEventArgs e)
@@ -165,7 +166,7 @@ namespace CampingApplication.VisitorApp.Views
             var pos = e.GetPosition(CampingCanvas);
             var (xCoordinate, yCoordinate) = MapConversionHelper.PixelsToMeters(pos.X, pos.Y, CampingMapViewModel.PIXELS_PER_METER);
             Debug.WriteLine("Real world mouse position: (x)" + xCoordinate + ", (y)" + yCoordinate);
-            pathView.AddClosestConnection(xCoordinate, yCoordinate);
+
         }
     }
 }

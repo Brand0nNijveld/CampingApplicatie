@@ -95,7 +95,7 @@ namespace CampingApplication.VisitorApp.ViewModels
 
         public void SelectCampingSpot()
         {
-            campingMapViewModel.SelectCampingSpot(ID);
+            campingMapViewModel.SelectCampingSpot(this);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

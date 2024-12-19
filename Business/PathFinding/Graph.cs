@@ -10,12 +10,45 @@ namespace CampingApplication.Business.PathFinding
 
     public class Graph
     {
+        public Node? StartNode { get; set; }
         public readonly Dictionary<Node, List<(Node, double)>> AdjacencyList;
 
         public Graph()
         {
             AdjacencyList = [];
         }
+
+        public Graph DeepCopyGraph()
+        {
+            var copiedGraph = new Graph();
+
+            // Step 1: Create copies of nodes (deep copy of the nodes)
+            var nodeMap = new Dictionary<Node, Node>(); // To map original node to its copy
+
+            // Create new nodes in the copied graph and keep track of the mapping
+            foreach (var node in AdjacencyList.Keys)
+            {
+                var copiedNode = new Node(node.ID, node.X, node.Y);
+                copiedGraph.AddNode(copiedNode); // Add the copied node to the new graph
+                nodeMap[node] = copiedNode; // Map original node to its copy
+            }
+
+            // Step 2: Copy edges (connections between nodes)
+            foreach (var node in AdjacencyList)
+            {
+                var originalNode = node.Key;
+                var copiedNode = nodeMap[originalNode]; // Get the copy of the current node
+
+                foreach (var (neighbor, distance) in node.Value)
+                {
+                    var copiedNeighbor = nodeMap[neighbor]; // Get the copy of the neighbor node
+                    copiedGraph.ConnectNodes(copiedNode, copiedNeighbor, distance); // Use the ConnectNodes method to add the edge
+                }
+            }
+
+            return copiedGraph;
+        }
+
 
         public void AddNode(Node node)
         {
