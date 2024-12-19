@@ -19,18 +19,12 @@ namespace CampingApplication.VisitorApp.Views.Map
         private Canvas canvas;
 
         public Path MainPath { get; private set; } = new();
+        private Graph mainGraph = new();
 
         public PathView(Canvas canvas)
         {
             this.canvas = canvas;
-        }
 
-        public void DrawMainPath()
-        {
-            HashSet<Tuple<Node, Node>> edgesDrawn = [];
-
-            // Sample graph with nodes and edges
-            Graph graph = new();
             var startNode = new Node(0, 33.95, 50);
             var node1 = new Node(1, 33.95, 37.2);
             var node2 = new Node(2, 15.3, 37.2);
@@ -41,87 +35,70 @@ namespace CampingApplication.VisitorApp.Views.Map
             var node7 = new Node(7, 29.8, 37.2);
             var node8 = new Node(8, 29.8, 20.4);
             var node9 = new Node(9, 50, 5.3);
-            graph.ConnectNodes(startNode, node1);
-            graph.ConnectNodes(node1, node2);
-            graph.ConnectNodes(node2, node3);
-            graph.ConnectNodes(node2, node4);
-            graph.ConnectNodes(node4, node5);
-            graph.ConnectNodes(node4, node6);
-            graph.ConnectNodes(node1, node7);
-            graph.ConnectNodes(node7, node8);
-            graph.ConnectNodes(node6, node9);
+            var node10 = new Node(10, 50, 20);
+            mainGraph.ConnectNodes(startNode, node1);
+            mainGraph.ConnectNodes(node1, node2);
+            mainGraph.ConnectNodes(node2, node3);
+            mainGraph.ConnectNodes(node2, node4);
+            mainGraph.ConnectNodes(node4, node5);
+            mainGraph.ConnectNodes(node4, node6);
+            mainGraph.ConnectNodes(node1, node7);
+            mainGraph.ConnectNodes(node7, node8);
+            mainGraph.ConnectNodes(node6, node9);
+            mainGraph.ConnectNodeToClosestEdge(node10);
+        }
 
+        public void DrawMainPath()
+        {
+            MainPath = DrawPath(mainGraph, Brushes.Black, 70, 0.2);
+            canvas.Children.Add(MainPath);
 
-            double pixelsPerMeter = CampingMapViewModel.PIXELS_PER_METER;
+            // DEBUG TO CHECK NODES
+            DrawNodes(mainGraph);
+        }
 
-            int startX = MapConversionHelper.MetersToPixels(startNode.X, pixelsPerMeter);
-            int startY = MapConversionHelper.MetersToPixels(startNode.Y, pixelsPerMeter);
-
-            PathGeometry pathGeometry = new();
-            List<PathFigure> pathFigures = DrawPath(startNode, edgesDrawn);
-
-            foreach ((var node, var neighbors) in graph.AdjacencyList)
+        public void AddClosestConnection(double x, double y)
+        {
+            Node from = new(-1, x, y);
+            mainGraph.ConnectNodeToClosestEdge(from);
+            if (MainPath != null)
             {
-                // Convert node position to pixels
-                double nodeX = MapConversionHelper.MetersToPixels(node.X, pixelsPerMeter);
-                double nodeY = MapConversionHelper.MetersToPixels(node.Y, pixelsPerMeter);
-                // Draw node (Ellipse)
-                Border nodeEllipse = new Border
-                {
-                    Width = 30,
-                    Height = 30,
-                    CornerRadius = new CornerRadius(100),
-                    Background = new SolidColorBrush(Colors.Red)
-                };
-
-                // Create and position a TextBlock for the node's ID
-                TextBlock idText = new TextBlock
-                {
-                    Text = node.ID.ToString(),  // Display the node's ID
-                    Foreground = Brushes.Black,
-                    FontSize = 20,
-                    FontWeight = FontWeights.Bold,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Center
-                };
-
-                nodeEllipse.Child = idText;
-
-                Canvas.SetLeft(nodeEllipse, nodeX - 15);
-                Canvas.SetTop(nodeEllipse, nodeY - 15);
-                canvas.Children.Add(nodeEllipse);
+                canvas.Children.Remove(MainPath);
             }
+
+            DrawMainPath();
+        }
+
+        private Path DrawPath(Graph graph, SolidColorBrush color, int strokeThickness = 30, double opacity = 1)
+        {
+            PathGeometry pathGeometry = new();
+            List<PathFigure> pathFigures = GeneratePathList(graph.AdjacencyList.First().Key);
 
             foreach (var path in pathFigures)
             {
                 pathGeometry.Figures.Add(path);
             }
 
-            // Create the Path with the geometry and add it to the canvas
-            MainPath = new Path
+            return new Path
             {
                 Data = pathGeometry,
-                Stroke = Brushes.Black,  // Thick road color
-                Opacity = 0.2,
-                StrokeThickness = 70,  // Set a thick road width here
+                Stroke = color,
+                Opacity = opacity,
+                StrokeThickness = strokeThickness,
                 StrokeLineJoin = PenLineJoin.Round,
                 Fill = Brushes.Transparent
             };
-
-            canvas.Children.Add(MainPath);
         }
 
-        private List<PathFigure> DrawPath(Node node, HashSet<Tuple<Node, Node>> edgesDrawn, List<PathFigure>? paths = null, PathFigure? currentPath = null)
+        private List<PathFigure> GeneratePathList(Node node, HashSet<Tuple<Node, Node>>? edgesDrawn = null, List<PathFigure>? paths = null, PathFigure? currentPath = null)
         {
             double pixelsPerMeter = CampingMapViewModel.PIXELS_PER_METER;
             // Convert node position to pixels
             double nodeX = MapConversionHelper.MetersToPixels(node.X, pixelsPerMeter);
             double nodeY = MapConversionHelper.MetersToPixels(node.Y, pixelsPerMeter);
 
-            if (paths == null)
-            {
-                paths = [];
-            }
+            paths ??= [];
+            edgesDrawn ??= [];
 
             if (node.Neighbors.Count == 0)
                 return paths;
@@ -137,8 +114,6 @@ namespace CampingApplication.VisitorApp.Views.Map
             {
                 return paths;
             }
-
-            Debug.WriteLine($"Drawing edge from {node.ID} to {neighbor.ID}");
 
             edgesDrawn.Add(Tuple.Create(node, neighbor));
 
@@ -167,16 +142,51 @@ namespace CampingApplication.VisitorApp.Views.Map
             currentPath.Segments.Add(bezierSegment);
 
             // Further draw current path
-            DrawPath(neighbor, edgesDrawn, paths, currentPath);
+            GeneratePathList(neighbor, edgesDrawn, paths, currentPath);
 
             // Start new branches if there are more neighbors
             for (int i = 1; i < node.Neighbors.Count; i++)
             {
                 // Leave out current path so it starts a new path
-                DrawPath(node.Neighbors[i], edgesDrawn, paths);
+                GeneratePathList(node.Neighbors[i], edgesDrawn, paths);
             }
 
             return paths;
         }
+
+        private void DrawNodes(Graph graph)
+        {
+            double pixelsPerMeter = CampingMapViewModel.PIXELS_PER_METER;
+
+            foreach ((var node, var neighbors) in graph.AdjacencyList)
+            {
+                double nodeX = MapConversionHelper.MetersToPixels(node.X, pixelsPerMeter);
+                double nodeY = MapConversionHelper.MetersToPixels(node.Y, pixelsPerMeter);
+                Border nodeEllipse = new()
+                {
+                    Width = 30,
+                    Height = 30,
+                    CornerRadius = new CornerRadius(100),
+                    Background = new SolidColorBrush(Colors.Red)
+                };
+
+                TextBlock idText = new TextBlock
+                {
+                    Text = node.ID.ToString(),
+                    Foreground = Brushes.Black,
+                    FontSize = 20,
+                    FontWeight = FontWeights.Bold,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center
+                };
+
+                nodeEllipse.Child = idText;
+
+                Canvas.SetLeft(nodeEllipse, nodeX - 15);
+                Canvas.SetTop(nodeEllipse, nodeY - 15);
+                canvas.Children.Add(nodeEllipse);
+            }
+        }
+
     }
 }

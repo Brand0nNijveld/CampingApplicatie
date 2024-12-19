@@ -25,9 +25,13 @@ namespace CampingApplication.VisitorApp.Views
         DoubleAnimation fadeInAnimation;
         DoubleAnimation fadeOutAnimation;
 
+        private PathView pathView;
+
         public CampingMap()
         {
             InitializeComponent();
+
+            pathView = new(CampingCanvas);
 
             // Load the image
             var bitmap = new BitmapImage(new Uri("Resources/TestMap2.png", UriKind.Relative));
@@ -153,16 +157,15 @@ namespace CampingApplication.VisitorApp.Views
                 CampingCanvas.Children.Add(facilityView);
             }
 
-            PathView pathView = new(CampingCanvas);
             pathView.DrawMainPath();
         }
 
-        private void CampingCanvas_MouseMove(object sender, MouseEventArgs e)
+        private void CampingCanvas_MouseUp(object sender, MouseEventArgs e)
         {
             var pos = e.GetPosition(CampingCanvas);
-            double xCoordinate = MapConversionHelper.PixelsToMeters(pos.X, CampingMapViewModel.PIXELS_PER_METER);
-            double yCoordinate = MapConversionHelper.PixelsToMeters(pos.Y, CampingMapViewModel.PIXELS_PER_METER);
+            var (xCoordinate, yCoordinate) = MapConversionHelper.PixelsToMeters(pos.X, pos.Y, CampingMapViewModel.PIXELS_PER_METER);
             Debug.WriteLine("Real world mouse position: (x)" + xCoordinate + ", (y)" + yCoordinate);
+            pathView.AddClosestConnection(xCoordinate, yCoordinate);
         }
     }
 }

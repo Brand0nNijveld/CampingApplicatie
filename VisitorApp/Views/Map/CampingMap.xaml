@@ -33,7 +33,7 @@
 
         <TextBlock x:Name="MapWidth" FontSize="20" Margin="0,0,0,20" Grid.Column="1" HorizontalAlignment="Center" Text="" >70 meter</TextBlock>
 
-        <Canvas ClipToBounds="True" MouseMove="CampingCanvas_MouseMove" Grid.Row="1" Grid.Column="1" Name="CampingCanvas" Margin="0,0,0,0">
+        <Canvas ClipToBounds="True" MouseLeftButtonUp="CampingCanvas_MouseUp" Grid.Row="1" Grid.Column="1" Name="CampingCanvas" Margin="0,0,0,0">
             <Canvas.Background>
                 <ImageBrush x:Name="MapImage" ImageSource="../../Resources/TestMap2.png" Stretch="Fill"/>
             </Canvas.Background>

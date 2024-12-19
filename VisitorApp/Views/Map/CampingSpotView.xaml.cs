@@ -37,7 +37,7 @@ namespace CampingApplication.VisitorApp.Views.Map
 
         private void CampingSpot_Clicked(object sender, MouseButtonEventArgs e)
         {
-            viewModel.ShowDetails();
+            viewModel.SelectCampingSpot();
         }
 
         private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)

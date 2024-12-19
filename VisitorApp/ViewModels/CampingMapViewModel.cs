@@ -64,6 +64,8 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
         }
 
+        public CampingSpotViewModel? SelectedCampingSpot { get; private set; }
+
         public CampingMapViewModel(ActionPanelViewModel actionPanelViewModel)
         {
             this.actionPanelViewModel = actionPanelViewModel;
@@ -107,8 +109,9 @@ namespace CampingApplication.VisitorApp.ViewModels
 
         public void SetWidthAndHeight(double widthInPixels, double heightInPixels)
         {
-            MapWidthInMeters = MapConversionHelper.PixelsToMeters(widthInPixels, PIXELS_PER_METER);
-            MapHeightInMeters = MapConversionHelper.PixelsToMeters(heightInPixels, PIXELS_PER_METER);
+            var (width, height) = MapConversionHelper.PixelsToMeters(widthInPixels, heightInPixels, PIXELS_PER_METER);
+            MapWidthInMeters = width;
+            MapHeightInMeters = height;
         }
 
         public void ClearAvailability()
@@ -152,22 +155,26 @@ namespace CampingApplication.VisitorApp.ViewModels
             PropertyChanged?.Invoke(this.PropertyChanged, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void ShowBookScreen(int ID)
+        public void SelectCampingSpot(CampingSpotViewModel campingSpot)
         {
-            if (StartDate >= EndDate)
-                return;
+            SelectedCampingSpot = campingSpot;
 
-            BookingView bookingView = new(ID, StartDate, EndDate, 60);
-            bookingView.BackButtonClicked += () => actionPanelViewModel.ClearAndHide();
-            bookingView.ViewModel.BookingSuccessful += () =>
-            {
-                actionPanelViewModel.Next();
-                GetAvailability();
-            };
-            BookingSuccessView bookingSuccessView = new();
-            bookingSuccessView.DoneButtonClicked += () => actionPanelViewModel.ClearAndHide();
+            //if (StartDate >= EndDate)
+            //    return;
 
-            actionPanelViewModel.SetSteps([bookingView, bookingSuccessView]);
+            //int ID = campingSpot.ID;
+
+            //BookingView bookingView = new(ID, StartDate, EndDate, 60);
+            //bookingView.BackButtonClicked += () => actionPanelViewModel.ClearAndHide();
+            //bookingView.ViewModel.BookingSuccessful += () =>
+            //{
+            //    actionPanelViewModel.Next();
+            //    GetAvailability();
+            //};
+            //BookingSuccessView bookingSuccessView = new();
+            //bookingSuccessView.DoneButtonClicked += () => actionPanelViewModel.ClearAndHide();
+
+            //actionPanelViewModel.SetSteps([bookingView, bookingSuccessView]);
         }
 
         public async void GetAvailability()

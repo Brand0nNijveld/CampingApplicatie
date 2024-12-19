@@ -17,5 +17,10 @@ namespace CampingApplication.Client.Shared.Helpers
         {
             return (int)Math.Round(meters * pixelsPerMeter);
         }
+
+        public static (double, double) PixelsToMeters(double pixelsX, double pixelsY, double pixelsPerMeter)
+        {
+            return (pixelsX / pixelsPerMeter, pixelsY / pixelsPerMeter);
+        }
     }
 }
