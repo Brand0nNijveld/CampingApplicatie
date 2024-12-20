@@ -1,5 +1,6 @@
 ﻿using CampingApplication.Business;
 using CampingApplication.VisitorApp.ViewModels;
+using CampingApplication.VisitorApp.Views;
 using CampingApplication.VisitorApp.Views.Booking;
 using System.Text;
 using System.Windows;
@@ -34,6 +35,16 @@ namespace CampingApplication.VisitorApp
             ActionPanel.SetViewModel(viewModel.ActionPanelViewModel);
 
             DateRangePicker.mainViewModel = viewModel;
+        }
+
+        public DateTime? GetBeginDate()
+        {
+            return DateRangePicker.BeginDate;
+        }
+
+        public DateTime? GetEndDate()
+        {
+            return DateRangePicker.EndDate;
         }
 
         private void DateRangePicker_Loaded(object sender, RoutedEventArgs e)

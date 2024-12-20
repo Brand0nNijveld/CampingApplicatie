@@ -16,5 +16,8 @@ namespace CampingApplication.Business.CampingSpotService
 
         public Task<CampingSpotInfo> GetCampingSpotInfoAsync (int ID);
 
+        Task<IEnumerable<CampingSpotImage>> GetCampingSpotImagesAsync(int spotNr);
+
+
     }
 }

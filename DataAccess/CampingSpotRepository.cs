@@ -3,6 +3,9 @@ using CampingApplication.Business.CampingSpotService;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace DataAccess
 {
@@ -54,27 +57,64 @@ namespace DataAccess
                         reader.GetInt32("PositionY")
                     ));
                 }
-                // Ensure the connection is closed after the operation
-                connection.Close();  // Close the connection
+
+                connection.Close(); // Eigenlijk niet nodig aangezien 'using' dit al automatisch doet
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Database error: {ex.Message}");
-                throw; // Rethrow exception for higher-level handling
+                throw;
             }
 
             return availableSpots;
         }
 
-        public async Task<CampingSpotInfo> GetCampingSpotInfoAsync(int ID)
+        // Voeg een foto toe met het volledige pad en bestandsnaam
+        public async Task AddFotoToDatabaseAsync(int spotNr, string filePath)
         {
-            CampingSpotInfo campingSpotInfo = null;
-            string query = "SELECT SpotNr, PricePerNight, Pets, Electricity FROM spotinfo WHERE SpotNr = @SpotNr";
+            string fileName = Path.GetFileName(filePath);  // Haal de bestandsnaam uit het pad
+
+            string query = @"
+                INSERT INTO CampingSpotImage (SpotNr, FilePath, Filename)
+                VALUES (@SpotNr, @FilePath, @Filename)";
 
             try
             {
                 using var connection = await _dbConnection.GetConnectionAsync();
-                await connection.OpenAsync(); // Verantwoordelijkheid voor openen ligt bij de repository
+                await connection.OpenAsync();
+
+                using var command = new MySqlCommand(query, connection);
+                command.Parameters.AddWithValue("@SpotNr", spotNr);
+                command.Parameters.AddWithValue("@FilePath", filePath);  // Sla het volledige pad op
+                command.Parameters.AddWithValue("@Filename", fileName);    // Sla de bestandsnaam op
+
+                await command.ExecuteNonQueryAsync();
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error adding photo: {ex.Message}");
+            }
+        }
+
+        // Haal de camping info op, inclusief foto pad en bestandsnaam
+        public async Task<CampingSpotInfo> GetCampingSpotInfoAsync(int ID)
+        {
+            CampingSpotInfo campingSpotInfo = null;
+            string query = @"
+                SELECT      
+                spotinfo.SpotNr, spotinfo.PricePerNight, spotinfo.Pets, spotinfo.Electricity, 
+                campingspot.Type, campingspot.Length, campingspot.Width, 
+                CampingSpotImage.FilePath, CampingSpotImage.Filename
+                FROM spotinfo 
+                JOIN campingspot ON spotinfo.SpotNr = campingspot.SpotNr 
+                LEFT JOIN CampingSpotImage ON spotinfo.SpotNr = CampingSpotImage.SpotNr 
+                WHERE spotinfo.SpotNr = @SpotNr";
+
+            try
+            {
+                using var connection = await _dbConnection.GetConnectionAsync();
+                await connection.OpenAsync(); // Verantwoordelijkheid voor openen db-connectie ligt bij de repository
 
                 using var command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@SpotNr", ID);
@@ -86,16 +126,24 @@ namespace DataAccess
                         reader.GetInt32("SpotNr"),
                         reader.GetDouble("PricePerNight"),
                         reader.GetBoolean("Pets"),
-                        reader.GetBoolean("Electricity")
+                        reader.GetBoolean("Electricity"),
+                        reader.GetDouble("Length"),
+                        reader.GetDouble("Width"),
+                        reader.GetString("Type")
                     );
+
+                    // Optioneel, voeg de afbeelding gegevens toe aan campingSpotInfo
+                    string filePath = reader.GetString("FilePath");
+                    string fileName = reader.GetString("Filename");
+                    // Gebruik de foto gegevens hier, bijvoorbeeld in je model of view
                 }
-                // Ensure the connection is closed after the operation
-                connection.Close();  // Close the connection
+
+                connection.Close();
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Database error: {ex.Message}");
-                throw; // Rethrow exception for higher-level handling
+                throw;
             }
 
             if (campingSpotInfo == null)
@@ -106,6 +154,7 @@ namespace DataAccess
             return campingSpotInfo;
         }
 
+        // Haal een camping spot op via SpotNr
         public CampingSpot GetCampingSpot(int ID)
         {
             CampingSpot campingSpot = null;
@@ -128,18 +177,19 @@ namespace DataAccess
                         reader.GetInt32("PositionY")
                     );
                 }
-                // Ensure the connection is closed after the operation
-                connection.Close();  // Close the connection
+
+                connection.Close();
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Database error: {ex.Message}");
-                throw; // Rethrow exception for higher-level handling
+                throw;
             }
 
             return campingSpot;
         }
 
+        // Haal alle camping spots op
         public IEnumerable<CampingSpot> GetCampingSpots()
         {
             var spots = new List<CampingSpot>();
@@ -161,17 +211,52 @@ namespace DataAccess
                         reader.GetInt32("PositionY")
                     ));
                 }
-                // Ensure the connection is closed after the operation
-                connection.Close();  // Close the connection
+
+                connection.Close();
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Database error: {ex.Message}");
-                throw; // Rethrow exception for higher-level handling
+                throw;
             }
 
             return spots;
         }
+
+        // Haal alle afbeeldingen voor een camping spot op
+        public async Task<IEnumerable<CampingSpotImage>> GetCampingSpotImagesAsync(int spotNr)
+        {
+            var images = new List<CampingSpotImage>();
+            string query = "SELECT PhotoID, FilePath, Filename FROM CampingSpotImage WHERE SpotNr = @SpotNr";
+
+            try
+            {
+                using var connection = await _dbConnection.GetConnectionAsync();
+                await connection.OpenAsync();
+
+                using var command = new MySqlCommand(query, connection);
+                command.Parameters.AddWithValue("@SpotNr", spotNr);
+
+                using var reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    var image = new CampingSpotImage
+                    {
+                        PhotoID = reader.GetInt32("PhotoID"),
+                        FilePath = reader.GetString("FilePath"),  // Haal het volledige pad op
+                        Filename = reader.GetString("Filename")    // Haal de bestandsnaam op
+                    };
+                    images.Add(image);
+                }
+
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Database error: {ex.Message}");
+            }
+
+            return images;
+        }
     }
 }
-

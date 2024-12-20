@@ -7,22 +7,26 @@
              xmlns:local="clr-namespace:CampingApplication.VisitorApp.Views.Information"
              xmlns:viewmodels="clr-namespace:CampingApplication.VisitorApp.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="520" d:DesignWidth="500">
+             d:DesignHeight="540" d:DesignWidth="500">
+    <UserControl.Resources>
+        <local:EmptyListToVisibilityConverter x:Key="EmptyListToVisibilityConverter"/>
+    </UserControl.Resources>
+
     <Grid>
 
         <Border x:Name="HighlightRectangle" Background="White" CornerRadius="15" Padding="0">
             <Grid>
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto"/>
 
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto"/>
 
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto"/>
 
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto"/>
 
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto"/>
 
                 </Grid.RowDefinitions>
 
@@ -53,7 +57,7 @@
                            Margin="180, 0, 0, 0"
                            Grid.Row="1"/>
 
-                <StackPanel x:Name="PhotoSection" Orientation="Horizontal" 
+                <!--<StackPanel x:Name="PhotoSection" Orientation="Horizontal" 
                             HorizontalAlignment="Center" 
                             VerticalAlignment="Top" 
                             Margin="0,10,0,0" 
@@ -69,43 +73,77 @@
                             <TextBlock Text="Foto 3" VerticalAlignment="Center" HorizontalAlignment="Center" />
                         </Border>
                     </WrapPanel>
+                </StackPanel>-->
+
+                <StackPanel x:Name="PhotoSection" Orientation="Horizontal" 
+    HorizontalAlignment="Center" 
+    VerticalAlignment="Top" 
+    Margin="0,10,0,0" 
+    Grid.Row="2">
+                    <WrapPanel HorizontalAlignment="Center">
+                        <!-- Foto 1 -->
+                        <Border Background="#F9F9F9" Width="150" Height="150" CornerRadius="10" Margin="0, 0, 10, 0">
+                            <Image Source="{Binding Images[0].FilePath}" Stretch="UniformToFill" Visibility="{Binding Images.Count, Converter={StaticResource EmptyListToVisibilityConverter}}"/>
+                        </Border>
+
+
+                        <!-- Foto 2 
+                        <Border Background="#F9F9F9" Width="150" Height="150" CornerRadius="10" Margin="10, 0, 10, 0">
+                            <Image Source="{Binding Images[1].FilePath}" Stretch="UniformToFill" />
+                        </Border>
+
+                        
+                        <Border Background="#F9F9F9" Width="150" Height="150" CornerRadius="10" Margin="10, 0, 0, 0">
+                            <Image Source="{Binding Images[2].FilePath}" Stretch="UniformToFill" />
+                        </Border>-->
+                    </WrapPanel>
                 </StackPanel>
 
+
+
                 <StackPanel x:Name="CampingSpotDetails" Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,15,0,0" Grid.Row="3" >
-                    <Border Background="#F9F9F9" Width="495" Height="250" CornerRadius="10">
+                    <Border Background="#F9F9F9" Width="495" Height="270" CornerRadius="10">
                         <Grid>
                             <TextBlock Text="Type: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,10,0,0" FontSize="16"/>
                             <TextBlock Text="{Binding Type}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,10,10,0" FontSize="16" Padding="0, 0, 10, 0"/>
 
-                            <TextBlock Text="Grootte: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,45,0,0" FontSize="16"/>
-                            <TextBlock Text="" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,45,10,0" FontSize="16" Padding="0, 0, 10, 0"/>
+                            <Border Background="LightGray" Height="1" Margin="15,10,15,205" />
 
-                            <Border Background="LightGray" Height="1" Margin="15,29,15,205" />
+                            <TextBlock Text="Breedte: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,45,0,0" FontSize="16"/>
+                            <TextBlock Text="{Binding Width}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,45,10,0" FontSize="16" Padding="0, 0, 10, 0"/>
 
-                            <TextBlock Text="Prijs per nacht: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,75,0,0" FontSize="16"/>
-                            <TextBlock Text="{Binding PricePerNight}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,75,10,0" FontSize="16" Padding="0, 0, 10, 0"/>
+                            <Border Background="Gray" Height="1" Margin="15,65,15,205" />
 
-                            <Border Background="LightGray" Height="1" Margin="15,29,15,145" />
+                            <TextBlock Text="Lengte: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,75,0,0" FontSize="16"/>
+                            <TextBlock Text="{Binding Length}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,75,10,0" FontSize="16" Padding="0, 0, 10, 0"/>
 
-                            <TextBlock Text="Aantal nachten: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,105,0,0" FontSize="16"/>
-                            <TextBlock Text="" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,105,10,0" FontSize="16" Padding="0, 0, 10, 0"/>
+                            <Border Background="LightGray" Height="1" Margin="15, 96,15,205" />
 
-                            <Border Background="LightGray" Height="1" Margin="15,29,15,85" />
+                            <TextBlock Text="Prijs per nacht: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,105,0,0" FontSize="16"/>
+                            <TextBlock Text="{Binding PricePerNight}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,105,10,0" FontSize="16" Padding="0, 0, 10, 0"/>
 
-                            <TextBlock Text="Hond: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,135,0,0" FontSize="16"/>
-                            <TextBlock Text="{Binding Pets}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,135,10,0" FontSize="16" Padding="0, 0, 10, 0"/>
+                            <Border Background="LightGray" Height="1" Margin="15,66,15,203" />
 
-                            <Border Background="LightGray" Height="1" Margin="15,29,15,25" />
+                            <TextBlock Text="Aantal nachten: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,135,0,0" FontSize="16"/>
+                            <TextBlock Text="{Binding NumberOfNights}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,135,10,0" FontSize="16" Padding="0, 0, 10, 0"/>
 
-                            <TextBlock Text="Electriciteit: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,165,0,0" FontSize="16"/>
-                            <TextBlock Text="{Binding Electricity}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,165,10,0" FontSize="16" Padding="0, 0, 10, 0"/>
+                            <Border Background="LightGray" Height="1" Margin="15,96,15,172" />
 
-                            <Border Background="LightGray" Height="1" Margin="15,29,15,-35" />
+                            <TextBlock Text="Hond: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,165,0,0" FontSize="16"/>
+                            <TextBlock Text="{Binding Pets}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,165,10,0" FontSize="16" Padding="0, 0, 10, 0"/>
 
-                            <Border Background="Gray" Height="1" Margin="15,130,15,-35" />
+                            <Border Background="LightGray" Height="1" Margin="15,129,15,140" />
 
-                            <TextBlock Text="Totaal Prijs:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,220,0,0" FontSize="16" FontWeight="Bold"/>
-                            <TextBlock Text="" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,185,10,-35" FontSize="16"/>
+                            <TextBlock Text="Electriciteit: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,195,0,0" FontSize="16"/>
+                            <TextBlock Text="{Binding Electricity}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,195,10,0" FontSize="16" Padding="0, 0, 10, 0"/>
+
+                            <Border Background="LightGray" Height="1" Margin="15,159,15,110" />
+
+                            <Border Background="Gray" Height="1" Margin="15,235,15,34" />
+
+                            <TextBlock Text="Totaal Prijs:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,241,0,0" FontSize="16" FontWeight="Bold"/>
+                            <TextBlock Text="" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="450,195,10,-35" FontSize="16"/>
+                            <Border Background="LightGray" Height="1" Margin="15,189,15,80" />
                         </Grid>
                     </Border>
                 </StackPanel>

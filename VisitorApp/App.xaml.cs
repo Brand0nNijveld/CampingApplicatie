@@ -36,7 +36,7 @@ namespace CampingApplication.VisitorApp
             ServiceProvider serviceProvider = new();
 
             DBConnection dbConnection = new DBConnection();
-            ICampingSpotRepository campingSpotRepository = new CampingSpotRepository(dbConnection);  // Actual repository
+            ICampingSpotRepository campingSpotRepository = new CampingSpotRepository(dbConnection);  
             CampingSpotService campingSpotService = new(campingSpotRepository);
             serviceProvider.RegisterInstance(campingSpotService);
 
@@ -48,10 +48,10 @@ namespace CampingApplication.VisitorApp
         private void InjectDebugDependencies()
         {
             ServiceProvider serviceProvider = new();
-            DBConnection dbConnection = new DBConnection();  // Use actual DB connection
+            DBConnection dbConnection = new DBConnection();  
 
-            // Use real repository even in Debug mode
-            ICampingSpotRepository campingSpotRepository = new CampingSpotRepository(dbConnection);  // Actual repository for debug
+            
+            ICampingSpotRepository campingSpotRepository = new CampingSpotRepository(dbConnection);  
             CampingSpotService campingSpotService = new(campingSpotRepository);
             serviceProvider.RegisterInstance(campingSpotService);
 

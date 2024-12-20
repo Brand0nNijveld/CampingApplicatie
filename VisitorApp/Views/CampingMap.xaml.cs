@@ -1,11 +1,7 @@
 ﻿using CampingApplication.VisitorApp.ViewModels;
 using CampingApplication.VisitorApp.Views.Information;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -76,11 +72,6 @@ namespace CampingApplication.VisitorApp.Views
             }
         }
 
-        //private void CloseButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    HighlightRectangle.Visibility = Visibility.Collapsed;
-        //}
-
         private void BoekenButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Boekingsproces gestart!", "Boeken", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -115,25 +106,35 @@ namespace CampingApplication.VisitorApp.Views
 
                 spotVisual.MouseLeftButtonUp += (e, s) =>
                 {
-                    Debug.WriteLine("Clicked cmaping spot");
-                    viewModel?.ShowBookScreen(spot.ID);
-                };
-
-                spotVisual.MouseLeftButtonUp += (s, e) =>
-                {
                     Debug.WriteLine("Clicked camping spot");
 
+                    // Haal de MainWindow instantie op
                     var mainWindow = Application.Current.MainWindow as MainWindow;
+
                     if (mainWindow != null)
                     {
-                       // mainWindow.SpotInfo.Visibility = Visibility.Visible;
+                        // Haal de begin- en einddatum vanuit de MainWindow
+                        DateTime? beginDate = mainWindow.GetBeginDate();
+                        DateTime? endDate = mainWindow.GetEndDate();
+
+                        // Controleer of beide datums zijn geselecteerd
+                        if (beginDate.HasValue && endDate.HasValue)
+                        {
+                            // Bereken het aantal nachten
+                            viewModel?.UpdateNumberOfNights(beginDate.Value, endDate.Value);
+
+                            // Roep de ShowBookScreen aan met de datums
+                            viewModel?.ShowBookScreen(spot.ID, beginDate.Value, endDate.Value);
+                        }
+                        else
+                        {
+                            // Geef een foutmelding als niet beide datums zijn geselecteerd
+                            MessageBox.Show("Selecteer beide datums.");
+                        }
                     }
                 };
 
-                // Add the visual to the CampingCanvas
                 CampingCanvas.Children.Add(spotVisual);
-
-
 
                 Canvas.SetLeft(spotVisual, spot.PositionX);
                 Canvas.SetTop(spotVisual, spot.PositionY);
@@ -155,24 +156,6 @@ namespace CampingApplication.VisitorApp.Views
                 Canvas.SetLeft(spotID, textPosX);
                 Canvas.SetTop(spotID, textPosY);
 
-                // Handle click event 
-                //spotVisual.MouseLeftButtonUp += (s, e) =>
-                //{
-                //    // When a camping spot is clicked, show the white rectangle and update information
-                //    HighlightRectangle.Visibility = Visibility.Visible;
-
-                //    // Update the camping spot info
-                //    CampingSpotToiletDistance.Text = "Afstand tot Toiletgebouw: 15m";
-                //    CampingSpotLakeDistance.Text = "Afstand tot Meer: 25m";
-                //    CampingSpotSize.Text = "Grootte van plaats: 30m²";
-                //    CampingSpotReceptionDistance.Text = "Afstand tot Receptie: 10m";
-                //    CampingSpotInfo.Text = "Plaats 1 Informatie";
-                //    CampingSpotType.Text = "Plaatstype: Tent";
-                //    CampingSpotPrice.Text = "Prijs per nacht: €50";
-                //    CampingSpotAvailability.Text = "Beschikbaar vanaf xx/xx/xxxx";
-                //};
-
-                //CampingCanvas.Children.Add(spotVisual);
                 CampingCanvas.Children.Add(spotID);
             }
         }

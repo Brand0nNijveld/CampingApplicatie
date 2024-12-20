@@ -22,7 +22,14 @@ namespace CampingApplication.Business.CampingSpotService
 
         }
 
+        public async Task<List<CampingSpotImage>> GetCampingSpotImagesAsync(int campingSpotId)
+        {
+            // Haal de afbeeldingen op uit de database via de repository
+            var images = await repository.GetCampingSpotImagesAsync(campingSpotId);
 
+            // De lijst van CampingSpotImage wordt teruggegeven
+            return images.ToList();
+        }
 
         public List<CampingSpot> GetCampingSpots()
         {

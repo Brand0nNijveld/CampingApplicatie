@@ -20,24 +20,22 @@ namespace DataAccess
             _connectionString = connectionString;
         }
 
-        // Returns a closed connection; the caller is responsible for opening it
+        // geeft een gesloten connectie en de oproeper is verantwoordelijk voor het openen
         public MySqlConnection GetConnection()
         {
             return new MySqlConnection(_connectionString);
         }
 
-        // Returns a closed connection asynchronously; the caller is responsible for opening it
+        // geeft een gesloten connectie 'asynchronisch' de oproeper is weer verantwoordelijk voor het openen
         public async Task<MySqlConnection> GetConnectionAsync()
         {
             var connection = new MySqlConnection(_connectionString);
             try
             {
-                // Log connection creation for debugging purposes
                 Debug.WriteLine("Creating a new database connection (async)...");
             }
             catch (Exception ex)
             {
-                // Ensure the connection object is disposed if something goes wrong
                 Debug.WriteLine($"Error creating database connection: {ex.Message}");
                 connection.Dispose();
                 throw;

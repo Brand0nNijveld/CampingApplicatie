@@ -20,6 +20,7 @@
                 <views:CampingMap Padding="50" x:Name="CampingMapUserControl" />
             </Viewbox>
             <booking:ActionPanel x:Name="ActionPanel" />
+            
         </Grid>
     </Grid>
 </Window>

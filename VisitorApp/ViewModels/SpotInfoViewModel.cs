@@ -1,14 +1,10 @@
-﻿using CampingApplication.Business.CampingSpotService;
-using CampingApplication.Business;
-using CampingApplication.VisitorApp.Views.Information;
+﻿using CampingApplication.Business;
+using CampingApplication.Business.CampingSpotService;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CampingApplication.VisitorApp.Models;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
@@ -37,17 +33,6 @@ namespace CampingApplication.VisitorApp.ViewModels
                 OnPropertyChanged(nameof(Description));
             }
         }
-
-        //private double size;
-        //public double Size
-        //{
-        //    get => size;
-        //    set
-        //    {
-        //        size = value;
-        //        OnPropertyChanged(nameof(Size));
-        //    }
-        //}
 
         private double pricePerNight;
         public double PricePerNight
@@ -93,35 +78,84 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
         }
 
-        
-        public SpotInfoViewModel(int id)
+        private double width;
+        public double Width
         {
-            ID = id;
-            _campingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
-
+            get => width;
+            set
+            {
+                width = value;
+                OnPropertyChanged(nameof(Width));
+            }
         }
 
-        
+        private double length;
+        public double Length
+        {
+            get => length;
+            set
+            {
+                length = value;
+                OnPropertyChanged(nameof(Length));
+            }
+        }
+
+        private int numberOfNights;
+        public int NumberOfNights
+        {
+            get => numberOfNights;
+            set
+            {
+                numberOfNights = value;
+                OnPropertyChanged(nameof(NumberOfNights));
+            }
+        }
+
+        private List<CampingSpotImage> images = new List<CampingSpotImage>();
+        public List<CampingSpotImage> Images
+        {
+            get => images;
+            set
+            {
+                images = value;
+                OnPropertyChanged(nameof(Images));
+            }
+        }
+
+        //    public List<CampingSpotImage> Images { get; set; } = new List<CampingSpotImage>
+        //{
+        //    new CampingSpotImage { FilePath = "Images/1.jpg" } // Set the correct path
+        //};
+
+        public SpotInfoViewModel(int id, int numberOfNights)
+        {
+            ID = id;
+            NumberOfNights = numberOfNights;
+            _campingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
+        }
+
         public async Task LoadCampingSpotInfoAsync()
         {
             try
             {
-               
                 var spot = await _campingSpotService.GetCampingSpotInfoAsync(ID);
 
                 if (spot != null)
                 {
-                    Debug.WriteLine($"camping info found for ID: {ID}");
                     PricePerNight = spot.PricePerNight;
                     Pets = spot.Pets;
                     Electricity = spot.Electricity;
+                    Length = spot.Length;
+                    Width = spot.Width;
+                    Type = spot.Type;
+
+                    // Fetch the images
+                    var spotImages = await _campingSpotService.GetCampingSpotImagesAsync(ID);
+                    Images = new List<CampingSpotImage>(spotImages);
                 }
                 else
                 {
                     Debug.WriteLine($"No camping info found for ID: {ID}");
-                    //PricePerNight = 50.0;
-                    //Pets = false;
-                    //Electricity = false;
                 }
             }
             catch (Exception ex)
@@ -130,17 +164,11 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
         }
 
-
-
-        
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-       
         public event PropertyChangedEventHandler? PropertyChanged;
-
-
     }
 }

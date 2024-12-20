@@ -15,16 +15,21 @@ namespace CampingApplication.Business
         
         public bool Pets { get; private set; }
         public bool Electricity { get; private set; }
-        //public string Type { get; private set; }
+        public double Length { get; private set; }
+        public double Width { get; private set; }
+        public string Type { get; private set; }
 
 
-        public CampingSpotInfo(int ID, double PricePerNight, bool Pets, bool Electricity)
+        public CampingSpotInfo(int ID, double PricePerNight, bool Pets, bool Electricity, double length, double width, string type)
         {
             this.ID = ID;
             this.PricePerNight = PricePerNight;
             this.Pets = Pets;
             this.Electricity = Electricity;
-            //this.Type = Type;
+            this.Length = length;
+            this.Width = width;
+            this.Type = type;
+           
         }
     }
 }

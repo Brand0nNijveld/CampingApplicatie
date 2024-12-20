@@ -1,20 +1,17 @@
-﻿using System;
+﻿using CampingApplication.Business.CampingSpotService;
+using CampingApplication.Business;
+using CampingApplication.VisitorApp.Models;
+using CampingApplication.VisitorApp.Views.Information;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CampingApplication.Business;
-using CampingApplication.Business.CampingSpotService;
-using CampingApplication.VisitorApp.Models;
-using CampingApplication.VisitorApp.Views.Booking;
-using CampingApplication.VisitorApp.Views.Information;
+using System.Windows.Controls;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
     public delegate void AvailabilityHandler(bool available);
+
     public class CampingMapViewModel : INotifyPropertyChanged
     {
         public event AvailabilityHandler? AvailabilityChanged;
@@ -22,7 +19,7 @@ namespace CampingApplication.VisitorApp.ViewModels
 
         public List<CampingSpot> CampingSpotData { get; private set; }
 
-        private ObservableCollection<CampingSpotVisualModel> campingSpots = [];
+        private ObservableCollection<CampingSpotVisualModel> campingSpots = new();
         public ObservableCollection<CampingSpotVisualModel> CampingSpots
         {
             get => campingSpots;
@@ -46,6 +43,22 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
         }
 
+        private int numberOfNights;
+        public int NumberOfNights
+        {
+            get => numberOfNights;
+            set
+            {
+                numberOfNights = value;
+                OnPropertyChanged(nameof(NumberOfNights));
+            }
+        }
+
+        public void UpdateNumberOfNights(DateTime startDate, DateTime endDate)
+        {
+            NumberOfNights = (endDate - startDate).Days;
+        }
+
         public CampingMapViewModel(ActionPanelViewModel actionPanelViewModel)
         {
             this.actionPanelViewModel = actionPanelViewModel;
@@ -57,15 +70,15 @@ namespace CampingApplication.VisitorApp.ViewModels
             for (int i = 0; i < spots.Count; i++)
             {
                 CampingSpot spot = spots[i];
-                campingSpotVisuals[i] = new(spot.ID, spot.PositionX, spot.PositionY);
+                campingSpotVisuals[i] = new CampingSpotVisualModel(spot.ID, spot.PositionX, spot.PositionY);
             }
 
-            CampingSpots = new(campingSpotVisuals);
+            CampingSpots = new ObservableCollection<CampingSpotVisualModel>(campingSpotVisuals);
         }
 
         public void ClearAvailability()
         {
-            SetAvailability([]);
+            SetAvailability(new Dictionary<int, CampingSpot>());
         }
 
         public void SetAvailability(Dictionary<int, CampingSpot> available)
@@ -93,21 +106,19 @@ namespace CampingApplication.VisitorApp.ViewModels
 
         protected void OnPropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this.PropertyChanged, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void ShowBookScreen(int ID)
+        public void ShowBookScreen(int ID, DateTime startDate, DateTime endDate)
         {
-            SpotInfo spotInfo = new(ID);
-            spotInfo.CloseButton_Clicked += () => actionPanelViewModel.ClearAndHide();
+            // Calculate the number of nights
+            UpdateNumberOfNights(startDate, endDate);
 
-            //BookingView bookingView = new(ID, DateTime.Now, DateTime.Now.AddDays(5), 60);
-            //bookingView.BackButtonClicked += () => actionPanelViewModel.ClearAndHide();
-            //bookingView.ViewModel.BookingSuccessful += () => actionPanelViewModel.CurrentView = 1;
-            //BookingSuccessView bookingSuccessView = new();
-            //bookingSuccessView.DoneButtonClicked += () => actionPanelViewModel.ClearAndHide();
+            // Create SpotInfo UserControl, passing in the ID and NumberOfNights
+            var spotInfo = new SpotInfo(ID, NumberOfNights);
 
-            actionPanelViewModel.SetSteps([spotInfo]);
+            // Pass the SpotInfo UserControl to the action panel
+            actionPanelViewModel.SetSteps(new List<UserControl> { spotInfo });
         }
     }
 }

@@ -22,10 +22,16 @@ namespace CampingApplication.Business.CampingSpotService
         {
             throw new NotImplementedException();
         }
+
+        public Task<IEnumerable<CampingSpotImage>> GetCampingSpotImagesAsync(int spotNr)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<CampingSpotInfo> GetCampingSpotInfoAsync(int ID)
         {
             await Task.Delay(100);
-            return new CampingSpotInfo(ID, 30, false, true);
+            return new CampingSpotInfo(ID, 30, false, true, 10, 20, "Camperplek");
         }
 
         public IEnumerable<CampingSpot> GetCampingSpots()
