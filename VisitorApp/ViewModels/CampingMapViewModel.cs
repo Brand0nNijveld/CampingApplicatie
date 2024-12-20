@@ -95,7 +95,6 @@ namespace CampingApplication.VisitorApp.ViewModels
                 var campingSpots = await getCampingSpots;
                 CampingSpotData = [];
                 FacilityData = await getFacilities;
-
                 var campingSpotViewModels = new List<CampingSpotViewModel>();
                 foreach (var spot in campingSpots)
                 {
@@ -169,10 +168,18 @@ namespace CampingApplication.VisitorApp.ViewModels
             PropertyChanged?.Invoke(this.PropertyChanged, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void SelectCampingSpot(CampingSpotViewModel campingSpot)
+        public void SelectCampingSpot(CampingSpotViewModel? campingSpot)
         {
+            if (campingSpot == SelectedCampingSpot)
+            {
+                return;
+            }
+
             SelectedCampingSpot = campingSpot;
-            Debug.WriteLine("Selected camping spot with ID: " + campingSpot.ID);
+            if (campingSpot != null)
+            {
+                Debug.WriteLine("Selected camping spot with ID: " + campingSpot.ID);
+            }
 
             //if (StartDate >= EndDate)
             //    return;

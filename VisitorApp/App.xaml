@@ -49,10 +49,35 @@
             <SolidColorBrush x:Key="Ring">#0066FF</SolidColorBrush>
             <SolidColorBrush x:Key="Radius">#F2F2F2</SolidColorBrush>
 
+            <Style x:Key="HoverableBorder" TargetType="Border">
+                <Style.Triggers>
+                    <!-- Use the VisualStateManager to define hover states -->
+                    <EventTrigger RoutedEvent="Border.MouseEnter">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation 
+                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" 
+                                    To="LightGray" Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Border.MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation 
+                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" 
+                                    To="Transparent" Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Style.Triggers>
+            </Style>
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/Themes.xaml" />
                 <ResourceDictionary Source="Resources/Icons/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

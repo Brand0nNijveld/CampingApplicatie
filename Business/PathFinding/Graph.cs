@@ -126,7 +126,7 @@ namespace CampingApplication.Business.PathFinding
             ConnectNodes(edgeStart, newNode, edgeStart.GetDistanceTo(newNode));
             ConnectNodes(newNode, edgeEnd, newNode.GetDistanceTo(edgeEnd));
 
-            Debug.WriteLine($"Added node {newNode.ID} at position ({newNode.X}, {newNode.Y}) on the edge between {edgeStart.ID} and {edgeEnd.ID}");
+            //Debug.WriteLine($"Added node {newNode.ID} at position ({newNode.X}, {newNode.Y}) on the edge between {edgeStart.ID} and {edgeEnd.ID}");
         }
 
         public (Node?, Node?) FindClosestEdge(Node point)
@@ -155,12 +155,11 @@ namespace CampingApplication.Business.PathFinding
         {
             foreach (var node in AdjacencyList)
             {
-                Console.Write(node.Key.ID + " is connected to: ");
+                Debug.Write(node.Key.ID + " is connected to: ");
                 foreach (var connection in node.Value)
                 {
-                    Console.Write($"{connection.Item1.ID} (Distance: {connection.Item2} meters) ");
+                    Debug.WriteLine($"{connection.Item1.ID} (Distance: {connection.Item2} meters) ");
                 }
-                Console.WriteLine();
             }
         }
     }

@@ -22,5 +22,10 @@ namespace CampingApplication.Client.Shared.Helpers
         {
             return (pixelsX / pixelsPerMeter, pixelsY / pixelsPerMeter);
         }
+
+        public static (int, int) MetersToPixels(double metersX, double metersY, double pixelsPerMeter)
+        {
+            return (MetersToPixels(metersX, pixelsPerMeter), MetersToPixels(metersY, pixelsPerMeter));
+        }
     }
 }

@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Icons\chevron-right.svg" />
     <None Remove="Resources\Icons\playground.svg" />
     <None Remove="Resources\Icons\restroom.svg" />
     <None Remove="Resources\Icons\shower.svg" />
@@ -36,6 +37,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="./Resources/Icons/info.svg" />
+    <Resource Include="Resources\Icons\chevron-right.svg" />
     <Resource Include="Resources\Icons\playground.svg" />
     <Resource Include="Resources\Icons\restroom.svg" />
     <Resource Include="Resources\Icons\shower.svg" />

@@ -30,15 +30,15 @@ namespace CampingApplication.VisitorApp
             CampingMapUserControl.DataContext = viewModel.CampingMapViewModel;
             CampingMapUserControl.SetViewModel(viewModel.CampingMapViewModel);
 
+            // Create path view model to get path data and create the path view for the map
+            CampingMapUserControl.PathView = new(CampingMapUserControl.CampingCanvas, viewModel.PathViewModel);
+
+            SpotInformation.SetViewModel(viewModel.SpotInformationViewModel);
+
             ActionPanel.DataContext = viewModel.ActionPanelViewModel;
             ActionPanel.SetViewModel(viewModel.ActionPanelViewModel);
 
             DateRangePicker.mainViewModel = viewModel;
-        }
-
-        private void DateRangePicker_Loaded(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

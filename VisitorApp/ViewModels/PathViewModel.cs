@@ -7,24 +7,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
     public class PathViewModel : INotifyPropertyChanged
     {
-        private CampingMapViewModel? campingMapViewModel;
-        public CampingMapViewModel? CampingMapViewModel
-        {
-            get => campingMapViewModel;
-            set
-            {
-                campingMapViewModel = value;
-                if (campingMapViewModel != null)
-                {
-                    campingMapViewModel.SelectedCampingSpotChanged += CampingMapViewModel_SelectedCampingSpotChanged;
-                }
-            }
-        }
+        private CampingMapViewModel campingMapViewModel;
 
         private Graph mainGraph;
         public Graph MainGraph
@@ -37,19 +27,22 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
         }
 
-        private List<Graph> routeGraphs = [];
-        public List<Graph> RouteGraphs
+        private List<Route> routes = [];
+        public List<Route> Routes
         {
-            get => routeGraphs;
+            get => routes;
             set
             {
-                routeGraphs = value;
-                OnPropertyChanged(nameof(RouteGraphs));
+                routes = value;
+                OnPropertyChanged(nameof(Routes));
             }
         }
 
-        public PathViewModel()
+        public PathViewModel(CampingMapViewModel campingMapViewModel)
         {
+            this.campingMapViewModel = campingMapViewModel;
+            campingMapViewModel.SelectedCampingSpotChanged += CampingMapViewModel_SelectedCampingSpotChanged;
+
             mainGraph = new();
             var startNode = new Node(0, 33.95, 50);
             var node1 = new Node(1, 33.95, 37.2);
@@ -61,17 +54,20 @@ namespace CampingApplication.VisitorApp.ViewModels
             var node7 = new Node(7, 29.8, 37.2);
             var node8 = new Node(8, 29.8, 20.4);
             var node9 = new Node(9, 50, 5.3);
-            var node10 = new Node(10, 50, 20);
             MainGraph.ConnectNodes(startNode, node1);
             MainGraph.ConnectNodes(node1, node2);
             MainGraph.ConnectNodes(node2, node3);
-            MainGraph.ConnectNodes(node2, node4);
             MainGraph.ConnectNodes(node4, node5);
+            MainGraph.ConnectNodes(node4, node1);
             MainGraph.ConnectNodes(node4, node6);
             MainGraph.ConnectNodes(node1, node7);
             MainGraph.ConnectNodes(node7, node8);
             MainGraph.ConnectNodes(node6, node9);
-            MainGraph.ConnectNodeToClosestEdge(node10);
+        }
+
+        private void CampingMapViewModel_SelectedCampingSpotChanged(CampingSpotViewModel? campingSpot)
+        {
+            Routes = [];
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -81,31 +77,34 @@ namespace CampingApplication.VisitorApp.ViewModels
             PropertyChanged?.Invoke(this.PropertyChanged, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void CampingMapViewModel_SelectedCampingSpotChanged(CampingSpotViewModel? campingSpot)
+        public async Task CreateRoutes(CampingSpotViewModel campingSpot)
         {
-            if (campingMapViewModel == null || campingSpot == null)
-                return;
             var pixelsPerMeter = CampingMapViewModel.PIXELS_PER_METER;
             var (xStart, yStart) = MapConversionHelper.PixelsToMeters(campingSpot.PositionX + campingSpot.Width / 2, campingSpot.PositionY + campingSpot.Height / 2, pixelsPerMeter);
 
-            List<Graph> routesToFacilities = [];
+            List<Route> routesToFacilities = [];
             Node startNode = new(-1, xStart, yStart);
 
             var facilities = campingMapViewModel.FacilityData;
             foreach (var facility in facilities)
             {
-                Graph route = mainGraph.DeepCopyGraph();
-                route.StartNode = startNode;
-                Node endNode = new(route.AdjacencyList.Count, facility.XCoordinate, facility.YCoordinate);
+                Graph graph = mainGraph.DeepCopyGraph();
+                graph.StartNode = startNode;
+                Node endNode = new(graph.AdjacencyList.Count, facility.XCoordinate, facility.YCoordinate);
 
-                route.ConnectNodeToClosestEdge(startNode);
-                route.ConnectNodeToClosestEdge(endNode);
+                graph.ConnectNodeToClosestEdge(startNode);
+                graph.ConnectNodeToClosestEdge(endNode);
+
+                Route route = Dijkstra.FindShortestPath(graph, startNode, endNode);
 
                 routesToFacilities.Add(route);
-                Debug.WriteLine("Creating graph for specific facility!");
+                //Debug.WriteLine("Creating graph for specific facility!");
             }
 
-            RouteGraphs = routesToFacilities;
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                Routes = routesToFacilities;
+            });
         }
     }
 }

@@ -14,7 +14,7 @@ namespace DataAccess
         {
             await Task.Delay(100);
             return [
-                new Facility(1,  34, 6, FacilityType.Restroom),
+                new Facility(1,  34, 0, FacilityType.Restroom),
                 new Facility(2, 20, 20,FacilityType.Shower),
                 new Facility(3,  10, 10, FacilityType.Playground),
                 new Facility(4,  30, 42, FacilityType.Reception),

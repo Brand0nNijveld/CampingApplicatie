@@ -16,6 +16,8 @@ namespace CampingApplication.VisitorApp.ViewModels
         public CampingMapViewModel CampingMapViewModel { get; private set; }
 
         public ActionPanelViewModel ActionPanelViewModel { get; private set; }
+        public SpotInformationViewModel SpotInformationViewModel { get; private set; }
+        public PathViewModel PathViewModel { get; private set; }
 
         public MainViewModel()
         {
@@ -23,6 +25,8 @@ namespace CampingApplication.VisitorApp.ViewModels
 
             ActionPanelViewModel = new();
             CampingMapViewModel = new(ActionPanelViewModel);
+            PathViewModel = new(CampingMapViewModel);
+            SpotInformationViewModel = new(CampingMapViewModel, PathViewModel);
         }
 
         public async void CheckAvailableSpots(DateTime startDate, DateTime endDate)

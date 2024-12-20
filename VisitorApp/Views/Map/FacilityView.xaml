@@ -7,17 +7,17 @@
              xmlns:viewmodels="clr-namespace:CampingApplication.VisitorApp.ViewModels"
              xmlns:svg="http://sharpvectors.codeplex.com/svgc/"
              mc:Ignorable="d"
-             Width="35" Height="35"
+             Width="60" Height="60"
              d:DataContext="{d:DesignInstance Type=viewmodels:FacilityViewModel}"             >
     <!-- Border for the Facility -->
-    <Border CornerRadius="100" Background="{DynamicResource Primary}" Padding="8">
+    <Border CornerRadius="100" Background="{DynamicResource Primary}" Padding="15">
         <ContentControl Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">
             <ContentControl.Style>
                 <Style TargetType="ContentControl">
                     <Setter Property="ContentTemplate">
                         <Setter.Value>
                             <DataTemplate>
-                                <TextBlock FontWeight="ExtraBold" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Text="?" />
+                                <TextBlock FontWeight="ExtraBold" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" Text="?" />
                             </DataTemplate>
                         </Setter.Value>
                     </Setter>
@@ -63,7 +63,7 @@
                             <Setter Property="ContentTemplate">
                                 <Setter.Value>
                                     <DataTemplate>
-                                        <TextBlock FontWeight="ExtraBold" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Text="R" />
+                                        <TextBlock FontWeight="ExtraBold" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" Text="R" />
                                     </DataTemplate>
                                 </Setter.Value>
                             </Setter>

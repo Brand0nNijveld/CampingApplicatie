@@ -37,18 +37,6 @@
             <Canvas.Background>
                 <ImageBrush x:Name="MapImage" ImageSource="../../Resources/TestMap2.png" Stretch="Fill"/>
             </Canvas.Background>
-            <Path Stroke="Black" StrokeThickness="10" Fill="Transparent">
-                <Path.Data>
-                    <PathGeometry>
-                        <PathFigure StartPoint="50,50">
-                            <BezierSegment Point1="100,20" Point2="200,80" Point3="250,50" IsStroked="True" IsSmoothJoin="True"/>
-                            <LineSegment Point="300,150" />
-                            <BezierSegment Point1="350,200" Point2="250,300" Point3="150,200" IsStroked="True" IsSmoothJoin="True"/>
-                        </PathFigure>
-                    </PathGeometry>
-                </Path.Data>
-            </Path>
-
         </Canvas>
 
         <Border Grid.Column="1" Grid.Row="1" x:Name="NoneAvailableInfo" IsHitTestVisible="False" IsEnabled="False" Opacity="0" Padding="8" CornerRadius="10" BorderThickness="2" BorderBrush="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">

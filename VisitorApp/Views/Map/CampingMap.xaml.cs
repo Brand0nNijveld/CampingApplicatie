@@ -25,13 +25,11 @@ namespace CampingApplication.VisitorApp.Views
         DoubleAnimation fadeInAnimation;
         DoubleAnimation fadeOutAnimation;
 
-        private PathView pathView;
+        public PathView? PathView { get; set; }
 
         public CampingMap()
         {
             InitializeComponent();
-
-            pathView = new(CampingCanvas);
 
             // Load the image
             var bitmap = new BitmapImage(new Uri("Resources/TestMap2.png", UriKind.Relative));
@@ -67,7 +65,6 @@ namespace CampingApplication.VisitorApp.Views
         public void SetViewModel(CampingMapViewModel viewModel)
         {
             this.viewModel = viewModel;
-            pathView.ViewModel.CampingMapViewModel = viewModel;
             viewModel.AvailabilityChanged += OnAvailabilityChanged;
 
             viewModel.MapLoaded += ViewModel_MapLoaded;
@@ -144,6 +141,7 @@ namespace CampingApplication.VisitorApp.Views
 
                 Canvas.SetLeft(campingSpotView, campingSpot.PositionX);
                 Canvas.SetTop(campingSpotView, campingSpot.PositionY);
+                Canvas.SetZIndex(campingSpotView, 2);
                 CampingCanvas.Children.Add(campingSpotView);
             }
 
@@ -151,14 +149,18 @@ namespace CampingApplication.VisitorApp.Views
             foreach (var facility in viewModel.Facilities)
             {
                 var facilityView = new FacilityView(facility);
+                double width = facilityView.Width;
+                double height = facilityView.Height;
 
-                Canvas.SetLeft(facilityView, facility.PositionX);
-                Canvas.SetTop(facilityView, facility.PositionY);
+                Canvas.SetLeft(facilityView, facility.PositionX - width / 2);
+                Canvas.SetTop(facilityView, facility.PositionY - height / 2);
+                Canvas.SetZIndex(facilityView, 2);
                 Debug.WriteLine("Setting facility position: " + facility.PositionX + ", " + facility.PositionY);
                 CampingCanvas.Children.Add(facilityView);
             }
 
-            pathView?.DrawMainPath();
+            PathView?.DrawMainPath();
+            CampingCanvas.UpdateLayout();
         }
 
         private void CampingCanvas_MouseUp(object sender, MouseEventArgs e)
