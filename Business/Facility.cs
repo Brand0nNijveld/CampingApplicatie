@@ -25,6 +25,23 @@ namespace CampingApplication.Business
             this.Type = type;
         }
 
+        public static string TypeToString(FacilityType type)
+        {
+            switch (type)
+            {
+                case FacilityType.Reception:
+                    return "Receptie";
+                case FacilityType.Restroom:
+                    return "Toilet";
+                case FacilityType.Shower:
+                    return "Douches";
+                case FacilityType.Playground:
+                    return "Speeltuin";
+                default:
+                    return "?";
+            }
+        }
+
         public Facility(int ID, int posX, int posY, string type) : base(ID, posX, posY)
         {
             switch (type.ToLower())

@@ -1,5 +1,6 @@
 ﻿using CampingApplication.Business.PathFinding;
 using CampingApplication.Client.Shared.Helpers;
+using CampingApplication.VisitorApp.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,9 +13,9 @@ using System.Windows.Threading;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
-    public class PathViewModel : INotifyPropertyChanged
+    public class PathViewModel : BaseViewModel
     {
-        private CampingMapViewModel campingMapViewModel;
+        private CampingMapModel campingMapModel;
 
         private Graph mainGraph;
         public Graph MainGraph
@@ -27,21 +28,58 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
         }
 
-        private List<Route> routes = [];
-        public List<Route> Routes
+        public List<FacilityRouteModel> Routes
         {
-            get => routes;
+            get
+            {
+                if (campingMapModel.SelectedCampingSpot != null)
+                {
+                    return campingMapModel.SelectedCampingSpot.Routes;
+                }
+                else
+                {
+                    return [];
+                }
+            }
             set
             {
-                routes = value;
+                if (campingMapModel.SelectedCampingSpot != null)
+                {
+                    campingMapModel.SelectedCampingSpot.Routes = value;
+                }
+
                 OnPropertyChanged(nameof(Routes));
             }
         }
 
-        public PathViewModel(CampingMapViewModel campingMapViewModel)
+        public FacilityRouteModel? ShownRoute
         {
-            this.campingMapViewModel = campingMapViewModel;
-            campingMapViewModel.SelectedCampingSpotChanged += CampingMapViewModel_SelectedCampingSpotChanged;
+            get
+            {
+                if (campingMapModel.SelectedCampingSpot != null)
+                {
+                    return campingMapModel.SelectedCampingSpot.HoveredFacilityRoute;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            set
+            {
+                if (campingMapModel.SelectedCampingSpot != null)
+                {
+                    campingMapModel.SelectedCampingSpot.HoveredFacilityRoute = value;
+                }
+
+                OnPropertyChanged(nameof(ShownRoute));
+            }
+        }
+
+        public PathViewModel(CampingMapModel campingMapModel)
+        {
+            this.campingMapModel = campingMapModel;
+            campingMapModel.PropertyChanged += CampingMapModel_PropertyChanged;
 
             mainGraph = new();
             var startNode = new Node(0, 33.95, 50);
@@ -65,40 +103,52 @@ namespace CampingApplication.VisitorApp.ViewModels
             MainGraph.ConnectNodes(node6, node9);
         }
 
-        private void CampingMapViewModel_SelectedCampingSpotChanged(CampingSpotViewModel? campingSpot)
+        private async void CampingMapModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            Routes = [];
+            if (e.PropertyName == nameof(campingMapModel.SelectedCampingSpot))
+            {
+                Routes = [];
+
+                if (campingMapModel.SelectedCampingSpot != null)
+                {
+                    var selectedSpot = campingMapModel.SelectedCampingSpot;
+                    selectedSpot.PropertyChanged += SelectedSpot_PropertyChanged;
+
+                    await Task.Delay(500);
+                    var (x, y) = selectedSpot.CampingSpot.GetCenterPoint();
+                    await CreateRoutes(new Node(-1, x, y));
+                }
+            }
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
+        private void SelectedSpot_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            PropertyChanged?.Invoke(this.PropertyChanged, new PropertyChangedEventArgs(propertyName));
+            if (e.PropertyName == nameof(campingMapModel.SelectedCampingSpot.HoveredFacilityRoute))
+            {
+                OnPropertyChanged(nameof(ShownRoute));
+            }
         }
 
-        public async Task CreateRoutes(CampingSpotViewModel campingSpot)
+        public async Task CreateRoutes(Node from)
         {
-            var pixelsPerMeter = CampingMapViewModel.PIXELS_PER_METER;
-            var (xStart, yStart) = MapConversionHelper.PixelsToMeters(campingSpot.PositionX + campingSpot.Width / 2, campingSpot.PositionY + campingSpot.Height / 2, pixelsPerMeter);
+            if (campingMapModel.SelectedCampingSpot == null)
+                return;
 
-            List<Route> routesToFacilities = [];
-            Node startNode = new(-1, xStart, yStart);
+            List<FacilityRouteModel> routesToFacilities = [];
 
-            var facilities = campingMapViewModel.FacilityData;
-            foreach (var facility in facilities)
+            foreach (var facility in campingMapModel.Facilities)
             {
                 Graph graph = mainGraph.DeepCopyGraph();
-                graph.StartNode = startNode;
+                graph.StartNode = from;
                 Node endNode = new(graph.AdjacencyList.Count, facility.XCoordinate, facility.YCoordinate);
 
-                graph.ConnectNodeToClosestEdge(startNode);
+                graph.ConnectNodeToClosestEdge(from);
                 graph.ConnectNodeToClosestEdge(endNode);
 
-                Route route = Dijkstra.FindShortestPath(graph, startNode, endNode);
+                Route route = Dijkstra.FindShortestPath(graph, from, endNode);
+                var facilityRouteModel = new FacilityRouteModel(facility, route);
 
-                routesToFacilities.Add(route);
-                //Debug.WriteLine("Creating graph for specific facility!");
+                routesToFacilities.Add(facilityRouteModel);
             }
 
             await Application.Current.Dispatcher.InvokeAsync(() =>

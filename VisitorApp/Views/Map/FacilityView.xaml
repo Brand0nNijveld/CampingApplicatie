@@ -11,66 +11,7 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:FacilityViewModel}"             >
     <!-- Border for the Facility -->
     <Border CornerRadius="100" Background="{DynamicResource Primary}" Padding="15">
-        <ContentControl Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <ContentControl.Style>
-                <Style TargetType="ContentControl">
-                    <Setter Property="ContentTemplate">
-                        <Setter.Value>
-                            <DataTemplate>
-                                <TextBlock FontWeight="ExtraBold" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" Text="?" />
-                            </DataTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <!-- Default icon -->
-
-                    <Style.Triggers>
-                        <!-- Trigger for type 'Restroom' -->
-                        <DataTrigger Binding="{Binding Type}" Value="Restroom">
-                            <Setter Property="ContentTemplate">
-                                <Setter.Value>
-                                    <DataTemplate>
-                                        <svg:SvgViewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="pack://application:,,,/Resources/Icons/restroom.svg" />
-                                    </DataTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-
-                        <!-- Trigger for type 'Shower' -->
-                        <DataTrigger Binding="{Binding Type}" Value="Shower">
-                            <Setter Property="ContentTemplate">
-                                <Setter.Value>
-                                    <DataTemplate>
-                                        <ContentControl Foreground="White">
-                                            <svg:SvgViewbox MessageFillBrush="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="pack://application:,,,/Resources/Icons/shower.svg" />
-                                        </ContentControl>
-                                    </DataTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-
-                        <!-- Trigger for type 'Playground' -->
-                        <DataTrigger Binding="{Binding Type}" Value="Playground">
-                            <Setter Property="ContentTemplate">
-                                <Setter.Value>
-                                    <DataTemplate>
-                                        <svg:SvgViewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="pack://application:,,,/Resources/Icons/playground.svg" />
-                                    </DataTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-
-                        <DataTrigger Binding="{Binding Type}" Value="Reception">
-                            <Setter Property="ContentTemplate">
-                                <Setter.Value>
-                                    <DataTemplate>
-                                        <TextBlock FontWeight="ExtraBold" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" Text="R" />
-                                    </DataTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ContentControl.Style>
+        <ContentControl FontSize="30" Style="{DynamicResource FacilityIcon}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">
         </ContentControl>
     </Border>
 </UserControl>

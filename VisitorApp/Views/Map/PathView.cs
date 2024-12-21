@@ -1,5 +1,6 @@
 ﻿using CampingApplication.Business.PathFinding;
 using CampingApplication.Client.Shared.Helpers;
+using CampingApplication.VisitorApp.Models;
 using CampingApplication.VisitorApp.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -20,9 +21,11 @@ namespace CampingApplication.VisitorApp.Views.Map
     {
         private Canvas canvas;
 
+        private const int ROUTE_THICKNESS = 15;
+
         public PathViewModel ViewModel { get; private set; }
         public Path MainPath { get; private set; } = new();
-        private List<Path> routePaths = [];
+        private Dictionary<FacilityRouteModel, Path> routePaths = [];
 
         public PathView(Canvas canvas, PathViewModel viewModel)
         {
@@ -38,13 +41,51 @@ namespace CampingApplication.VisitorApp.Views.Map
             {
                 DrawRoutes();
             }
+            else if (e.PropertyName == nameof(ViewModel.ShownRoute))
+            {
+                ShowSelectedRoute(ViewModel.ShownRoute);
+            }
+        }
+
+        private void ShowSelectedRoute(FacilityRouteModel? facilityRoute)
+        {
+            foreach (var route in routePaths)
+            {
+                if (facilityRoute == null)
+                {
+                    AnimateStrokeThickness(route.Value, ROUTE_THICKNESS);
+                    continue;
+                }
+
+                if (facilityRoute == route.Key)
+                {
+                    AnimateStrokeThickness(route.Value, ROUTE_THICKNESS);
+                }
+                else
+                {
+                    AnimateStrokeThickness(route.Value, 0);
+                }
+            }
+        }
+
+        private void AnimateStrokeThickness(Path path, double targetThickness)
+        {
+            var animation = new DoubleAnimation
+            {
+                To = targetThickness,
+                Duration = TimeSpan.FromMilliseconds(300),
+                EasingFunction = new QuadraticEase() // Optional for smooth transitions
+            };
+
+            path.BeginAnimation(Path.StrokeThicknessProperty, animation);
         }
 
         private void DrawRoutes()
         {
             foreach (var route in routePaths)
             {
-                canvas.Children.Remove(route);
+                canvas.Children.Remove(route.Value);
+                routePaths.Remove(route.Key);
             }
 
             routePaths = [];
@@ -55,10 +96,11 @@ namespace CampingApplication.VisitorApp.Views.Map
                 SolidColorBrush color = colors[i];
                 var route = ViewModel.Routes[i];
 
-                Path path = DrawRoute(route, color);
+                Path path = DrawRoute(route.Route, color);
                 Canvas.SetZIndex(path, 0);
                 canvas.Children.Add(path);
-                routePaths.Add(path);
+                routePaths.Add(route, path);
+                AnimateStrokeThickness(path, ROUTE_THICKNESS);
             }
         }
 
@@ -183,7 +225,7 @@ namespace CampingApplication.VisitorApp.Views.Map
                 Data = pathGeometry,
                 Stroke = color,
                 Opacity = 1,
-                StrokeThickness = 15,
+                StrokeThickness = 0,
                 StrokeLineJoin = PenLineJoin.Round,
                 Fill = Brushes.Transparent
             };

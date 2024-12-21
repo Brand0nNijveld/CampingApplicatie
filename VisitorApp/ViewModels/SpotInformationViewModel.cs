@@ -1,5 +1,8 @@
-﻿using System;
+﻿using CampingApplication.Business.PathFinding;
+using CampingApplication.VisitorApp.Models;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -8,10 +11,9 @@ using System.Threading.Tasks;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
-    public class SpotInformationViewModel : INotifyPropertyChanged
+    public class SpotInformationViewModel : BaseViewModel
     {
-        private PathViewModel pathViewModel;
-        private CampingMapViewModel mapViewModel;
+        private CampingMapModel campingMapModel;
         private bool open;
         public bool Open
         {
@@ -23,7 +25,7 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
         }
 
-        private string title = "";
+        private string title = "Campingplek ?";
         public string Title
         {
             get => title;
@@ -34,48 +36,74 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
         }
 
-        public SpotInformationViewModel(CampingMapViewModel mapViewModel, PathViewModel pathViewModel)
+        private ObservableCollection<FacilityRouteModel> facilityRoutes = [];
+        public ObservableCollection<FacilityRouteModel> FacilityRoutes
         {
-            this.pathViewModel = pathViewModel;
-            this.mapViewModel = mapViewModel;
-            mapViewModel.SelectedCampingSpotChanged += MapViewModel_SelectedCampingSpotChanged;
-            pathViewModel.PropertyChanged += PathViewModel_PropertyChanged;
-        }
-
-        private void PathViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(pathViewModel.Routes))
+            get => facilityRoutes;
+            set
             {
-                foreach (var route in pathViewModel.Routes)
-                {
-                    Debug.WriteLine("Route: " + route.TotalDistance);
-                }
+                facilityRoutes = value;
+                OnPropertyChanged(nameof(FacilityRoutes));
             }
         }
 
-        private async void MapViewModel_SelectedCampingSpotChanged(CampingSpotViewModel? campingSpot)
+        public SpotInformationViewModel(CampingMapModel campingMapModel)
+        {
+            this.campingMapModel = campingMapModel;
+            campingMapModel.PropertyChanged += CampingMapModel_PropertyChanged;
+        }
+
+        private void CampingMapModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(campingMapModel.SelectedCampingSpot))
+            {
+                OnSelectedCampingSpotChanged(campingMapModel.SelectedCampingSpot);
+            }
+        }
+
+        private void OnSelectedCampingSpotChanged(SpotInformationModel? campingSpot)
         {
             Open = campingSpot != null;
 
             if (campingSpot != null)
             {
-                Title = $"Campingplek #{campingSpot.ID}";
-                await Task.Delay(1000);
-                await pathViewModel.CreateRoutes(campingSpot);
+                Title = $"Campingplek #{campingSpot.CampingSpot.ID}";
+                campingSpot.PropertyChanged += SelectedSpot_PropertyChanged;
+                ClearAsyncData();
             }
+        }
+
+        private void SelectedSpot_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (sender is SpotInformationModel model)
+            {
+                if (e.PropertyName == nameof(model.Routes))
+                {
+                    FacilityRoutes = new(model.Routes);
+                }
+            }
+        }
+
+        public void HoverFacilityRoute(FacilityRouteModel facilityRoute)
+        {
+            if (campingMapModel.SelectedCampingSpot != null)
+                campingMapModel.SelectedCampingSpot.HoveredFacilityRoute = facilityRoute;
+        }
+
+        public void StopHoverFacilityRoute()
+        {
+            if (campingMapModel.SelectedCampingSpot != null)
+                campingMapModel.SelectedCampingSpot.HoveredFacilityRoute = null;
         }
 
         public void Close()
         {
-            mapViewModel.SelectCampingSpot(null);
-            pathViewModel.Routes = [];
+            campingMapModel.SelectedCampingSpot = null;
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
+        public void ClearAsyncData()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            FacilityRoutes = [];
         }
     }
 }

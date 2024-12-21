@@ -16,7 +16,7 @@ namespace CampingApplication.VisitorApp.ViewModels
 {
     public delegate void BookingSuccessHandler();
 
-    public class BookingViewModel : INotifyPropertyChanged
+    public class BookingViewModel : BaseViewModel
     {
         private readonly BookingService bookingService;
 
@@ -97,8 +97,6 @@ namespace CampingApplication.VisitorApp.ViewModels
         }
         public string? PhoneNumberError { get; private set; }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
         public BookingViewModel(int ID, DateTime startDate, DateTime endDate)
         {
             bookingRequest = new BookingRequest
@@ -123,11 +121,6 @@ namespace CampingApplication.VisitorApp.ViewModels
                 ServiceProvider.Current.RegisterInstance(new BookingService(new BookingRepositoryMock()));
                 bookingService = ServiceProvider.Current.Resolve<BookingService>();
             }
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public async Task SubmitBooking()

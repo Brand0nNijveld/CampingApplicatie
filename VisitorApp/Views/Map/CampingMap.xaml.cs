@@ -137,10 +137,11 @@ namespace CampingApplication.VisitorApp.Views
             // Draw camping spots
             foreach (var campingSpot in viewModel.CampingSpots)
             {
-                var campingSpotView = new CampingSpotView(campingSpot);
+                CampingSpotViewModel campingSpotViewModel = new(viewModel.Model, campingSpot.Value);
+                var campingSpotView = new CampingSpotView(campingSpotViewModel);
 
-                Canvas.SetLeft(campingSpotView, campingSpot.PositionX);
-                Canvas.SetTop(campingSpotView, campingSpot.PositionY);
+                Canvas.SetLeft(campingSpotView, campingSpotViewModel.PositionX);
+                Canvas.SetTop(campingSpotView, campingSpotViewModel.PositionY);
                 Canvas.SetZIndex(campingSpotView, 2);
                 CampingCanvas.Children.Add(campingSpotView);
             }
@@ -148,14 +149,16 @@ namespace CampingApplication.VisitorApp.Views
             // Draw facilities
             foreach (var facility in viewModel.Facilities)
             {
-                var facilityView = new FacilityView(facility);
+                FacilityViewModel facilityViewModel = new(facility);
+                var facilityView = new FacilityView(facilityViewModel);
                 double width = facilityView.Width;
                 double height = facilityView.Height;
 
-                Canvas.SetLeft(facilityView, facility.PositionX - width / 2);
-                Canvas.SetTop(facilityView, facility.PositionY - height / 2);
+                // Set it to center so route goes to the center (inconsistent with camping spots right now)
+                Canvas.SetLeft(facilityView, facilityViewModel.PositionX - width / 2);
+                Canvas.SetTop(facilityView, facilityViewModel.PositionY - height / 2);
                 Canvas.SetZIndex(facilityView, 2);
-                Debug.WriteLine("Setting facility position: " + facility.PositionX + ", " + facility.PositionY);
+
                 CampingCanvas.Children.Add(facilityView);
             }
 

@@ -9,10 +9,8 @@ using System.Windows.Controls;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
-    public class ActionPanelViewModel : INotifyPropertyChanged
+    public class ActionPanelViewModel : BaseViewModel
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-
         private int currentView;
         public int CurrentView
         {
@@ -59,11 +57,6 @@ namespace CampingApplication.VisitorApp.ViewModels
         {
             Views = [];
             CurrentView = 0;
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

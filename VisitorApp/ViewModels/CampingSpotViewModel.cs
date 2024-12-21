@@ -1,5 +1,6 @@
 ﻿using CampingApplication.Business;
 using CampingApplication.Client.Shared.Helpers;
+using CampingApplication.VisitorApp.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
-    public class CampingSpotViewModel : INotifyPropertyChanged
+    public class CampingSpotViewModel : BaseViewModel
     {
-        private readonly CampingMapViewModel campingMapViewModel;
+        private readonly CampingMapModel campingMapModel;
 
         private int id;
         public int ID
@@ -79,7 +80,7 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
         }
 
-        public CampingSpotViewModel(CampingMapViewModel campingMapViewModel, CampingSpot spot)
+        public CampingSpotViewModel(CampingMapModel campingMapModel, CampingSpot spot)
         {
             ID = spot.ID;
 
@@ -90,18 +91,40 @@ namespace CampingApplication.VisitorApp.ViewModels
             Width = MapConversionHelper.MetersToPixels(spot.Width, pixelsPerMeter);
             Height = MapConversionHelper.MetersToPixels(spot.Height, pixelsPerMeter);
 
-            this.campingMapViewModel = campingMapViewModel;
+            this.campingMapModel = campingMapModel;
+            campingMapModel.PropertyChanged += CampingMapModel_PropertyChanged;
+        }
+
+        private void CampingMapModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(campingMapModel.AvailableCampingSpots))
+            {
+                if (campingMapModel.AvailableCampingSpots == null)
+                {
+                    Available = false;
+                }
+                else
+                {
+                    Available = campingMapModel.AvailableCampingSpots.ContainsKey(ID);
+                }
+            }
         }
 
         public void SelectCampingSpot()
         {
-            campingMapViewModel.SelectCampingSpot(this);
-        }
+            if (campingMapModel == null)
+                return;
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this.PropertyChanged, new PropertyChangedEventArgs(propertyName));
+            SpotInformationModel? selectedSpot = campingMapModel.SelectedCampingSpot;
+
+            // Check if this camping spot is already selected
+            if (selectedSpot != null)
+            {
+                if (selectedSpot.CampingSpot.ID == ID)
+                    return;
+            }
+
+            campingMapModel.SelectedCampingSpot = new(campingMapModel.CampingSpots[ID]);
         }
     }
 }

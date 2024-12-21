@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CampingApplication.Business;
 using CampingApplication.Business.CampingSpotService;
+using CampingApplication.VisitorApp.Models;
 using CampingApplication.VisitorApp.Views.Booking;
 
 namespace CampingApplication.VisitorApp.ViewModels
@@ -22,11 +23,12 @@ namespace CampingApplication.VisitorApp.ViewModels
         public MainViewModel()
         {
             CampingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
+            CampingMapModel campingMapModel = new();
 
             ActionPanelViewModel = new();
-            CampingMapViewModel = new(ActionPanelViewModel);
-            PathViewModel = new(CampingMapViewModel);
-            SpotInformationViewModel = new(CampingMapViewModel, PathViewModel);
+            CampingMapViewModel = new(campingMapModel, ActionPanelViewModel);
+            PathViewModel = new(campingMapModel);
+            SpotInformationViewModel = new(campingMapModel);
         }
 
         public async void CheckAvailableSpots(DateTime startDate, DateTime endDate)
