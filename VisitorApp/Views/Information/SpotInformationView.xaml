@@ -155,7 +155,7 @@
                 </StackPanel>
             </ScrollViewer>
 
-            <components:CustomButton Margin="0,10,0,0" Grid.Row="2" ButtonState="Inactive" HorizontalAlignment="Stretch" Content="Nu boeken" FontWeight="Bold"/>
+            <components:CustomButton Click="BookButton_Clicked" ButtonState="{Binding BookButtonState}" Margin="0,10,0,0" Grid.Row="2" HorizontalAlignment="Stretch" Content="Nu boeken" FontWeight="Bold"/>
         </Grid>
     </Border>
 </UserControl>

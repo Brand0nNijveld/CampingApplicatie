@@ -1,4 +1,4 @@
-﻿using CampingApplication.Business.PathFinding;
+﻿using CampingApplication.Business.PathService;
 using CampingApplication.Client.Shared.Helpers;
 using CampingApplication.VisitorApp.ViewModels;
 using CampingApplication.VisitorApp.Views.Information;
@@ -32,7 +32,7 @@ namespace CampingApplication.VisitorApp.Views
             InitializeComponent();
 
             // Load the image
-            var bitmap = new BitmapImage(new Uri("Resources/TestMap2.png", UriKind.Relative));
+            var bitmap = new BitmapImage(new Uri("Resources/TestMap3.png", UriKind.Relative));
             MapImage.ImageSource = bitmap;
 
             // Set canvas size to match the image dimensions for correct scale conversion

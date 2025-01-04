@@ -19,16 +19,19 @@ namespace CampingApplication.VisitorApp.ViewModels
         public ActionPanelViewModel ActionPanelViewModel { get; private set; }
         public SpotInformationViewModel SpotInformationViewModel { get; private set; }
         public PathViewModel PathViewModel { get; private set; }
+        private CampingMapModel campingMapModel;
 
         public MainViewModel()
         {
             CampingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
-            CampingMapModel campingMapModel = new();
+            campingMapModel = new();
 
-            ActionPanelViewModel = new();
+            ActionPanelViewModel = new(campingMapModel);
             CampingMapViewModel = new(campingMapModel, ActionPanelViewModel);
             PathViewModel = new(campingMapModel);
             SpotInformationViewModel = new(campingMapModel);
+
+            SpotInformationViewModel.BookingProcessStarted += OnBookingProcessStarted;
         }
 
         public async void CheckAvailableSpots(DateTime startDate, DateTime endDate)
@@ -51,6 +54,45 @@ namespace CampingApplication.VisitorApp.ViewModels
             {
                 Debug.WriteLine(ex);
             }
+        }
+
+
+        public void OnBookingProcessStarted()
+        {
+            if (ActionPanelViewModel.Views.Count > 0)
+                return;
+
+            var startDate = campingMapModel.StartDate;
+            var endDate = campingMapModel.EndDate;
+            if (startDate >= endDate)
+                return;
+
+            var campingSpot = campingMapModel.SelectedCampingSpot;
+            if (campingSpot == null)
+            {
+                ActionPanelViewModel.ClearAndHide();
+                return;
+            }
+
+            int ID = campingSpot.CampingSpot.ID;
+
+            BookingView bookingView = new(ID, campingMapModel);
+            bookingView.BackButtonClicked += ActionPanelViewModel.ClearAndHide;
+            bookingView.ViewModel.BookingSuccessful += () =>
+            {
+                ActionPanelViewModel.Next();
+                campingMapModel.AvailableCampingSpots?.Remove(ID);
+                CheckAvailableSpots(campingMapModel.StartDate, campingMapModel.EndDate);
+            };
+
+            BookingSuccessView bookingSuccessView = new();
+            bookingSuccessView.DoneButtonClicked += () =>
+            {
+                ActionPanelViewModel.ClearAndHide();
+                campingMapModel.SelectedCampingSpot = null;
+            };
+
+            ActionPanelViewModel.SetSteps([bookingView, bookingSuccessView]);
         }
     }
 }

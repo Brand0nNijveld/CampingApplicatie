@@ -1,4 +1,4 @@
-﻿using CampingApplication.Business.PathFinding;
+﻿using CampingApplication.Business.PathService;
 using CampingApplication.Client.Shared.Helpers;
 using CampingApplication.VisitorApp.Models;
 using CampingApplication.VisitorApp.ViewModels;
@@ -90,7 +90,7 @@ namespace CampingApplication.VisitorApp.Views.Map
 
             routePaths = [];
 
-            SolidColorBrush[] colors = { Brushes.Blue, Brushes.Yellow, Brushes.Red, Brushes.Purple };
+            SolidColorBrush[] colors = { Brushes.Blue, Brushes.Yellow, Brushes.Red, Brushes.Purple, Brushes.Green };
             for (int i = 0; i < ViewModel.Routes.Count; i++)
             {
                 SolidColorBrush color = colors[i];
@@ -108,8 +108,8 @@ namespace CampingApplication.VisitorApp.Views.Map
         public void DrawMainPath()
         {
             Graph mainGraph = ViewModel.MainGraph;
-            MainPath = DrawPath(mainGraph, Brushes.Black, 70, 0.2);
-            canvas.Children.Add(MainPath);
+            //MainPath = DrawPath(mainGraph, Brushes.Black, 30, 0.2);
+            //canvas.Children.Add(MainPath);
 
             // DEBUG TO CHECK NODES
             //DrawNodes(mainGraph);

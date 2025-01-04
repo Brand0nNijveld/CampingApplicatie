@@ -35,7 +35,7 @@
 
         <Canvas ClipToBounds="True" MouseLeftButtonUp="CampingCanvas_MouseUp" Grid.Row="1" Grid.Column="1" Name="CampingCanvas" Margin="0,0,0,0">
             <Canvas.Background>
-                <ImageBrush x:Name="MapImage" ImageSource="../../Resources/TestMap2.png" Stretch="Fill"/>
+                <ImageBrush x:Name="MapImage" ImageSource="../../Resources/TestMap3.png" Stretch="Fill"/>
             </Canvas.Background>
         </Canvas>
 

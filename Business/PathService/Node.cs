@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CampingApplication.Business.PathFinding
+namespace CampingApplication.Business.PathService
 {
     public class Node(int id, double x, double y)
     {

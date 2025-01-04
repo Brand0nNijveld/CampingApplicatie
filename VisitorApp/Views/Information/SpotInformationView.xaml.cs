@@ -1,5 +1,6 @@
 ﻿using CampingApplication.VisitorApp.Models;
 using CampingApplication.VisitorApp.ViewModels;
+using CampingApplication.VisitorApp.Views.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -127,6 +128,11 @@ namespace CampingApplication.VisitorApp.Views.Information
             // Apply animations to the ScaleTransform
             scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, scaleXAnimation);
             scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, scaleYAnimation);
+        }
+
+        private void BookButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            viewModel?.StartBookingProcess();
         }
     }
 }

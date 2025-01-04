@@ -1,4 +1,5 @@
 ﻿using CampingApplication.Business.BookingService;
+using CampingApplication.VisitorApp.Models;
 using CampingApplication.VisitorApp.ViewModels;
 using System.Diagnostics;
 using System.Windows;
@@ -17,16 +18,13 @@ namespace CampingApplication.VisitorApp.Views.Booking
 
         public BookingViewModel ViewModel { get; private set; }
 
-        public BookingView(int ID, DateTime startDate, DateTime endDate, float pricePerNight)
+        public BookingView(int ID, CampingMapModel mapModel)
         {
             InitializeComponent();
 
-            ViewModel = new(ID, startDate, endDate);
+            ViewModel = new(ID, mapModel);
             DataContext = ViewModel;
-
-            int amountOfNights = BookingService.CalculateAmountOfNights(startDate, endDate);
-            float totalPrice = BookingService.CalculateTotalPrice(amountOfNights, pricePerNight);
-            Details.SetDetails(ID, startDate, endDate, amountOfNights, pricePerNight, totalPrice);
+            Details.SetDetails(ID, mapModel);
 
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
 

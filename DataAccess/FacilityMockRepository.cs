@@ -14,10 +14,11 @@ namespace DataAccess
         {
             await Task.Delay(100);
             return [
-                new Facility(1,  34, 0, FacilityType.Restroom),
-                new Facility(2, 20, 20,FacilityType.Shower),
-                new Facility(3,  10, 10, FacilityType.Playground),
-                new Facility(4,  30, 42, FacilityType.Reception),
+                new Facility(1,  135.2, 173.44, FacilityType.Restroom),
+                new Facility(2, 190.4, 23.2, FacilityType.Shower),
+                new Facility(3,  134.24, 92.16, FacilityType.Playground),
+                new Facility(4,  108.96, 225.12, FacilityType.Reception),
+                new Facility(5,  54.56, 100, FacilityType.Restroom),
                 ];
         }
     }

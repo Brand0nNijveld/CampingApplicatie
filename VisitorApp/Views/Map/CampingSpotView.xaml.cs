@@ -26,7 +26,7 @@ namespace CampingApplication.VisitorApp.Views.Map
         private readonly CampingSpotViewModel viewModel;
 
         SolidColorBrush availableColor = new SolidColorBrush(Colors.Yellow);
-        SolidColorBrush defaultColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF4FAF01"));
+        SolidColorBrush defaultColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8bc267"));
 
         public CampingSpotView(CampingSpotViewModel viewModel)
         {

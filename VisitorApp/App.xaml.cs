@@ -8,6 +8,7 @@ using System.Configuration;
 using System.Data;
 using System.Windows;
 using CampingApplication.Business.FacilityService;
+using CampingApplication.Business.PathService;
 
 namespace CampingApplication.VisitorApp
 {
@@ -45,9 +46,17 @@ namespace CampingApplication.VisitorApp
             CampingSpotService campingSpotService = new(campingSpotRepository);
             serviceProvider.RegisterInstance(campingSpotService);
 
+            IFacilityRepository facilityRepository = new FacilityMockRepository();
+            FacilityService facilityService = new(facilityRepository);
+            serviceProvider.RegisterInstance(facilityService);
+
             IBookingRepository bookingRepository = new BookingRepositoryMock();
             BookingService bookingService = new(bookingRepository);
             serviceProvider.RegisterInstance(bookingService);
+
+            IPathRepository pathRepository = new PathMockRepository();
+            PathService pathService = new(pathRepository);
+            serviceProvider.RegisterInstance(pathService);
         }
 
         /// <summary>
@@ -69,6 +78,10 @@ namespace CampingApplication.VisitorApp
             IBookingRepository bookingRepository = new BookingRepository(dbConnection);
             BookingService bookingService = new(bookingRepository);
             serviceProvider.RegisterInstance(bookingService);
+
+            IPathRepository pathRepository = new PathMockRepository();
+            PathService pathService = new(pathRepository);
+            serviceProvider.RegisterInstance(pathService);
         }
 
         private void SetWindow(Window window)

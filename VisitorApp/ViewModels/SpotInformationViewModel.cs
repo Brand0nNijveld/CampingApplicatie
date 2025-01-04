@@ -1,5 +1,7 @@
-﻿using CampingApplication.Business.PathFinding;
+﻿using CampingApplication.Business.PathService;
 using CampingApplication.VisitorApp.Models;
+using CampingApplication.VisitorApp.Views.Booking;
+using CampingApplication.VisitorApp.Views.Components;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,8 +13,13 @@ using System.Threading.Tasks;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
+    public delegate void StartBookingProcessHandler();
     public class SpotInformationViewModel : BaseViewModel
     {
+        public event StartBookingProcessHandler? BookingProcessStarted;
+
+        private SpotInformationModel? currentSpotInformation;
+
         private CampingMapModel campingMapModel;
         private bool open;
         public bool Open
@@ -35,6 +42,21 @@ namespace CampingApplication.VisitorApp.ViewModels
                 OnPropertyChanged(nameof(Title));
             }
         }
+
+        private ButtonState bookButtonState;
+        public ButtonState BookButtonState
+        {
+            get => bookButtonState;
+            set
+            {
+                if (bookButtonState != value)
+                {
+                    bookButtonState = value;
+                    OnPropertyChanged(nameof(BookButtonState));
+                }
+            }
+        }
+
 
         private ObservableCollection<FacilityRouteModel> facilityRoutes = [];
         public ObservableCollection<FacilityRouteModel> FacilityRoutes
@@ -59,18 +81,46 @@ namespace CampingApplication.VisitorApp.ViewModels
             {
                 OnSelectedCampingSpotChanged(campingMapModel.SelectedCampingSpot);
             }
+            else if (e.PropertyName == nameof(campingMapModel.AvailableCampingSpots))
+            {
+                SetBookButtonState();
+            }
+        }
+
+        private void SetBookButtonState()
+        {
+            if (currentSpotInformation != null)
+            {
+                if (campingMapModel.AvailableCampingSpots != null)
+                {
+                    bool available = campingMapModel.AvailableCampingSpots.ContainsKey(currentSpotInformation.CampingSpot.ID);
+                    BookButtonState = available ? ButtonState.Active : ButtonState.Inactive;
+                }
+                else
+                {
+                    BookButtonState = ButtonState.Inactive;
+                }
+            }
         }
 
         private void OnSelectedCampingSpotChanged(SpotInformationModel? campingSpot)
         {
             Open = campingSpot != null;
+            currentSpotInformation = campingSpot;
 
             if (campingSpot != null)
             {
                 Title = $"Campingplek #{campingSpot.CampingSpot.ID}";
+                SetBookButtonState();
+
                 campingSpot.PropertyChanged += SelectedSpot_PropertyChanged;
                 ClearAsyncData();
             }
+        }
+        
+        public void StartBookingProcess()
+        {
+            BookingProcessStarted?.Invoke();
         }
 
         private void SelectedSpot_PropertyChanged(object? sender, PropertyChangedEventArgs e)

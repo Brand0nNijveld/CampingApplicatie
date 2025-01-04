@@ -1,4 +1,5 @@
-﻿using CampingApplication.Business.PathFinding;
+﻿using CampingApplication.Business;
+using CampingApplication.Business.PathService;
 using CampingApplication.Client.Shared.Helpers;
 using CampingApplication.VisitorApp.Models;
 using System;
@@ -15,6 +16,7 @@ namespace CampingApplication.VisitorApp.ViewModels
 {
     public class PathViewModel : BaseViewModel
     {
+        private PathService pathService;
         private CampingMapModel campingMapModel;
 
         private Graph mainGraph;
@@ -81,26 +83,14 @@ namespace CampingApplication.VisitorApp.ViewModels
             this.campingMapModel = campingMapModel;
             campingMapModel.PropertyChanged += CampingMapModel_PropertyChanged;
 
+            pathService = ServiceProvider.Current.Resolve<PathService>();
             mainGraph = new();
-            var startNode = new Node(0, 33.95, 50);
-            var node1 = new Node(1, 33.95, 37.2);
-            var node2 = new Node(2, 15.3, 37.2);
-            var node3 = new Node(3, 15.3, 5.3);
-            var node4 = new Node(4, 41.6, 37.2);
-            var node5 = new Node(5, 41.6, 44.97);
-            var node6 = new Node(6, 41.6, 5.3);
-            var node7 = new Node(7, 29.8, 37.2);
-            var node8 = new Node(8, 29.8, 20.4);
-            var node9 = new Node(9, 50, 5.3);
-            MainGraph.ConnectNodes(startNode, node1);
-            MainGraph.ConnectNodes(node1, node2);
-            MainGraph.ConnectNodes(node2, node3);
-            MainGraph.ConnectNodes(node4, node5);
-            MainGraph.ConnectNodes(node4, node1);
-            MainGraph.ConnectNodes(node4, node6);
-            MainGraph.ConnectNodes(node1, node7);
-            MainGraph.ConnectNodes(node7, node8);
-            MainGraph.ConnectNodes(node6, node9);
+            GetMainPath();
+        }
+
+        private async void GetMainPath()
+        {
+            MainGraph = await pathService.GetMainPath();
         }
 
         private async void CampingMapModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)

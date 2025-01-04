@@ -1,5 +1,6 @@
 ﻿using CampingApplication.Business;
 using CampingApplication.Business.BookingService;
+using CampingApplication.VisitorApp.Models;
 using CampingApplication.VisitorApp.Views.Components;
 using DataAccess.Bookings;
 using System;
@@ -97,18 +98,20 @@ namespace CampingApplication.VisitorApp.ViewModels
         }
         public string? PhoneNumberError { get; private set; }
 
-        public BookingViewModel(int ID, DateTime startDate, DateTime endDate)
+        public BookingViewModel(int ID, CampingMapModel mapModel)
         {
             bookingRequest = new BookingRequest
             {
                 CampingSpotID = ID,
-                StartDate = startDate,
-                EndDate = endDate,
+                StartDate = mapModel.StartDate,
+                EndDate = mapModel.EndDate,
                 FirstName = "",
                 LastName = "",
                 Email = "",
                 PhoneNumber = "",
             };
+
+            mapModel.PropertyChanged += MapModel_PropertyChanged;
 
             try
             {
@@ -120,6 +123,18 @@ namespace CampingApplication.VisitorApp.ViewModels
 
                 ServiceProvider.Current.RegisterInstance(new BookingService(new BookingRepositoryMock()));
                 bookingService = ServiceProvider.Current.Resolve<BookingService>();
+            }
+        }
+
+        private void MapModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (sender is CampingMapModel model)
+            {
+                if (e.PropertyName == nameof(CampingMapModel.StartDate) || e.PropertyName == nameof(CampingMapModel.EndDate))
+                {
+                    bookingRequest.StartDate = model.StartDate;
+                    bookingRequest.EndDate = model.EndDate;
+                }
             }
         }
 

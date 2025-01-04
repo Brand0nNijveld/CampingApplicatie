@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CampingApplication.VisitorApp.Models;
+using CampingApplication.VisitorApp.Views.Booking;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -11,6 +13,7 @@ namespace CampingApplication.VisitorApp.ViewModels
 {
     public class ActionPanelViewModel : BaseViewModel
     {
+        private CampingMapModel campingMapModel;
         private int currentView;
         public int CurrentView
         {
@@ -23,6 +26,11 @@ namespace CampingApplication.VisitorApp.ViewModels
         }
 
         public List<UserControl> Views { get; private set; } = [];
+
+        public ActionPanelViewModel(CampingMapModel campingMapModel)
+        {
+            this.campingMapModel = campingMapModel;
+        }
 
         public void Next()
         {

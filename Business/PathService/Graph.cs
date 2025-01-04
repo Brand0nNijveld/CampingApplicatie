@@ -5,9 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CampingApplication.Business.PathFinding
+namespace CampingApplication.Business.PathService
 {
-
     public class Graph
     {
         public Node? StartNode { get; set; }
@@ -91,7 +90,7 @@ namespace CampingApplication.Business.PathFinding
 
         /// <summary>
         /// Adds new node on the closest position on the edge from the "from" node. 
-        /// This from node gets connected to the graph.
+        /// The from node gets connected to the graph.
         /// </summary>
         /// <param name="newNode"></param>
         /// <param name="edgeStart"></param>

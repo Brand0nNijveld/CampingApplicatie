@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CampingApplication.Business.PathFinding
+namespace CampingApplication.Business.PathService
 {
     public class Dijkstra
     {
