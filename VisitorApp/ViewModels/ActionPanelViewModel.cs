@@ -1,6 +1,9 @@
-﻿using System;
+﻿using CampingApplication.VisitorApp.Models;
+using CampingApplication.VisitorApp.Views.Booking;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,10 +11,9 @@ using System.Windows.Controls;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
-    public class ActionPanelViewModel : INotifyPropertyChanged
+    public class ActionPanelViewModel : BaseViewModel
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-
+        private CampingMapModel campingMapModel;
         private int currentView;
         public int CurrentView
         {
@@ -25,6 +27,34 @@ namespace CampingApplication.VisitorApp.ViewModels
 
         public List<UserControl> Views { get; private set; } = [];
 
+        public ActionPanelViewModel(CampingMapModel campingMapModel)
+        {
+            this.campingMapModel = campingMapModel;
+        }
+
+        public void Next()
+        {
+            if (currentView + 1 >= Views.Count)
+            {
+                Debug.WriteLine("ACTIONPANEL: Trying to go next, but current is the last view.");
+                return;
+            }
+
+            CurrentView++;
+        }
+
+        public void Previous()
+        {
+            if (currentView - 1 < 0)
+            {
+                Debug.WriteLine("ACTIONPANEL: Trying to go back, but current is first view (clearing and hiding panel).");
+                ClearAndHide();
+                return;
+            }
+
+            CurrentView--;
+        }
+
         public void SetSteps(List<UserControl> steps, int startWith = 0)
         {
             this.Views = steps;
@@ -35,11 +65,6 @@ namespace CampingApplication.VisitorApp.ViewModels
         {
             Views = [];
             CurrentView = 0;
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

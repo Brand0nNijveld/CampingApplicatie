@@ -39,26 +39,16 @@ namespace CampingApplication.VisitorApp.Views.Booking
             {
                 if (e.PropertyName == nameof(ViewModel.CurrentView))
                 {
-                    if (ViewModel.Views.Count == 0)
+                    if (ViewModel.Views.Count == 0 || ViewModel.CurrentView < 0)
                     {
-                        HidePanel();
+                        TogglePanel(false);
                         return;
                     }
 
                     ContentControl.Content = ViewModel.Views[ViewModel.CurrentView];
-                    ShowPanel();
+                    TogglePanel(true);
                 }
             };
-        }
-
-        public void ShowPanel()
-        {
-            TogglePanel(true);
-        }
-
-        public void HidePanel()
-        {
-            TogglePanel(false);
         }
 
         private void TogglePanel(bool show, bool transition = true)

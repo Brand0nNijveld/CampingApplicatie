@@ -44,7 +44,7 @@ namespace CampingApplication.Business.CampingSpotService
         {
             await Task.Delay(100);
             return [
-                    new(1, 612, 360, [new(1, DateTime.Now.AddDays(1), DateTime.Now.AddDays(6))]),
+                    new(1, 45, 41.5, [new(1, DateTime.Now.AddDays(1), DateTime.Now.AddDays(6))]),
                     new(2, 612, 281, [new(1, DateTime.Now.AddDays(12), DateTime.Now.AddDays(22))]),
                     new(3, 612, 201,[new(1, DateTime.Now.AddDays(3), DateTime.Now.AddDays(12))]),
                     new(4, 612, 115, [new(1, DateTime.Now.AddDays(1), DateTime.Now.AddDays(6))]),

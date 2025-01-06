@@ -19,13 +19,9 @@ namespace DataAccess
 
         public async Task<MySqlConnection> GetConnectionAsync()
         {
-            if (Connection.State != System.Data.ConnectionState.Open)
-            {
-                Connection = new MySqlConnection(_connectionString);
-                await Connection.OpenAsync();
-            }
-
-            return Connection;
+            var conn = new MySqlConnection(_connectionString);
+            await conn.OpenAsync();
+            return conn;
         }
     }
 }

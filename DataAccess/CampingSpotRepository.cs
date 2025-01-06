@@ -116,11 +116,10 @@ namespace DataAccess
             {
                 string query = "SELECT SpotNr, PositionX, PositionY FROM campingspot";
 
-                using (connection.Connection)
+                using (var conn = await connection.GetConnectionAsync())
                 {
-                    using (MySqlCommand command = new MySqlCommand(query, connection.Connection))
+                    using (MySqlCommand command = new MySqlCommand(query, conn))
                     {
-                        connection.Connection.Open();
                         using (var reader = await command.ExecuteReaderAsync())
                         {
                             while (reader.Read())
@@ -132,7 +131,6 @@ namespace DataAccess
                                 Spots.Add(new CampingSpot(id, posX, posY));
                             }
                         }
-                        connection.Connection.Close();
                         return Spots;
                     }
                 }
