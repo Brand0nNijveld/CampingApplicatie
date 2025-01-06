@@ -1,4 +1,4 @@
-﻿using CampingApplication.Business.PathFinding;
+﻿using CampingApplication.Business.PathService;
 using CampingApplication.Client.Shared.Helpers;
 using CampingApplication.VisitorApp.ViewModels;
 using CampingApplication.VisitorApp.Views.Information;
@@ -25,12 +25,14 @@ namespace CampingApplication.VisitorApp.Views
         DoubleAnimation fadeInAnimation;
         DoubleAnimation fadeOutAnimation;
 
+        public PathView? PathView { get; set; }
+
         public CampingMap()
         {
             InitializeComponent();
 
             // Load the image
-            var bitmap = new BitmapImage(new Uri("Resources/TestMap2.png", UriKind.Relative));
+            var bitmap = new BitmapImage(new Uri("Resources/TestMap3.png", UriKind.Relative));
             MapImage.ImageSource = bitmap;
 
             // Set canvas size to match the image dimensions for correct scale conversion
@@ -135,34 +137,41 @@ namespace CampingApplication.VisitorApp.Views
             // Draw camping spots
             foreach (var campingSpot in viewModel.CampingSpots)
             {
-                var campingSpotView = new CampingSpotView(campingSpot);
+                CampingSpotViewModel campingSpotViewModel = new(viewModel.Model, campingSpot.Value);
+                var campingSpotView = new CampingSpotView(campingSpotViewModel);
 
-                Canvas.SetLeft(campingSpotView, campingSpot.PositionX);
-                Canvas.SetTop(campingSpotView, campingSpot.PositionY);
+                Canvas.SetLeft(campingSpotView, campingSpotViewModel.PositionX);
+                Canvas.SetTop(campingSpotView, campingSpotViewModel.PositionY);
+                Canvas.SetZIndex(campingSpotView, 2);
                 CampingCanvas.Children.Add(campingSpotView);
             }
 
             // Draw facilities
             foreach (var facility in viewModel.Facilities)
             {
-                var facilityView = new FacilityView(facility);
+                FacilityViewModel facilityViewModel = new(facility);
+                var facilityView = new FacilityView(facilityViewModel);
+                double width = facilityView.Width;
+                double height = facilityView.Height;
 
-                Canvas.SetLeft(facilityView, facility.PositionX);
-                Canvas.SetTop(facilityView, facility.PositionY);
-                Debug.WriteLine("Setting facility position: " + facility.PositionX + ", " + facility.PositionY);
+                // Set it to center so route goes to the center (inconsistent with camping spots right now)
+                Canvas.SetLeft(facilityView, facilityViewModel.PositionX - width / 2);
+                Canvas.SetTop(facilityView, facilityViewModel.PositionY - height / 2);
+                Canvas.SetZIndex(facilityView, 2);
+
                 CampingCanvas.Children.Add(facilityView);
             }
 
-            PathView pathView = new(CampingCanvas);
-            pathView.DrawMainPath();
+            PathView?.DrawMainPath();
+            CampingCanvas.UpdateLayout();
         }
 
-        private void CampingCanvas_MouseMove(object sender, MouseEventArgs e)
+        private void CampingCanvas_MouseUp(object sender, MouseEventArgs e)
         {
             var pos = e.GetPosition(CampingCanvas);
-            double xCoordinate = MapConversionHelper.PixelsToMeters(pos.X, CampingMapViewModel.PIXELS_PER_METER);
-            double yCoordinate = MapConversionHelper.PixelsToMeters(pos.Y, CampingMapViewModel.PIXELS_PER_METER);
+            var (xCoordinate, yCoordinate) = MapConversionHelper.PixelsToMeters(pos.X, pos.Y, CampingMapViewModel.PIXELS_PER_METER);
             Debug.WriteLine("Real world mouse position: (x)" + xCoordinate + ", (y)" + yCoordinate);
+
         }
     }
 }

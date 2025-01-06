@@ -25,6 +25,9 @@ namespace CampingApplication.VisitorApp.Views.Map
     {
         private readonly CampingSpotViewModel viewModel;
 
+        SolidColorBrush availableColor = new SolidColorBrush(Colors.Yellow);
+        SolidColorBrush defaultColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8bc267"));
+
         public CampingSpotView(CampingSpotViewModel viewModel)
         {
             InitializeComponent();
@@ -37,7 +40,7 @@ namespace CampingApplication.VisitorApp.Views.Map
 
         private void CampingSpot_Clicked(object sender, MouseButtonEventArgs e)
         {
-            viewModel.ShowDetails();
+            viewModel.SelectCampingSpot();
         }
 
         private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -46,11 +49,11 @@ namespace CampingApplication.VisitorApp.Views.Map
             {
                 if (viewModel.Available)
                 {
-                    SpotBorder.Background = new SolidColorBrush(Colors.Yellow);
+                    SpotBorder.Background = availableColor;
                 }
                 else
                 {
-                    SpotBorder.Background = new SolidColorBrush(Colors.Transparent);
+                    SpotBorder.Background = defaultColor;
                 }
             }
         }

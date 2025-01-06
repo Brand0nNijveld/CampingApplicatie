@@ -33,5 +33,10 @@ namespace CampingApplication.Business
                 b.EndDate >= startDate &&
                 b.EndDate <= endDate).Any();
         }
+
+        public (double x, double y) GetCenterPoint()
+        {
+            return ((XCoordinate + Width / 2), (YCoordinate + Height / 2));
+        }
     }
 }

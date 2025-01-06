@@ -13,6 +13,8 @@ namespace CampingApplication.EmployeeApp.ViewModels
     public delegate void AvailabilityHandler(bool available);
     public class CampingMapViewModel() : INotifyPropertyChanged
     {
+        public const int PIXELS_PER_METER = 25;
+
         public event AvailabilityHandler? AvailabilityChanged;
         public event PropertyChangedEventHandler? PropertyChanged;
 

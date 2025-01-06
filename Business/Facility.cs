@@ -13,6 +13,7 @@ namespace CampingApplication.Business
         Restroom,
         Shower,
         Playground,
+        Pool,
         Unknown,
     }
 
@@ -20,32 +21,48 @@ namespace CampingApplication.Business
     {
         public FacilityType Type { get; private set; }
 
-        public Facility(int ID, double posX, double posY, FacilityType type) : base(ID, posX, posY)
+        public static string TypeToString(FacilityType type)
         {
-            this.Type = type;
+            switch (type)
+            {
+                case FacilityType.Reception:
+                    return "Receptie";
+                case FacilityType.Restroom:
+                    return "Toilet";
+                case FacilityType.Shower:
+                    return "Douches";
+                case FacilityType.Playground:
+                    return "Speeltuin";
+                case FacilityType.Pool:
+                    return "Zwembad";
+                default:
+                    return "?";
+            }
         }
 
-        public Facility(int ID, int posX, int posY, string type) : base(ID, posX, posY)
+        private FacilityType ParseFacilityType(string type)
         {
             switch (type.ToLower())
             {
                 case "reception":
-                    this.Type = FacilityType.Reception;
-                    break;
+                    return FacilityType.Reception;
                 case "restroom":
-                    this.Type = FacilityType.Restroom;
-                    break;
+                    return FacilityType.Restroom;
                 case "shower":
-                    this.Type = FacilityType.Shower;
-                    break;
+                    return FacilityType.Shower;
                 case "playground":
-                    this.Type = FacilityType.Playground;
-                    break;
+                    return FacilityType.Playground;
+                case "pool":
+                    return FacilityType.Pool;
                 default:
-                    this.Type = FacilityType.Unknown;
                     Debug.WriteLine($"Assigned unknown type to facility! ({type})");
-                    break;
-            };
+                    return FacilityType.Unknown;
+            }
+        }
+
+        public Facility(int ID, double posX, double posY, string type) : base(ID, posX, posY)
+        {
+            this.Type = ParseFacilityType(type);
         }
     }
 }

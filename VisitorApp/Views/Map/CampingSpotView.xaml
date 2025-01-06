@@ -8,17 +8,25 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:CampingSpotViewModel}"
              mc:Ignorable="d" 
              Width="{Binding Width}" Height="{Binding Height}"
-             MinWidth="32"
+             MinWidth="50"
+             ClipToBounds="True"
              >
-    <Border x:Name="SpotBorder"
-                    Opacity="0.5"
-                    CornerRadius="5"
-                    Cursor="Hand"
-                    MouseLeftButtonDown="CampingSpot_Clicked">
-        <Border.Background>
-            <SolidColorBrush Color="Black" Opacity="0.2" />
-        </Border.Background>
-
-        <TextBlock FontSize="30" FontWeight="Bold" Text="{Binding ID}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    <Border
+        Cursor="Hand"
+        MouseLeftButtonDown="CampingSpot_Clicked"
+        CornerRadius="5"
+        BorderThickness="2">
+        <Border.BorderBrush>
+            <SolidColorBrush Color="Black" Opacity="0.5" />
+        </Border.BorderBrush>
+        <Grid >
+            <Border x:Name="SpotBorder"
+                    >
+                <Border.Background>
+                    <SolidColorBrush Color="#8bc267" Opacity="1" />
+                </Border.Background>
+            </Border>
+            <TextBlock FontSize="30" FontWeight="Bold" Text="{Binding ID}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
     </Border>
 </UserControl>

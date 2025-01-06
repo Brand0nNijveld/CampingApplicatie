@@ -4,5 +4,4 @@
         <ResourceDictionary Source="./CustomButton.xaml" />
         <ResourceDictionary Source="./CustomInput.xaml" />
     </ResourceDictionary.MergedDictionaries>
-
 </ResourceDictionary>

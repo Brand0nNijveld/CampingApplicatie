@@ -43,32 +43,7 @@
         <StackPanel>
             <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                 <Viewbox VerticalAlignment="Center" Width="38" Height="38">
-                    <Border PreviewMouseLeftButtonUp="BackButton_Clicked" Padding="3" Background="Transparent" CornerRadius="100" Cursor="Hand">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Style.Triggers>
-                                    <!-- Use the VisualStateManager to define hover states -->
-                                    <EventTrigger RoutedEvent="Border.MouseEnter">
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <ColorAnimation 
-                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" 
-                                    To="LightGray" Duration="0:0:0.2" />
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>
-                                    <EventTrigger RoutedEvent="Border.MouseLeave">
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <ColorAnimation 
-                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" 
-                                    To="Transparent" Duration="0:0:0.2" />
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
+                    <Border Style="{DynamicResource HoverableBorder}" PreviewMouseLeftButtonUp="BackButton_Clicked" Padding="3" Background="Transparent" CornerRadius="100" Cursor="Hand">
                         <ContentControl Foreground="Black" Content="{DynamicResource ArrowLeft}">
                         </ContentControl>
                     </Border>
@@ -128,7 +103,7 @@
                             FontStretch="UltraExpanded"
                             ButtonState="{Binding ButtonState}"
                             Click="Submit_Booking"
-                            Content="Nu boeken"
+                            Content="Boeking Voltooien"
                             />
                     </StackPanel>
                 </Border>

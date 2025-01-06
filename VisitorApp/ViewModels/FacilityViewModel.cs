@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CampingApplication.VisitorApp.ViewModels
 {
-    public class FacilityViewModel : INotifyPropertyChanged
+    public class FacilityViewModel : BaseViewModel
     {
         private int id;
         public int ID
@@ -63,12 +63,6 @@ namespace CampingApplication.VisitorApp.ViewModels
             positionY = MapConversionHelper.MetersToPixels(facility.YCoordinate, pixelsPerMeter);
 
             type = facility.Type.ToString();
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this.PropertyChanged, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

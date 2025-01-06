@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CampingApplication.Client.Shared.Helpers;
+using CampingApplication.EmployeeApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,11 +15,13 @@ namespace CampingApplication.EmployeeApp.Models
         public int PositionY { get; private set; }
         public bool Available { get; set; }
 
-        public CampingSpotVisualModel(int id, int positionX, int positionY)
+        public CampingSpotVisualModel(int id, double positionX, double positionY)
         {
             this.ID = id;
-            this.PositionX = positionX;
-            this.PositionY = positionY;
+            int pixelsPerMeter = CampingMapViewModel.PIXELS_PER_METER;
+            var (x, y) = MapConversionHelper.MetersToPixels(positionX, positionY, pixelsPerMeter);
+            this.PositionX = x;
+            this.PositionY = y;
         }
     }
 }
