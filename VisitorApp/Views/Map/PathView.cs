@@ -90,7 +90,7 @@ namespace CampingApplication.VisitorApp.Views.Map
 
             routePaths = [];
 
-            SolidColorBrush[] colors = { Brushes.Blue, Brushes.Yellow, Brushes.Red, Brushes.Purple, Brushes.Green };
+            SolidColorBrush[] colors = { Brushes.DarkBlue, Brushes.Yellow, Brushes.Red, Brushes.Purple, Brushes.Green, Brushes.LightCyan };
             for (int i = 0; i < ViewModel.Routes.Count; i++)
             {
                 SolidColorBrush color = colors[i];

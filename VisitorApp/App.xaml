@@ -129,6 +129,17 @@
                             </Setter.Value>
                         </Setter>
                     </DataTrigger>
+
+                    <!-- Trigger for type 'Playground' -->
+                    <DataTrigger Binding="{Binding Type}" Value="Pool">
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <svg:SvgViewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="pack://application:,,,/Resources/Icons/waves-ladder.svg" />
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
                 </Style.Triggers>
             </Style>
 

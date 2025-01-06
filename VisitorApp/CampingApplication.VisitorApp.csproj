@@ -14,6 +14,8 @@
     <None Remove="Resources\Icons\playground.svg" />
     <None Remove="Resources\Icons\restroom.svg" />
     <None Remove="Resources\Icons\shower.svg" />
+    <None Remove="Resources\Icons\walk.svg" />
+    <None Remove="Resources\Icons\waves-ladder.svg" />
     <None Remove="Resources\TestMap2.png" />
     <None Remove="Resources\TestMap3.png" />
     <None Remove="test1.png" />
@@ -45,6 +47,8 @@
     <Resource Include="Resources\Icons\playground.svg" />
     <Resource Include="Resources\Icons\restroom.svg" />
     <Resource Include="Resources\Icons\shower.svg" />
+    <Resource Include="Resources\Icons\walk.svg" />
+    <Resource Include="Resources\Icons\waves-ladder.svg" />
   </ItemGroup>
 
   <ItemGroup>

@@ -13,12 +13,13 @@ namespace DataAccess
         public async Task<IEnumerable<Facility>> GetFacilitiesAsync()
         {
             await Task.Delay(100);
+            return [];
             return [
-                new Facility(1,  135.2, 173.44, FacilityType.Restroom),
-                new Facility(2, 190.4, 23.2, FacilityType.Shower),
-                new Facility(3,  134.24, 92.16, FacilityType.Playground),
-                new Facility(4,  108.96, 225.12, FacilityType.Reception),
-                new Facility(5,  54.56, 100, FacilityType.Restroom),
+                new Facility(1,  135.2, 173.44, "Restroom"),
+                new Facility(2, 190.4, 23.2, "Shower"),
+                new Facility(3,  134.24, 92.16, "Playground"),
+                new Facility(4,  108.96, 225.12, "Reception"),
+                new Facility(5,  54.56, 100, "Restroom"),
                 ];
         }
     }

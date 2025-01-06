@@ -69,9 +69,12 @@
                                     <ColumnDefinition Width="100" />
                                     <ColumnDefinition Width="80" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Opacity="0.5" Text="Faciliteit" />
-                                <TextBlock HorizontalAlignment="Right" Opacity="0.5" Margin="10,0,30,0" Grid.Column="1" Text="Afstand" />
-                                <TextBlock HorizontalAlignment="Right" Opacity="0.5" Grid.Column="2" Text="Duur" />
+                                <TextBlock VerticalAlignment="Center" Opacity="0.5" Text="Faciliteit" />
+                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right" Opacity="0.5" Margin="10,0,30,0" Grid.Column="1" Text="Afstand" />
+                                <StackPanel Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal">
+                                    <svg:SvgViewbox Opacity="0.8" Width="15" Height="15" Margin="0,0,3,0" Source="pack://application:,,,/Resources/Icons/walk.svg" />
+                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right" Opacity="0.5" Grid.Column="2" Text="Duur" />
+                                </StackPanel>
                             </Grid>
                             <ItemsControl 
                                 Padding="0"

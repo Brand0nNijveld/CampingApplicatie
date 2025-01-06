@@ -98,6 +98,8 @@ namespace CampingApplication.VisitorApp.ViewModels
         }
         public string? PhoneNumberError { get; private set; }
 
+        private CampingMapModel mapModel;
+
         public BookingViewModel(int ID, CampingMapModel mapModel)
         {
             bookingRequest = new BookingRequest
@@ -111,6 +113,7 @@ namespace CampingApplication.VisitorApp.ViewModels
                 PhoneNumber = "",
             };
 
+            this.mapModel = mapModel;
             mapModel.PropertyChanged += MapModel_PropertyChanged;
 
             try
@@ -134,6 +137,20 @@ namespace CampingApplication.VisitorApp.ViewModels
                 {
                     bookingRequest.StartDate = model.StartDate;
                     bookingRequest.EndDate = model.EndDate;
+
+                    Debug.WriteLine("DATES CHANGED");
+
+                    var res = DateValidationService.ValidateDates(mapModel.StartDate, mapModel.EndDate);
+                    if (res == DateValidationResult.ValidDates)
+                    {
+                        SystemError = null;
+                        ButtonState = ButtonState.Active;
+                    }
+                    else
+                    {
+                        ButtonState = ButtonState.Inactive;
+                        SystemError = "Voer een geldige periode in.";
+                    }
                 }
             }
         }
@@ -141,6 +158,7 @@ namespace CampingApplication.VisitorApp.ViewModels
         public async Task SubmitBooking()
         {
             ButtonState = ButtonState.Loading;
+
             try
             {
                 await bookingService.BookAsync(bookingRequest);

@@ -49,6 +49,8 @@ namespace CampingApplication.VisitorApp.Views
                 DateTime endDate = EndDatePicker.SelectedDate.Value;
                 DateValidationResult result = DateValidationService.ValidateDates(beginDate, endDate);
 
+                mainViewModel?.SetDates(beginDate, endDate);
+
                 if (result == DateValidationResult.ValidDates)
                 {
                     ResultTextBlock.Text = "";

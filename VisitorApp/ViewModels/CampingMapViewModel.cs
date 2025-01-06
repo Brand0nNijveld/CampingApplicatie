@@ -117,14 +117,11 @@ namespace CampingApplication.VisitorApp.ViewModels
 
         public void ClearAvailability()
         {
-            SetAvailability([], DateTime.Now, DateTime.Now);
+            SetAvailability([]);
         }
 
-        public void SetAvailability(Dictionary<int, CampingSpot> available, DateTime startDate, DateTime endDate)
+        public void SetAvailability(Dictionary<int, CampingSpot> available)
         {
-            Model.StartDate = startDate;
-            Model.EndDate = endDate;
-
             if (available.Count == 0)
             {
                 AvailabilityChanged?.Invoke(false);
@@ -170,7 +167,7 @@ namespace CampingApplication.VisitorApp.ViewModels
 
                 Debug.WriteLine($"{availableDict.Count} camping spots available");
 
-                SetAvailability(availableDict, Model.StartDate, Model.EndDate);
+                SetAvailability(availableDict);
             }
             catch (Exception ex)
             {

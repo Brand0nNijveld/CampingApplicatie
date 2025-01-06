@@ -34,6 +34,12 @@ namespace CampingApplication.VisitorApp.ViewModels
             SpotInformationViewModel.BookingProcessStarted += OnBookingProcessStarted;
         }
 
+        public void SetDates(DateTime start, DateTime end)
+        {
+            campingMapModel.StartDate = start;
+            campingMapModel.EndDate = end;
+        }
+
         public async void CheckAvailableSpots(DateTime startDate, DateTime endDate)
         {
             try
@@ -48,7 +54,7 @@ namespace CampingApplication.VisitorApp.ViewModels
 
                 Debug.WriteLine($"{availableDict.Count} camping spots available");
 
-                CampingMapViewModel.SetAvailability(availableDict, startDate, endDate);
+                CampingMapViewModel.SetAvailability(availableDict);
             }
             catch (Exception ex)
             {

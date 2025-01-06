@@ -103,7 +103,7 @@
                             FontStretch="UltraExpanded"
                             ButtonState="{Binding ButtonState}"
                             Click="Submit_Booking"
-                            Content="Nu boeken"
+                            Content="Boeking Voltooien"
                             />
                     </StackPanel>
                 </Border>

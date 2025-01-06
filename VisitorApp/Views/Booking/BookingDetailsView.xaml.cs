@@ -60,9 +60,9 @@ namespace CampingApplication.VisitorApp.Views.Booking
 
             StartDate.Text = startDate.ToShortDateString();
             EndDate.Text = endDate.ToShortDateString();
-            AmountOfNights.Text = amountOfNights.ToString();
+            AmountOfNights.Text = amountOfNights < 0 ? "?" : amountOfNights.ToString();
             PricePerNight.Text = FormatPrice(60);
-            TotalPrice.Text = FormatPrice(totalPrice);
+            TotalPrice.Text = totalPrice < 0 ? "?" : FormatPrice(totalPrice);
         }
 
         private static string FormatPrice(float priceInEuros)
