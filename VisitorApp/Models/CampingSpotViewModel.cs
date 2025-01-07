@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace CampingApplication.VisitorApp.Models
 {
-    public class CampingSpotVisualModel
+    public class CampingSpotViewModel
     {
         public int ID { get; private set; }
         public int PositionX { get; private set; }
         public int PositionY { get; private set; }
         public bool Available { get; set; }
 
-        public CampingSpotVisualModel(int id, int positionX, int positionY)
+        public CampingSpotViewModel(int id, int positionX, int positionY)
         {
             this.ID = id;
             this.PositionX = positionX;

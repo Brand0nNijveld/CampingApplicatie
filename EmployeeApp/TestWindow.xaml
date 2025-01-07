@@ -15,9 +15,9 @@
 
         <views:AddCampingSpot Grid.Row="0" x:Name="AddCampingSpot"/>
         <Grid Grid.Row="1" VerticalAlignment="Top">
-            <Viewbox VerticalAlignment="Stretch">
+            
                 <views1:CampingMap Padding="50" x:Name="CampingMapUserControl" />
-            </Viewbox>
+            
         </Grid>
     </Grid>
 </Window>

@@ -62,5 +62,15 @@ namespace CampingApplication.Business.CampingSpotService
                     new(11, 190, 29, [new(1,DateTime.Now.AddDays(12), DateTime.Now.AddDays(22))]),
                 ];
         }
+
+        public void SaveCampingSpots(IEnumerable<CampingSpot> spots)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICampingSpotRepository.AddCampingSpot(int ID, int X, int Y)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

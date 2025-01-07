@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:CampingApplication.EmployeeApp.Views"
              mc:Ignorable="d" 
              >
-    <Border Background="Yellow" CornerRadius="5" Width="81" Height="60">
-        <TextBlock Text="ID" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    <Border x:Name="Box"  Background="Yellow" CornerRadius="5" Width="81" Height="60">
+        <TextBlock x:Name="block" Text="{Binding ID}" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Border>
 </UserControl>

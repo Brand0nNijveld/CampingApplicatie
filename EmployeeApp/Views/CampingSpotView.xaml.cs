@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CampingApplication.EmployeeApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,26 @@ namespace CampingApplication.EmployeeApp.Views
     /// </summary>
     public partial class CampingSpotView : UserControl
     {
-        public CampingSpotView()
+        private CampingSpotViewModel viewModel;
+
+        public CampingSpotView(CampingSpotViewModel model)
         {
             InitializeComponent();
+            viewModel = model;
+            DataContext = model;
+            viewModel.PropertyChanged += ViewModel_PropertyChanged;
+        }
+
+        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(viewModel.Edited))
+            {
+                if ( viewModel.Edited)
+                {
+                    Box.Background = new SolidColorBrush(Colors.Azure);
+                }
+            }
+
         }
     }
 }

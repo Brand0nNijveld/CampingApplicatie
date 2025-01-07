@@ -24,8 +24,8 @@ namespace CampingApplication.VisitorApp.ViewModels
 
         public List<CampingSpot> CampingSpotData { get; private set; } = [];
 
-        private ObservableCollection<CampingSpotVisualModel> campingSpots = [];
-        public ObservableCollection<CampingSpotVisualModel> CampingSpots
+        private ObservableCollection<CampingSpotViewModel> campingSpots = [];
+        public ObservableCollection<CampingSpotViewModel> CampingSpots
         {
             get => campingSpots;
             set
@@ -64,7 +64,7 @@ namespace CampingApplication.VisitorApp.ViewModels
                 var spots = await campingSpotService.GetCampingSpotsAsync();
                 CampingSpotData = spots;
 
-                var campingSpotVisuals = new CampingSpotVisualModel[spots.Count];
+                var campingSpotVisuals = new CampingSpotViewModel[spots.Count];
                 for (int i = 0; i < spots.Count; i++)
                 {
                     Debug.WriteLine("Camping spot: " + spots[i].ID);
@@ -75,7 +75,7 @@ namespace CampingApplication.VisitorApp.ViewModels
                 // Use Dispatcher to update UI-bound properties or raise events
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    CampingSpots = new ObservableCollection<CampingSpotVisualModel>(campingSpotVisuals);
+                    CampingSpots = new ObservableCollection<CampingSpotViewModel>(campingSpotVisuals);
                 });
             }
             catch (Exception ex)

@@ -2,6 +2,7 @@
 using CampingApplication.Business.CampingSpotService;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.Diagnostics;
 
 namespace DataAccess
 {
@@ -144,38 +145,43 @@ namespace DataAccess
             }
         }
 
-        public string AddCampingSpot(int ID, int X, int Y)
+        public void SaveCampingSpots(IEnumerable<CampingSpot> spots)
         {
-            
+            Debug.WriteLine("Data access laag");
+            foreach (CampingSpot sp in spots)
+            {
+                Debug.WriteLine("Spot toevoeg functie geroepen");
+                AddCampingSpot(sp.ID, sp.PositionX, sp.PositionY);
+            }
+        }
+
+        public void AddCampingSpot(int ID, int X, int Y)
+        {
             try
             {
-                string query = "INSERT INTO campingspot (SpotNr, PositionX, PositionY) VALUES (@SpotNr, @PositionX, @PositionY)";
+                Debug.WriteLine("Commands uitvoeren");
 
-                using (connection.Connection)
+                string query = "INSERT INTO campingspot (SpotNr, PositionX, PositionY, CampingID) VALUES (@SpotNr, @PositionX, @PositionY, 1)";
+
+                // Maak een nieuwe verbinding aan
+                using (var conn = new MySqlConnection(connection._connectionString))
                 {
-                    using (MySqlCommand command = new MySqlCommand(query, connection.Connection))
+                    conn.Open();
+                    using (MySqlCommand command = new MySqlCommand(query, conn))
                     {
                         command.Parameters.AddWithValue("@SpotNr", ID);
                         command.Parameters.AddWithValue("@PositionX", X);
                         command.Parameters.AddWithValue("@PositionY", Y);
 
-                        connection.Connection.Open();
-
-                        connection.Connection.Close();
+                        command.ExecuteNonQuery(); // Voer het SQL-commando uit
                     }
                 }
-                if (GetCampingSpot(ID) != null)
-                {
-                    return "Toevoegen gelukt!";   
-                }
-                else
-                {
-                    return "Toevoegen niet gelukt";
-                }
-
             }
-            catch (Exception ex) { return $"Database error: {ex.Message}"; }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Database error: {ex.Message}");
+                throw; // Optioneel hergooien voor logging/debugging
+            }
         }
-
     }
 }

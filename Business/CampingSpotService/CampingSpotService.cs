@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,9 +38,15 @@ namespace CampingApplication.Business.CampingSpotService
             return spots.Where(c => c.IsAvailableDuringPeriod(startDate, endDate));
         }
 
-        public string AddCampingSpot(int ID, int X, int Y)
+        public void SaveCampingSpots(IEnumerable<CampingSpot> spots)
         {
-            return repository.AddCampingSpot(ID, X, Y);
+            repository.SaveCampingSpots(spots);
+            Debug.WriteLine("campingspots opslaan");
+        }
+
+        public void AddCampingSpot(int ID, int X, int Y)
+        {
+            repository.AddCampingSpot(ID, X, Y);
         }
     }
 }

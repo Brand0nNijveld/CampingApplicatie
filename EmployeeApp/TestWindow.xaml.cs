@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using CampingApplication.EmployeeApp.Views;
 using System.Windows.Shapes;
 using CampingApplication.EmployeeApp.Views.Login;
+using CampingApplication.EmployeeApp.ViewModels;
 
 namespace CampingApplication.EmployeeApp
 {
@@ -30,6 +31,11 @@ namespace CampingApplication.EmployeeApp
 
             ActionPanel view = new();
             setWindow(view);
+
+            CampingMapViewModel viewModel = new CampingMapViewModel();
+
+            AddCampingSpot.SetViewModel(viewModel);
+            CampingMapUserControl.SetViewModel(viewModel);
         }
 
         private void setWindow(UIElement element)

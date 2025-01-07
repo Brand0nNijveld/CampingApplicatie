@@ -57,7 +57,7 @@ namespace CampingApplication.EmployeeApp
 
             DBConnection dbConnection = new();
 
-            ICampingSpotRepository campingSpotRepository = new CampingSpotMockRepository();
+            ICampingSpotRepository campingSpotRepository = new CampingSpotRepository(dbConnection);
             CampingSpotService campingSpotService = new(campingSpotRepository);
             serviceProvider.RegisterInstance(campingSpotService);
 

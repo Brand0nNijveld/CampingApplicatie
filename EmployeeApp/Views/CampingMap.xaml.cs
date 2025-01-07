@@ -44,6 +44,7 @@ namespace CampingApplication.EmployeeApp.Views
         public void SetViewModel(CampingMapViewModel viewModel)
         {
             this.viewModel = viewModel;
+            DataContext = viewModel;
             viewModel.PropertyChanged += ViewModel_PropertyChanged;
             viewModel.AvailabilityChanged += OnAvailabilityChanged;
 
@@ -99,91 +100,32 @@ namespace CampingApplication.EmployeeApp.Views
             int width = 81;
             int height = 60;
 
-            foreach (var spot in viewModel.CampingSpots)
+            foreach (var campingSpot in viewModel.CampingSpots)
             {
-                var spotVisual = new Rectangle
-                {
-                    Width = width,
-                    Height = height,
-                    RadiusX = 5,
-                    RadiusY = 5,
-                    Fill = spot.Available ? Brushes.Yellow : Brushes.Transparent,
-                    Cursor = Cursors.Hand,
-                    IsHitTestVisible = true,
-                };
+                var campingSpotView = new CampingSpotView(campingSpot);
 
-                Debug.WriteLine("Drawing Camping Spot: " + spot.ID);
-
-                //spotVisual.MouseLeftButtonUp += (e, s) =>
-                //{
-                //    Debug.WriteLine("Clicked cmaping spot");
-                //    viewModel?.ShowBookScreen(spot.ID);
-                //};
-
-                spotVisual.MouseLeftButtonUp += (s, e) =>
-                {
-                    Debug.WriteLine("Clicked camping spot");
-
-                    var mainWindow = Application.Current.MainWindow as MainWindow;
-                    //if (mainWindow != null)
-                    //{
-                    //    mainWindow.SpotInfo.Visibility = Visibility.Visible;
-                    //}
-                };
-
-                // Add the visual to the CampingCanvas
-                CampingCanvas.Children.Add(spotVisual);
+                Canvas.SetLeft(campingSpotView, campingSpot.PositionX);
+                Canvas.SetTop(campingSpotView, campingSpot.PositionY);
+                CampingCanvas.Children.Add(campingSpotView);
 
 
-
-                Canvas.SetLeft(spotVisual, spot.PositionX);
-                Canvas.SetTop(spotVisual, spot.PositionY);
-
-                var spotID = new TextBlock
-                {
-                    Text = spot.ID.ToString(),
-                    FontSize = 14,
-                    Foreground = new SolidColorBrush(Colors.Black),
-                    IsHitTestVisible = false,
-                };
-
-                spotID.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                var textSize = spotID.DesiredSize;
-
-                double textPosX = spot.PositionX + (width / 2) - (textSize.Width / 2);
-                double textPosY = spot.PositionY + (height / 2) - (textSize.Height / 2);
-
-                Canvas.SetLeft(spotID, textPosX);
-                Canvas.SetTop(spotID, textPosY);
-
-                // Handle click event 
-                //spotVisual.MouseLeftButtonUp += (s, e) =>
-                //{
-                //    // When a camping spot is clicked, show the white rectangle and update information
-                //    HighlightRectangle.Visibility = Visibility.Visible;
-
-                //    // Update the camping spot info
-                //    CampingSpotToiletDistance.Text = "Afstand tot Toiletgebouw: 15m";
-                //    CampingSpotLakeDistance.Text = "Afstand tot Meer: 25m";
-                //    CampingSpotSize.Text = "Grootte van plaats: 30m²";
-                //    CampingSpotReceptionDistance.Text = "Afstand tot Receptie: 10m";
-                //    CampingSpotInfo.Text = "Plaats 1 Informatie";
-                //    CampingSpotType.Text = "Plaatstype: Tent";
-                //    CampingSpotPrice.Text = "Prijs per nacht: €50";
-                //    CampingSpotAvailability.Text = "Beschikbaar vanaf xx/xx/xxxx";
-                //};
-
-                //CampingCanvas.Children.Add(spotVisual);
-                CampingCanvas.Children.Add(spotID);
             }
+            Debug.WriteLine("Tekenen spot");
         }
 
         private void CampingCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            // mouse position
-            var pos = e.GetPosition((Canvas)sender);
-            Debug.WriteLine(pos.X);
-            Debug.WriteLine(pos.Y);
+            if (viewModel.EditMode)
+            {
+                var position = e.GetPosition((Canvas)sender);
+                int Xcordinate = (int)position.X;
+                int Ycordinate = (int)position.Y;
+
+                viewModel.AddCampingSpot(Xcordinate, Ycordinate);
+
+
+                Debug.WriteLine(Xcordinate + ", " + Ycordinate);
+            }
         }
     }
 }

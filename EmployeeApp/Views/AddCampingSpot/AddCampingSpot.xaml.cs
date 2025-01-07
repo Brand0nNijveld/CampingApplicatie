@@ -1,8 +1,10 @@
 ﻿using CampingApplication.Business;
 using CampingApplication.Business.CampingSpotService;
+using CampingApplication.EmployeeApp.ViewModels;
 using DataAccess;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +25,8 @@ namespace CampingApplication.EmployeeApp.Views.AddCampingSpot
     public partial class AddCampingSpot : UserControl
     {
         public CampingSpotService CampingSpotService { get; private set; }
+        public CampingMapViewModel MapViewModel { get; set; }
+
 
         private bool waitingForClick = false;
 
@@ -37,43 +41,37 @@ namespace CampingApplication.EmployeeApp.Views.AddCampingSpot
             CampingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
         }
 
-        private void Plaats_Click(object sender, RoutedEventArgs e)
+        public void SetViewModel(CampingMapViewModel viewModel)
         {
-            AddNotification.Text = "klik waar je een nieuwe plaats wil hebben";
-
-            waitingForClick = true;
+            this.MapViewModel = viewModel;
+            DataContext = viewModel;
+            viewModel.PropertyChanged += ViewModel_PropertyChanged;
         }
 
-        private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (waitingForClick)
+            if (e.PropertyName == nameof(CampingMapViewModel.EditMode))
             {
-                var position = e.GetPosition(AddSpot);
-                Xcordinate = (int)position.X;
-                Ycordinate = (int)position.Y;
-                SpotNr = int.Parse(SpotNumber.Text);
-
-
-                AddNotification.Text = $"Je hebt geklikt op: X={position.X}, Y={position.Y}";
-
-
-                Button newButton = new Button();
+                if (MapViewModel.EditMode)
                 {
-                    Width = 20;
-                    Height = 20;
-                };
-                Canvas.SetLeft(newButton, position.X);
-                Canvas.SetTop(newButton, position.Y);
-                AddSpot.Children.Add(newButton);
-
-                waitingForClick = false;
+                    AddButton.Content = "Annuleren";
+                }
+                else
+                {
+                    AddButton.Content = "Toevoegen plaats";
+                }
             }
+        }
+
+        private void Plaats_Click(object sender, RoutedEventArgs e)
+        {
+            MapViewModel.EditMode = !MapViewModel.EditMode;
         }
 
         private void Opslaan_Click(object sender, RoutedEventArgs e)
         {
-            string returntext = CampingSpotService.AddCampingSpot(SpotNr, Xcordinate, Ycordinate);
-            AddNotification.Text = returntext;
+            Debug.WriteLine("opslaan knop klik");
+            MapViewModel.Save();
         }
 
         private void SpotNumber_TextChanged(object sender, TextChangedEventArgs e)
