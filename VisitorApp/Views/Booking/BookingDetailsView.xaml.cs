@@ -26,14 +26,34 @@ namespace CampingApplication.VisitorApp.Views.Booking
             InitializeComponent();
         }
 
+        private float _totalPrice { get; set; }
+
         public void SetDetails(int id, DateTime startDate, DateTime endDate, int amountOfNights, float pricePerNight, float totalPrice)
         {
+            _totalPrice = totalPrice;
+
             ID.Text = id.ToString();
             StartDate.Text = startDate.ToShortDateString();
             EndDate.Text = endDate.ToShortDateString();
             AmountOfNights.Text = amountOfNights.ToString();
             PricePerNight.Text = FormatPrice(pricePerNight);
-            TotalPrice.Text = FormatPrice(totalPrice);
+            TotalPrice.Text = FormatPrice(_totalPrice);
+        }
+
+        public void PriceChangePets(bool pets)
+        {
+            if (pets) { _totalPrice += 60; }
+            if (!pets) { _totalPrice -= 60; }
+
+            TotalPrice.Text = FormatPrice(_totalPrice);
+        }
+
+        public void PriceChangeElectricity(bool electricity)
+        {
+            if (electricity) { _totalPrice += 60; }
+            if (!electricity) { _totalPrice -= 60; }
+
+            TotalPrice.Text = FormatPrice(_totalPrice);
         }
 
         private static string FormatPrice(float priceInEuros)

@@ -97,6 +97,26 @@ namespace CampingApplication.VisitorApp.ViewModels
         }
         public string? PhoneNumberError { get; private set; }
 
+        public bool Pets
+        {
+            get => bookingRequest.Pets;
+            set
+            {
+                bookingRequest.Pets = value;
+                OnPropertyChanged(nameof(Pets));
+            }
+        }
+
+        public bool Electricity
+        {
+            get => bookingRequest.Electricity;
+            set
+            {
+                bookingRequest.Electricity = value;
+                OnPropertyChanged(nameof(Electricity));
+            }
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public BookingViewModel(int ID, DateTime startDate, DateTime endDate)
@@ -110,6 +130,8 @@ namespace CampingApplication.VisitorApp.ViewModels
                 LastName = "",
                 Email = "",
                 PhoneNumber = "",
+                Pets = false,
+                Electricity = false,
             };
 
             try

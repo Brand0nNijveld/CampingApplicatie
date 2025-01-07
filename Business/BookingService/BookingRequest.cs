@@ -16,5 +16,7 @@ namespace CampingApplication.Business.BookingService
         public required string LastName { get; set; }
         public required string Email { get; set; }
         public required string PhoneNumber { get; set; }
+        public bool Pets { get; set; }
+        public bool Electricity { get; set; }
     }
 }
