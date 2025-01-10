@@ -7,9 +7,9 @@
         xmlns:views="clr-namespace:CampingApplication.VisitorApp.Views.Booking"
         mc:Ignorable="d"
         Title="TestWindow" Background="LightGray" Height="450" Width="800">
-    <Grid VerticalAlignment="Center">
+    <Grid VerticalAlignment="Top">
         <Grid x:Name="ContentWindow">
-
+            
         </Grid>
     </Grid>
 </Window>

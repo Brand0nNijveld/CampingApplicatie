@@ -8,6 +8,11 @@ namespace CampingApplication.Business.CampingSpotService
 {
     public class CampingSpotMockRepository : ICampingSpotRepository
     {
+        public string AddCampingSpot(int ID, int X, int Y)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<CampingSpot> GetAvailableSpots(CampingSpot[] spots, DateTime startDate, DateTime endDate)
         {
             return spots.Where(c => c.IsAvailableDuringPeriod(startDate, endDate));
@@ -56,6 +61,16 @@ namespace CampingApplication.Business.CampingSpotService
                     new(10, 86, 29, [new(1,DateTime.Now.AddDays(12), DateTime.Now.AddDays(22))]),
                     new(11, 190, 29, [new(1,DateTime.Now.AddDays(12), DateTime.Now.AddDays(22))]),
                 ];
+        }
+
+        public void SaveCampingSpots(IEnumerable<CampingSpot> spots)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICampingSpotRepository.AddCampingSpot(int ID, int X, int Y)
+        {
+            throw new NotImplementedException();
         }
     }
 }

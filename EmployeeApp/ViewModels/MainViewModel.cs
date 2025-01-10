@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using CampingApplication.Business;
 using CampingApplication.Business.CampingSpotService;
 using CampingApplication.EmployeeApp.Views.Login;
-using CampingApplication.EmployeeApp.Models;
 using CampingApplication.EmployeeApp.ViewModels;
 
 namespace CampingApplication.EmployeeApp.ViewModels

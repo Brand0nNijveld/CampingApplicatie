@@ -2,6 +2,7 @@
 using CampingApplication.Business.CampingSpotService;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.Diagnostics;
 
 namespace DataAccess
 {
@@ -139,6 +140,45 @@ namespace DataAccess
             {
                 Console.WriteLine($"Database error getting camping spots: {ex.Message}");
                 throw;
+            }
+        }
+
+        public void SaveCampingSpots(IEnumerable<CampingSpot> spots)
+        {
+            Debug.WriteLine("Data access laag");
+            foreach (CampingSpot sp in spots)
+            {
+                Debug.WriteLine("Spot toevoeg functie geroepen");
+                AddCampingSpot(sp.ID, sp.PositionX, sp.PositionY);
+            }
+        }
+
+        public void AddCampingSpot(int ID, int X, int Y)
+        {
+            try
+            {
+                Debug.WriteLine("Commands uitvoeren");
+
+                string query = "INSERT INTO campingspot (SpotNr, PositionX, PositionY, CampingID) VALUES (@SpotNr, @PositionX, @PositionY, 1)";
+
+                // Maak een nieuwe verbinding aan
+                using (var conn = new MySqlConnection(connection._connectionString))
+                {
+                    conn.Open();
+                    using (MySqlCommand command = new MySqlCommand(query, conn))
+                    {
+                        command.Parameters.AddWithValue("@SpotNr", ID);
+                        command.Parameters.AddWithValue("@PositionX", X);
+                        command.Parameters.AddWithValue("@PositionY", Y);
+
+                        command.ExecuteNonQuery(); // Voer het SQL-commando uit
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Database error: {ex.Message}");
+                throw; // Optioneel hergooien voor logging/debugging
             }
         }
     }

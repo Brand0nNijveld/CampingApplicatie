@@ -1,0 +1,23 @@
+﻿<Window x:Class="CampingApplication.EmployeeApp.TestWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CampingApplication.EmployeeApp"
+        xmlns:views="clr-namespace:CampingApplication.EmployeeApp.Views.AddCampingSpot" xmlns:views1="clr-namespace:CampingApplication.EmployeeApp.Views"
+        mc:Ignorable="d"
+        Title="TestWindow" Background="LightGray" Height="960" Width="1440">
+    <Grid x:Name="ContentWindow">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <views:AddCampingSpot Grid.Row="0" x:Name="AddCampingSpot"/>
+        <Grid Grid.Row="1" VerticalAlignment="Top">
+            
+                <views1:CampingMap Padding="50" x:Name="CampingMapUserControl" />
+            
+        </Grid>
+    </Grid>
+</Window>

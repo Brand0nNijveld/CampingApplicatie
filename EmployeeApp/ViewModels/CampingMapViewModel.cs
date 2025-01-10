@@ -2,24 +2,37 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using CampingApplication.Business;
-using CampingApplication.EmployeeApp.Models;
+using CampingApplication.Business.CampingSpotService;
+using CampingApplication.EmployeeApp.Views;
 
 namespace CampingApplication.EmployeeApp.ViewModels
 {
     public delegate void AvailabilityHandler(bool available);
-    public class CampingMapViewModel() : INotifyPropertyChanged
+    public class CampingMapViewModel : INotifyPropertyChanged
     {
         public const int PIXELS_PER_METER = 25;
 
         public event AvailabilityHandler? AvailabilityChanged;
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        private ObservableCollection<CampingSpotVisualModel> campingSpots = [];
-        public ObservableCollection<CampingSpotVisualModel> CampingSpots
+        private bool _editMode;
+        public bool EditMode {
+            get => _editMode;
+            set
+            {
+                _editMode = value;
+                OnPropertyChanged(nameof(EditMode));
+            }
+        }
+
+        private ObservableCollection<CampingSpotViewModel> campingSpots = [];
+        public ObservableCollection<CampingSpotViewModel> CampingSpots
         {
             get => campingSpots;
             set
@@ -40,45 +53,69 @@ namespace CampingApplication.EmployeeApp.ViewModels
             }
         }
 
-        public CampingMapViewModel(string backgroundImage, List<CampingSpot> campingSpots) : this()
+        private CampingSpotService campingSpotService;
+        public CampingMapViewModel()
         {
-            var campingSpotVisuals = new CampingSpotVisualModel[campingSpots.Count];
-            for (int i = 0; i < campingSpots.Count; i++)
-            {
-                CampingSpot spot = campingSpots[i];
-                campingSpotVisuals[i] = new(spot.ID, spot.XCoordinate, spot.YCoordinate);
-            }
-
-            this.campingSpots = new(campingSpotVisuals);
-            this.backgroundImage = backgroundImage;
+            this.campingSpotService = ServiceProvider.Current.Resolve<CampingSpotService>();
+            GetCampingSpotsAsync();
         }
 
-        public void ClearAvailability()
+        public async void GetCampingSpotsAsync()
         {
-            SetAvailability([]);
+            try
+            {
+                var spots = await campingSpotService.GetCampingSpotsAsync();
+                CampingSpotData = spots;
+
+                var campingSpotVisuals = new CampingSpotViewModel[spots.Count];
+                for (int i = 0; i < spots.Count; i++)
+                {
+                    Debug.WriteLine("Camping spot: " + spots[i].ID);
+                    CampingSpot spot = spots[i];
+                    campingSpotVisuals[i] = new(spot.ID, spot.PositionX, spot.PositionY);
+                }
+
+                // Use Dispatcher to update UI-bound properties or raise events
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    CampingSpots = new ObservableCollection<CampingSpotViewModel>(campingSpotVisuals);
+
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
 
-        public void SetAvailability(Dictionary<int, CampingSpot> available)
+        public void AddCampingSpot(int x, int y)
         {
-            if (available.Count == 0)
+            int newID = 1;
+            if (CampingSpots.Count > 0)
             {
-                AvailabilityChanged?.Invoke(false);
+                newID = CampingSpots.Max((c) => c.ID) + 1;
             }
-
-            foreach (var visual in campingSpots)
-            {
-                if (available.ContainsKey(visual.ID))
-                {
-                    visual.Available = true;
-                }
-                else
-                {
-                    visual.Available = false;
-                }
-            }
-
+            Debug.WriteLine(newID);
+            var newSpot = new CampingSpotViewModel(newID, x, y);
+            CampingSpots.Add(newSpot);
             OnPropertyChanged(nameof(CampingSpots));
-            AvailabilityChanged?.Invoke(true);
+            newSpot.Edited = true;
+            EditMode = false;
+        }
+
+        public void Save()
+        {
+            Debug.WriteLine("save functie");
+            var unsavedSpots = CampingSpots.Where((c) => c.Edited);
+            List<CampingSpot> unsaved = new List<CampingSpot>();
+
+            foreach (var spot in unsavedSpots)
+            {
+                CampingSpot newSpot = new CampingSpot(spot.ID, spot.PositionX, spot.PositionY);
+                unsaved.Add(newSpot);
+            }
+
+            campingSpotService.SaveCampingSpots(unsaved);
         }
 
         protected void OnPropertyChanged(string propertyName)
