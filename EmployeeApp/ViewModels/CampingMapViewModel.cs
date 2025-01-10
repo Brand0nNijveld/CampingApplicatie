@@ -13,6 +13,8 @@ namespace CampingApplication.EmployeeApp.ViewModels
     public delegate void AvailabilityHandler(bool available);
     public class CampingMapViewModel() : INotifyPropertyChanged
     {
+        public const int PIXELS_PER_METER = 25;
+
         public event AvailabilityHandler? AvailabilityChanged;
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -44,7 +46,7 @@ namespace CampingApplication.EmployeeApp.ViewModels
             for (int i = 0; i < campingSpots.Count; i++)
             {
                 CampingSpot spot = campingSpots[i];
-                campingSpotVisuals[i] = new(spot.ID, spot.PositionX, spot.PositionY);
+                campingSpotVisuals[i] = new(spot.ID, spot.XCoordinate, spot.YCoordinate);
             }
 
             this.campingSpots = new(campingSpotVisuals);

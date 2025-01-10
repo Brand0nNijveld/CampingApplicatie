@@ -1,0 +1,3 @@
+ALTER TABLE campingspot 
+MODIFY COLUMN PositionX DOUBLE,
+MODIFY COLUMN PositionY DOUBLE;

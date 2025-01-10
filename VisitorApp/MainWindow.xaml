@@ -5,15 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CampingApplication.VisitorApp"
         xmlns:views="clr-namespace:CampingApplication.VisitorApp.Views"
+        xmlns:information="clr-namespace:CampingApplication.VisitorApp.Views.Information"
         xmlns:booking="clr-namespace:CampingApplication.VisitorApp.Views.Booking"
         mc:Ignorable="d"
-       Title="Camping Applicatie" Height="960" Width="1440">
+       Title="Camping Applicatie" Background="#F9F9F9" Height="960" Width="1440">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
         <views:DateRangePicker Grid.Row="0" x:Name="DateRangePicker"/>
         <Grid Grid.Row="1" VerticalAlignment="Top">
             <Viewbox VerticalAlignment="Top">
@@ -21,5 +26,6 @@
             </Viewbox>
             <booking:ActionPanel x:Name="ActionPanel" />
         </Grid>
+        <information:SpotInformationView x:Name="SpotInformation" Grid.Column="1" Grid.RowSpan="2" />
     </Grid>
 </Window>

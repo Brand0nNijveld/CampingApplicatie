@@ -1,5 +1,6 @@
 ﻿using CampingApplication.Business;
 using CampingApplication.Business.BookingService;
+using CampingApplication.VisitorApp.Models;
 using CampingApplication.VisitorApp.Views.Components;
 using DataAccess.Bookings;
 using System;
@@ -16,7 +17,7 @@ namespace CampingApplication.VisitorApp.ViewModels
 {
     public delegate void BookingSuccessHandler();
 
-    public class BookingViewModel : INotifyPropertyChanged
+    public class BookingViewModel : BaseViewModel
     {
         private readonly BookingService bookingService;
 
@@ -97,6 +98,7 @@ namespace CampingApplication.VisitorApp.ViewModels
         }
         public string? PhoneNumberError { get; private set; }
 
+
         public bool Pets
         {
             get => bookingRequest.Pets;
@@ -118,14 +120,16 @@ namespace CampingApplication.VisitorApp.ViewModels
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        
+        private CampingMapModel mapModel;
 
-        public BookingViewModel(int ID, DateTime startDate, DateTime endDate)
+        public BookingViewModel(int ID, CampingMapModel mapModel)
         {
             bookingRequest = new BookingRequest
             {
                 CampingSpotID = ID,
-                StartDate = startDate,
-                EndDate = endDate,
+                StartDate = mapModel.StartDate,
+                EndDate = mapModel.EndDate,
                 FirstName = "",
                 LastName = "",
                 Email = "",
@@ -133,6 +137,9 @@ namespace CampingApplication.VisitorApp.ViewModels
                 Pets = false,
                 Electricity = false,
             };
+
+            this.mapModel = mapModel;
+            mapModel.PropertyChanged += MapModel_PropertyChanged;
 
             try
             {
@@ -147,14 +154,36 @@ namespace CampingApplication.VisitorApp.ViewModels
             }
         }
 
-        protected virtual void OnPropertyChanged(string propertyName)
+        private void MapModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (sender is CampingMapModel model)
+            {
+                if (e.PropertyName == nameof(CampingMapModel.StartDate) || e.PropertyName == nameof(CampingMapModel.EndDate))
+                {
+                    bookingRequest.StartDate = model.StartDate;
+                    bookingRequest.EndDate = model.EndDate;
+
+                    Debug.WriteLine("DATES CHANGED");
+
+                    var res = DateValidationService.ValidateDates(mapModel.StartDate, mapModel.EndDate);
+                    if (res == DateValidationResult.ValidDates)
+                    {
+                        SystemError = null;
+                        ButtonState = ButtonState.Active;
+                    }
+                    else
+                    {
+                        ButtonState = ButtonState.Inactive;
+                        SystemError = "Voer een geldige periode in.";
+                    }
+                }
+            }
         }
 
         public async Task SubmitBooking()
         {
             ButtonState = ButtonState.Loading;
+
             try
             {
                 await bookingService.BookAsync(bookingRequest);

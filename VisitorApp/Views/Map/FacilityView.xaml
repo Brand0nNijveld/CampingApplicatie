@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="CampingApplication.VisitorApp.Views.Map.FacilityView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:CampingApplication.VisitorApp.Views.Map"
+             xmlns:viewmodels="clr-namespace:CampingApplication.VisitorApp.ViewModels"
+             xmlns:svg="http://sharpvectors.codeplex.com/svgc/"
+             mc:Ignorable="d"
+             Width="60" Height="60"
+             d:DataContext="{d:DesignInstance Type=viewmodels:FacilityViewModel}"             >
+    <!-- Border for the Facility -->
+    <Border CornerRadius="100" Background="{DynamicResource Primary}" Padding="15">
+        <ContentControl FontSize="30" Style="{DynamicResource FacilityIcon}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">
+        </ContentControl>
+    </Border>
+</UserControl>

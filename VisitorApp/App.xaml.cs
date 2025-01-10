@@ -7,6 +7,8 @@ using DataAccess;
 using System.Configuration;
 using System.Data;
 using System.Windows;
+using CampingApplication.Business.FacilityService;
+using CampingApplication.Business.PathService;
 
 namespace CampingApplication.VisitorApp
 {
@@ -38,15 +40,23 @@ namespace CampingApplication.VisitorApp
         private void InjectDependencies()
         {
             ServiceProvider serviceProvider = new();
+            DBConnection dbConnection = new();
 
-            DBConnection dbConnection = new DBConnection();
             ICampingSpotRepository campingSpotRepository = new CampingSpotRepository(dbConnection);
             CampingSpotService campingSpotService = new(campingSpotRepository);
             serviceProvider.RegisterInstance(campingSpotService);
 
-            IBookingRepository bookingRepository = new BookingRepositoryMock();
+            IFacilityRepository facilityRepository = new FacilityRepository(dbConnection);
+            FacilityService facilityService = new(facilityRepository);
+            serviceProvider.RegisterInstance(facilityService);
+
+            IBookingRepository bookingRepository = new BookingRepository(dbConnection);
             BookingService bookingService = new(bookingRepository);
             serviceProvider.RegisterInstance(bookingService);
+
+            IPathRepository pathRepository = new PathRepository(dbConnection);
+            PathService pathService = new(pathRepository);
+            serviceProvider.RegisterInstance(pathService);
         }
 
         /// <summary>
@@ -61,9 +71,17 @@ namespace CampingApplication.VisitorApp
             CampingSpotService campingSpotService = new(campingSpotRepository);
             serviceProvider.RegisterInstance(campingSpotService);
 
+            IFacilityRepository facilityRepository = new FacilityRepository(dbConnection);
+            FacilityService facilityService = new(facilityRepository);
+            serviceProvider.RegisterInstance(facilityService);
+
             IBookingRepository bookingRepository = new BookingRepository(dbConnection);
             BookingService bookingService = new(bookingRepository);
             serviceProvider.RegisterInstance(bookingService);
+
+            IPathRepository pathRepository = new PathRepository(dbConnection);
+            PathService pathService = new(pathRepository);
+            serviceProvider.RegisterInstance(pathService);
         }
 
         private void SetWindow(Window window)

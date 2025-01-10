@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CampingApplication.Business.BookingService;
+using CampingApplication.VisitorApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -21,23 +23,49 @@ namespace CampingApplication.VisitorApp.Views.Booking
     /// </summary>
     public partial class BookingDetailsView : UserControl
     {
+        private CampingMapModel? mapModel;
+
         public BookingDetailsView()
         {
             InitializeComponent();
         }
 
+
         private float _totalPrice { get; set; }
-
-        public void SetDetails(int id, DateTime startDate, DateTime endDate, int amountOfNights, float pricePerNight, float totalPrice)
+        public void SetDetails(int id, CampingMapModel mapModel)
         {
-            _totalPrice = totalPrice;
-
             ID.Text = id.ToString();
+            this.mapModel = mapModel;
+            mapModel.PropertyChanged += MapModel_PropertyChanged;
+        }
+
+        private void MapModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(mapModel.StartDate) || e.PropertyName == nameof(mapModel.EndDate))
+            {
+                SetData();
+            }
+        }
+
+        private void SetData()
+        {
+            if (mapModel == null)
+            {
+                return;
+            }
+
+            DateTime startDate = mapModel.StartDate;
+            DateTime endDate = mapModel.EndDate;
+
+            int amountOfNights = BookingService.CalculateAmountOfNights(startDate, endDate);
+            _totalPrice = BookingService.CalculateTotalPrice(amountOfNights, 60);
+
             StartDate.Text = startDate.ToShortDateString();
             EndDate.Text = endDate.ToShortDateString();
-            AmountOfNights.Text = amountOfNights.ToString();
-            PricePerNight.Text = FormatPrice(pricePerNight);
-            TotalPrice.Text = FormatPrice(_totalPrice);
+            
+            AmountOfNights.Text = amountOfNights < 0 ? "?" : amountOfNights.ToString();
+            PricePerNight.Text = FormatPrice(60);
+            TotalPrice.Text = totalPrice < 0 ? "?" : FormatPrice(totalPrice);
         }
 
         public void PriceChangePets(bool pets)
@@ -54,6 +82,10 @@ namespace CampingApplication.VisitorApp.Views.Booking
             if (!electricity) { _totalPrice -= 60; }
 
             TotalPrice.Text = FormatPrice(_totalPrice);
+
+            AmountOfNights.Text = amountOfNights < 0 ? "?" : amountOfNights.ToString();
+            PricePerNight.Text = FormatPrice(60);
+            TotalPrice.Text = totalPrice < 0 ? "?" : FormatPrice(totalPrice);
         }
 
         private static string FormatPrice(float priceInEuros)
