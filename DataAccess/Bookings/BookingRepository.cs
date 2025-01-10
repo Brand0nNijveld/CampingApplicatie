@@ -70,12 +70,14 @@ namespace DataAccess.Bookings
                         throw new BookingException("You are trying to book for a period that already has bookings.", BookingExceptionType.AlreadyBooked);
                     }
 
-                    string insertBookingQuery = "INSERT INTO booking (SpotNr, StartDate, EndDate) VALUES (@CampingID, @StartDate, @EndDate)";
+                    string insertBookingQuery = "INSERT INTO booking (SpotNr, StartDate, EndDate, Pets, Electricity) VALUES (@CampingID, @StartDate, @EndDate, @Pets, @Electricity)";
                     using (var cmd = new MySqlCommand(insertBookingQuery, conn))
                     {
                         cmd.Parameters.AddWithValue("@CampingID", request.CampingSpotID);
                         cmd.Parameters.AddWithValue("@StartDate", request.StartDate);
                         cmd.Parameters.AddWithValue("@EndDate", request.EndDate);
+                        cmd.Parameters.AddWithValue("@Pets", request.Pets);
+                        cmd.Parameters.AddWithValue("@Electricity", request.Electricity);
                         await cmd.ExecuteNonQueryAsync();
                     }
 

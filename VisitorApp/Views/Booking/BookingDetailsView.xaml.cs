@@ -30,6 +30,8 @@ namespace CampingApplication.VisitorApp.Views.Booking
             InitializeComponent();
         }
 
+
+        private float _totalPrice { get; set; }
         public void SetDetails(int id, CampingMapModel mapModel)
         {
             ID.Text = id.ToString();
@@ -56,10 +58,31 @@ namespace CampingApplication.VisitorApp.Views.Booking
             DateTime endDate = mapModel.EndDate;
 
             int amountOfNights = BookingService.CalculateAmountOfNights(startDate, endDate);
-            float totalPrice = BookingService.CalculateTotalPrice(amountOfNights, 60);
+            _totalPrice = BookingService.CalculateTotalPrice(amountOfNights, 60);
 
             StartDate.Text = startDate.ToShortDateString();
             EndDate.Text = endDate.ToShortDateString();
+            
+            AmountOfNights.Text = amountOfNights < 0 ? "?" : amountOfNights.ToString();
+            PricePerNight.Text = FormatPrice(60);
+            TotalPrice.Text = totalPrice < 0 ? "?" : FormatPrice(totalPrice);
+        }
+
+        public void PriceChangePets(bool pets)
+        {
+            if (pets) { _totalPrice += 60; }
+            if (!pets) { _totalPrice -= 60; }
+
+            TotalPrice.Text = FormatPrice(_totalPrice);
+        }
+
+        public void PriceChangeElectricity(bool electricity)
+        {
+            if (electricity) { _totalPrice += 60; }
+            if (!electricity) { _totalPrice -= 60; }
+
+            TotalPrice.Text = FormatPrice(_totalPrice);
+
             AmountOfNights.Text = amountOfNights < 0 ? "?" : amountOfNights.ToString();
             PricePerNight.Text = FormatPrice(60);
             TotalPrice.Text = totalPrice < 0 ? "?" : FormatPrice(totalPrice);

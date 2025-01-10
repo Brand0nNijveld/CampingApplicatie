@@ -95,5 +95,29 @@ namespace CampingApplication.VisitorApp.Views.Booking
         {
             BackButtonClicked?.Invoke();
         }
+
+        private void Pets_Checked(object sender, RoutedEventArgs e)
+        {
+            Details.PriceChangePets(true);
+            ViewModel.Pets = true;
+        }
+
+        private void Pets_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Details.PriceChangePets(false);
+            ViewModel.Pets = false;
+        }
+
+        private void Electricity_Checked(object sender, RoutedEventArgs e)
+        {
+            Details.PriceChangeElectricity(true);
+            ViewModel.Electricity = true;
+        }
+
+        private void Electricity_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Details.PriceChangeElectricity(false);
+            ViewModel.Electricity = false;
+        }
     }
 }

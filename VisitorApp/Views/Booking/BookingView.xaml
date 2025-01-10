@@ -96,6 +96,16 @@
                                 Grid.ColumnSpan="3" Grid.Row="2" />
                         </Grid>
 
+                        <CheckBox 
+                            Content="Huisdieren (+ €60,-)" 
+                            Margin="0,10,0,0" 
+                            HorizontalAlignment="Left" Checked="Pets_Checked" Unchecked="Pets_Unchecked"/>
+
+                        <CheckBox 
+                            Content="Elektriciteit (+ €60,-)" 
+                            Margin="0,10,0,0" 
+                            HorizontalAlignment="Left" Checked="Electricity_Checked" Unchecked="Electricity_Unchecked"/>
+
                         <components:CustomButton
                             HorizontalAlignment="Stretch"
                             Width="Auto" Margin="0, 10, 0, 0"
