@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		deploy-visitor-app.yml = deploy-visitor-app.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampingApplicationDataAccess", "DataAccess\CampingApplicationDataAccess.csproj", "{1B54C1BE-CFBC-4979-B344-666CE8D945A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampingApplication.DataAccess", "DataAccess\CampingApplication.DataAccess.csproj", "{1B54C1BE-CFBC-4979-B344-666CE8D945A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampingApplication.EmployeeApp", "EmployeeApp\CampingApplication.EmployeeApp.csproj", "{93F5CE61-3AFA-4CFA-9F34-F9DB78EB6C73}"
 EndProject
