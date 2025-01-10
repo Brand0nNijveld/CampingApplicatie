@@ -14,7 +14,7 @@ namespace CampingApplication.Business.PathService
             var priorityQueue = new SortedSet<(double Distance, Node Node)>(Comparer<(double Distance, Node Node)>.Create((a, b) =>
             {
                 int compare = a.Distance.CompareTo(b.Distance);
-                if (compare == 0) return a.Node.ID.CompareTo(b.Node.ID); // Tie-breaker for nodes with equal distances
+                if (compare == 0) return a.Node.ID.CompareTo(b.Node.ID); // Tie breaker for nodes with equal distances
                 return compare;
             }));
 
