@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace UnitTests
 {
-    public class PathFindingTests
+    public class PathServiceTests
     {
         [Test]
         public void FindShortestPath()
         {
-            // Arrange
             Graph graph = new();
             var startNode = new Node(0, 0, 0);
             var node1 = new Node(1, 0, 1);
@@ -27,10 +26,8 @@ namespace UnitTests
             graph.ConnectNodes(node3, node4);
             graph.ConnectNodes(node2, endNode);
 
-            // Act
             Route shortestRoute = Dijkstra.FindShortestPath(graph, startNode, endNode);
 
-            // Assert
             var expectedNodes = new List<Node> { startNode, node1, node2, endNode };
             Assert.Multiple(() =>
             {

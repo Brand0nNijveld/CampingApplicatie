@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Business\CampingApplication.Business.csproj" />
-    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+    <ProjectReference Include="..\DataAccess\CampingApplicationDataAccess.csproj" />
   </ItemGroup>
 
   <ItemGroup>
