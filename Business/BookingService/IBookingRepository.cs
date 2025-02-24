@@ -10,5 +10,6 @@ namespace CampingApplication.Business.BookingService
     {
         public Task SaveBookingAsync(BookingRequest request);
         public Task<IEnumerable<Booking>> GetBookingsInTimeFrameAsync(int campingSpotID, DateTime startDate, DateTime endDate);
+        public List<Booking> GetBookings();
     }
 }

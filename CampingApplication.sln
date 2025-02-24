@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampingApplication.Employee
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampingApplication.Client.Shared", "CampingApplication.Client.Shared\CampingApplication.Client.Shared.csproj", "{75CB8D00-DB63-4888-BFF7-DC6B3E6C5E3C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampingApplication.EmployeeViewReservations", "EmployeeViewReservations\CampingApplication.EmployeeViewReservations.csproj", "{4C4FBF02-ADD0-46C7-BC46-92052261ADD8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{75CB8D00-DB63-4888-BFF7-DC6B3E6C5E3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75CB8D00-DB63-4888-BFF7-DC6B3E6C5E3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75CB8D00-DB63-4888-BFF7-DC6B3E6C5E3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C4FBF02-ADD0-46C7-BC46-92052261ADD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C4FBF02-ADD0-46C7-BC46-92052261ADD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C4FBF02-ADD0-46C7-BC46-92052261ADD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C4FBF02-ADD0-46C7-BC46-92052261ADD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

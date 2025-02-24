@@ -21,6 +21,38 @@ namespace DataAccess.Bookings
             connection = con;
         }
 
+        public List<Booking> GetBookings()
+        {
+            List<Booking> bookings = new List<Booking>();
+
+            MySqlConnection conn = connection.Connection;
+            string query = @"SELECT BookingID, SpotNr, StartDate, EndDate
+                     FROM booking
+                     WHERE SpotNr = @SpotID
+                     AND (
+                         (StartDate < @EndDate AND EndDate > @StartDate)
+                     )";
+
+            using (var cmd = new MySqlCommand(query, conn))
+            {
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int ID = reader.GetInt32("BookingID");
+                        int spotNr = reader.GetInt32("SpotNr");
+                        DateTime sDate = reader.GetDateTime("StartDate");
+                        DateTime eDate = reader.GetDateTime("EndDate");
+
+                        bookings.Add(new Booking(ID, sDate, eDate));
+                    }
+                }
+            }
+
+            return bookings;
+        }
+            
+
         public async Task<IEnumerable<Booking>> GetBookingsInTimeFrameAsync(int campingSpotID, DateTime startDate, DateTime endDate)
         {
             List<Booking> bookings = new List<Booking>();

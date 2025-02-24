@@ -8,6 +8,11 @@ namespace CampingApplication.Business.BookingService
 {
     public class BookingRepositoryMock : IBookingRepository
     {
+        public List<Booking> GetBookings()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<IEnumerable<Booking>> GetBookingsInTimeFrameAsync(int campingSpotID, DateTime startDate, DateTime endDate)
         {
             throw new NotImplementedException();

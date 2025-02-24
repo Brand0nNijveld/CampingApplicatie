@@ -36,6 +36,11 @@ namespace CampingApplication.Business.BookingService
             await repository.SaveBookingAsync(request);
         }
 
+        public List<Booking> GetBookings()
+        {
+            return repository.GetBookings().ToList();
+        }
+
         public static int CalculateAmountOfNights(DateTime startDate, DateTime endDate)
         {
             return (endDate - startDate).Days;
